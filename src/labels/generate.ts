@@ -1,6 +1,7 @@
 import 'dotenv/config';
 
 import type { ChainId } from '@/utils/chains.js';
+import { putObject } from '@/utils/storage.js';
 
 import { fetch as fetchLabels } from './sources/index.js';
 
@@ -17,5 +18,5 @@ for (const chainIdString in labels) {
     }),
   );
   const string = JSON.stringify(labelsNoMetadata, null, 2);
-  console.log(chainId, string);
+  await putObject(`${chainId}.json`, string);
 }
