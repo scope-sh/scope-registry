@@ -15,8 +15,8 @@
   "scripts": {
     "generate:labels": "bun src/labels/generate.ts",
     "lint": "bun run lint:prettier && bun run lint:eslint",
-    "lint:prettier": "prettier -c \"src/**/*.{json,js,ts,vue}\"",
-    "lint:eslint": "eslint \"src/**/*.{js,ts,vue}\"",
+    "lint:prettier": "prettier -c \"src/**/*.{json,js,ts}\"",
+    "lint:eslint": "eslint \"src/**/*.{js,ts}\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
