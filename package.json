@@ -1,0 +1,39 @@
+{
+  "name": "scope-app",
+  "version": "1.0.0",
+  "description": "Scope Registry",
+  "author": {
+    "name": "Timur Badretdinov",
+    "url": "https://github.com/Destiner"
+  },
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/scope-sh/scope-registry.git"
+  },
+  "type": "module",
+  "scripts": {
+    "generate:labels": "bun src/labels/generate.ts",
+    "lint": "bun run lint:prettier && bun run lint:eslint",
+    "lint:prettier": "prettier -c \"src/**/*.{json,js,ts,vue}\"",
+    "lint:eslint": "eslint \"src/**/*.{js,ts,vue}\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@envio-dev/hypersync-client": "^0.1.9",
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "evm-providers": "^0.4.3",
+    "viem": "^2.9.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.5",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "eslint": "^8.57.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-vue": "^9.22.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.2"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "1": {
+    "0xa1207f3bba224e2c9c3c6d5af63d0eb1582ce587": "EAS",
+    "0xa7b39296258348c78294f95b872b282326a97bdf": "Schema Registry"
+  },
+  "10": {
+    "0x4200000000000000000000000000000000000021": "EAS",
+    "0x4200000000000000000000000000000000000020": "Schema Registry",
+    "0xe132c2e90274b44ffd8090b58399d04ddc060ae1": "EIP712 Proxy",
+    "0x6dd0cb3c3711c8b5d03b3790e5339bbc2bbcf934": "Indexer"
+  },
+  "137": {
+    "0x5e634ef5355f45a855d02d66ecd687b1502af790": "EAS",
+    "0x4be71865917c7907cca531270181d9b7dd4f2733": "EIP712 Proxy",
+    "0x12d0f50eb2d67b14293bdda2c248358f3dfe5308": "Indexer",
+    "0x7876eef51a891e737af8ba5a5e0f0fd29073d5a7": "Schema Registry"
+  },
+  "420": {
+    "0x4200000000000000000000000000000000000021": "EAS",
+    "0x88d1bd62ac014424b987ce5abf311bd7749e426b": "EIP712 Proxy",
+    "0xa42428d1bf904d762add02b27adac26d53643782": "Indexer",
+    "0x4200000000000000000000000000000000000020": "Schema Registry"
+  },
+  "8453": {
+    "0x4200000000000000000000000000000000000021": "EAS",
+    "0x4200000000000000000000000000000000000020": "Schema Registry",
+    "0xf095fe4b23958b08d38e52d5d5674bbf0c03cbf6": "EIP712 Proxy",
+    "0x37ac6006646f2e687b7fb379f549dc7634df5b84": "Indexer"
+  },
+  "42161": {
+    "0xbd75f629a22dc1ced33dda0b68c546a1c035c458": "EAS",
+    "0xa310da9c5b885e7fb3fba9d66e9ba6df512b78eb": "Schema Registry"
+  },
+  "42170": {
+    "0x6d3dc0fe5351087e3af3bde8eb3f7350ed894fc3": "EAS",
+    "0x49563d0da8df38ef2ebf9c1167270334d72ce0ae": "Schema Registry",
+    "0xebf2deed690f8a68b8248d6a12231ee70ed2154a": "EIP712 Proxy",
+    "0x7182be5e84afee9dc29c69d081f8a0fa834d6cb8": "Indexer"
+  },
+  "59140": {
+    "0xaef4103a04090071165f78d45d83a0c0782c2b2a": "EAS",
+    "0xb3574f76b1720e61fda98702c7016674cd6eaa7b": "EIP712 Proxy",
+    "0x55d26f9ae0203ef95494ae4c170ed35f4cf77797": "Schema Registry"
+  },
+  "59144": {
+    "0xaef4103a04090071165f78d45d83a0c0782c2b2a": "EAS",
+    "0x55d26f9ae0203ef95494ae4c170ed35f4cf77797": "Schema Registry"
+  },
+  "80001": {
+    "0xaef4103a04090071165f78d45d83a0c0782c2b2a": "EAS",
+    "0xb3574f76b1720e61fda98702c7016674cd6eaa7b": "EIP712 Proxy",
+    "0x55d26f9ae0203ef95494ae4c170ed35f4cf77797": "Schema Registry"
+  },
+  "84531": {
+    "0x4200000000000000000000000000000000000021": "EAS",
+    "0x37ac6006646f2e687b7fb379f549dc7634df5b84": "EIP712 Proxy",
+    "0xe0893f47009776d6aec3de8455cb0ed325eea74a": "Indexer",
+    "0x4200000000000000000000000000000000000020": "Schema Registry"
+  },
+  "84532": {
+    "0x4200000000000000000000000000000000000021": "EAS",
+    "0x4200000000000000000000000000000000000020": "SchemaRegistry",
+    "0xAd64A04c20dDBbA7cBb0EcAe4823095B4adA5c57": "EIP712Proxy",
+    "0x2C7BCE69D5Ee84EF73CC9286416F68E60F9A61b3": "Indexer"
+  },
+  "421613": {
+    "0xaef4103a04090071165f78d45d83a0c0782c2b2a": "EAS",
+    "0xb3574f76b1720e61fda98702c7016674cd6eaa7b": "EIP712 Proxy",
+    "0x55d26f9ae0203ef95494ae4c170ed35f4cf77797": "Schema Registry"
+  },
+  "534351": {
+    "0xaef4103a04090071165f78d45d83a0c0782c2b2a": "EAS",
+    "0xb3574f76b1720e61fda98702c7016674cd6eaa7b": "EIP712 Proxy",
+    "0x7c2cb1edc328491da52de2a0afc44d3b0ae7ee17": "Indexer",
+    "0x55d26f9ae0203ef95494ae4c170ed35f4cf77797": "Schema Registry"
+  },
+  "534352": {
+    "0xc47300428b6ad2c7d03bb76d05a176058b47e6b0": "EAS",
+    "0x77b7da1c40762cd8affe2069b575328efd4d9801": "EIP712 Proxy",
+    "0x8314bc1b2f7f286cb4f0323fe7119c0f99d4a083": "Indexer",
+    "0xd2cdf46556543316e7d34e8edc4624e2bb95e3b6": "Schema Registry"
+  },
+  "11155111": {
+    "0xc2679fbd37d54388ce493f1db75320d236e1815e": "EAS",
+    "0x9c9d17bee150e4ecdf3b99bafa62c08cb30e82bc": "EIP712 Proxy",
+    "0xaef4103a04090071165f78d45d83a0c0782c2b2a": "Indexer",
+    "0x0a7e2ff54e76b8e6659aedc9103fb21c038050d0": "Schema Registry"
+  },
+  "11155420": {
+    "0x4200000000000000000000000000000000000021": "EAS",
+    "0x37ac6006646f2e687b7fb379f549dc7634df5b84": "EIP712 Proxy",
+    "0x97e6822a36e38d4d93c0c810cc2be1c6fd492b64": "Indexer",
+    "0x4200000000000000000000000000000000000020": "Schema Registry"
+  }
+}
