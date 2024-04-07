@@ -1,4 +1,4 @@
-import { decodeEventLog, getEventSelector } from 'viem';
+import { decodeEventLog, encodeEventTopics } from 'viem';
 
 import aaveV3PoolConfiguratorAbi from '@/abi/aaveV3PoolConfigurator.js';
 import { Source as BaseSource } from '@/labels/base.js';
@@ -55,10 +55,15 @@ class Source extends BaseSource {
     previousLabels: ChainLabelMap,
   ): Promise<ChainLabelMap> {
     const address = this.getPoolConfiguratorAddress(chain);
-    const topic = getEventSelector(
-      'event ReserveInitialized(address,address,address,address,address)',
-    );
     if (!address) {
+      return {};
+    }
+    const topics = encodeEventTopics({
+      abi: aaveV3PoolConfiguratorAbi,
+      eventName: 'ReserveInitialized',
+    });
+    const topic = topics[0];
+    if (!topic) {
       return {};
     }
     const events = await getEvents(chain, address, topic);
