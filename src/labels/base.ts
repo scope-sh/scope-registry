@@ -9,6 +9,7 @@ type LabelType =
   | 'aave-v3-atoken'
   | 'aave-v3-vtoken'
   | 'aave-v3-stoken'
+  | 'biconomy-v2-account'
   | 'uniswap-v2-pool'
   | 'uniswap-v3-pool';
 

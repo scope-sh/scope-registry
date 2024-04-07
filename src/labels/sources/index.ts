@@ -8,6 +8,8 @@ import AaveV2TokenSource from './aave/v2-tokens.js';
 import AaveV2Source from './aave/v2.js';
 import AaveV3TokenSource from './aave/v3-tokens.js';
 import AaveV3Source from './aave/v3.js';
+import BiconomyV2AccountSource from './biconomy/v2-accounts.js';
+import BiconomyV2Source from './biconomy/v2.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import FarcasterSource from './farcaster/index.js';
@@ -55,6 +57,8 @@ const sources: Source[] = [
   new FarcasterSource(),
   new EnsSource(),
   new EasSource(),
+  new BiconomyV2AccountSource(),
+  new BiconomyV2Source(),
 ];
 
 export { fetch };
