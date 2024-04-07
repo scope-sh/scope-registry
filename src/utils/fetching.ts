@@ -143,6 +143,32 @@ async function getEventsPaginated(
   };
 }
 
+async function getDeployed(
+  chain: ChainId,
+  addresses: Record<Address, string>,
+): Promise<Record<Address, string>> {
+  const client = getClient(chain);
+  if (!client) {
+    return {};
+  }
+  const deployed: Record<Address, string> = {};
+  for (const addressString in addresses) {
+    const address = addressString as Address;
+    const label = addresses[address];
+    if (!label) {
+      continue;
+    }
+    const bytecode = await client.getBytecode({
+      address,
+    });
+    if (!bytecode) {
+      continue;
+    }
+    deployed[address] = label;
+  }
+  return deployed;
+}
+
 async function getErc20Metadata(
   chain: ChainId,
   addresses: string[],
@@ -210,5 +236,5 @@ async function getErc20Metadata(
   return metadata;
 }
 
-export { getEvents, getErc20Metadata };
+export { getEvents, getErc20Metadata, getDeployed };
 export type { Event };
