@@ -25,7 +25,7 @@
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "evm-providers": "^0.4.3",
-    "viem": "^2.9.9"
+    "viem": "^2.9.12"
   },
   "devDependencies": {
     "@types/node": "^20.12.5",
