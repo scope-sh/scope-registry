@@ -3,8 +3,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID as string;
 const accessKeyId = process.env.CLOUDFLARE_ACCESS_KEY_ID as string;
 const secretAccessKey = process.env.CLOUDFLARE_SECRET_ACCESS_KEY as string;
-
-const bucket = 'scope-labels';
+const bucket = process.env.CLOUDFLARE_R2_BUCKET as string;
 
 const s3 = new S3Client({
   region: 'auto',

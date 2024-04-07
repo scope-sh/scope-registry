@@ -18,5 +18,5 @@ for (const chainIdString in labels) {
     }),
   );
   const string = JSON.stringify(labelsNoMetadata, null, 2);
-  await putObject(`${chainId}.json`, string);
+  await putObject(`labels/${chainId}.json`, string);
 }
