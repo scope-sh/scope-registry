@@ -11,6 +11,7 @@ type LabelType =
   | 'aave-v3-stoken'
   | 'biconomy-v2-account'
   | 'kernel-v2-account'
+  | 'rhinestone-v1-module'
   | 'safe-v1.3.0-account'
   | 'safe-v1.4.1-account'
   | 'uniswap-v2-pool'

@@ -1,0 +1,79 @@
+import { decodeEventLog, encodeEventTopics } from 'viem';
+import type { Address, Hex } from 'viem';
+
+import rhinestoneV1RegistryAbi from '@/abi/rhinestoneV1Registry.js';
+import { Source as BaseSource } from '@/labels/base.js';
+import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
+import { initLabelMap } from '@/labels/utils.js';
+import { CHAINS } from '@/utils/chains.js';
+import type { ChainId } from '@/utils/chains.js';
+import { getEvents } from '@/utils/fetching.js';
+
+interface Module {
+  address: Address;
+  sender: Address;
+  resolver: Hex;
+}
+
+const REGISTRY_ADDRESS = '0xe0cde9239d16bef05e62bbf7aa93e420f464c826';
+
+class Source extends BaseSource {
+  getName(): string {
+    return 'Rhinestone V1 Accounts';
+  }
+
+  async fetch(): Promise<LabelMap> {
+    const labels = initLabelMap();
+    for (const chain of CHAINS) {
+      const chainLabels = await this.fetchLabels(chain);
+      labels[chain] = chainLabels;
+    }
+
+    return labels;
+  }
+
+  private async fetchLabels(chain: ChainId): Promise<ChainLabelMap> {
+    const topics = encodeEventTopics({
+      abi: rhinestoneV1RegistryAbi,
+      eventName: 'ModuleRegistration',
+    });
+    const topic = topics[0];
+    if (!topic) {
+      return {};
+    }
+    const events = await getEvents(chain, REGISTRY_ADDRESS, topic);
+
+    const modules: Module[] = events.map((event) => {
+      const decodedEvent = decodeEventLog({
+        abi: rhinestoneV1RegistryAbi,
+        data: event.data as Hex,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        topics: event.topics,
+      });
+      if (decodedEvent.eventName !== 'ModuleRegistration') {
+        throw new Error('Invalid event name');
+      }
+      return {
+        address: decodedEvent.args.implementation.toLowerCase() as Address,
+        sender: decodedEvent.args.sender.toLowerCase() as Address,
+        resolver: decodedEvent.args.resolver as Hex,
+      };
+    });
+
+    return Object.fromEntries(
+      modules.map((module) => {
+        return [
+          module.address,
+          {
+            value: 'Module',
+            type: 'rhinestone-v1-module',
+            namespace: 'Rhinestone V1',
+          },
+        ];
+      }),
+    );
+  }
+}
+
+export default Source;
