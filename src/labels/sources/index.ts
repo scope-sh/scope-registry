@@ -15,6 +15,10 @@ import EnsSource from './ens/index.js';
 import FarcasterSource from './farcaster/index.js';
 import KernelV2AccountSource from './kernel/v2-accounts.js';
 import KernelV2Source from './kernel/v2.js';
+import SafeV1_3_0AccountSource from './safe/v1.3.0-accounts.js';
+import SafeV1_3_0Source from './safe/v1.3.0.js';
+import SafeV1_4_1AccountSource from './safe/v1.4.1-accounts.js';
+import SafeV1_4_1Source from './safe/v1.4.1.js';
 import TokenlistSource from './tokenlists.js';
 import UniswapV2PoolSource from './uniswap/v2-pools.js';
 import UniswapV2Source from './uniswap/v2.js';
@@ -63,6 +67,10 @@ const sources: Source[] = [
   new BiconomyV2Source(),
   new KernelV2AccountSource(),
   new KernelV2Source(),
+  new SafeV1_3_0AccountSource(),
+  new SafeV1_3_0Source(),
+  new SafeV1_4_1AccountSource(),
+  new SafeV1_4_1Source(),
 ];
 
 export { fetch };
