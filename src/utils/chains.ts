@@ -179,15 +179,7 @@ function getChainData(chain: ChainId): ChainData {
     case LINEA:
       return linea;
     case POLYGON_AMOY:
-      return {
-        ...polygonAmoy,
-        contracts: {
-          multicall3: {
-            address: '0xca11bde05977b3631167028862be2a173976ca11',
-            blockCreated: 3127388,
-          },
-        },
-      };
+      return polygonAmoy;
     case BASE_SEPOLIA:
       return baseSepolia;
     case ARBITRUM_SEPOLIA:
