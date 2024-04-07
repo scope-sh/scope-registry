@@ -8,16 +8,7 @@ type LabelType =
   | 'aave-v2-stable-debt-token'
   | 'aave-v3-atoken'
   | 'aave-v3-vtoken'
-  | 'aave-v3-stoken'
-  | 'compound-v2-ctoken'
-  | 'compound-v3-market'
-  | 'curve-v1-pool'
-  | 'curve-v2-pool'
-  | 'uniswap-v3-pool'
-  | 'uniswap-v2-pool'
-  | 'balancer-v2-pool'
-  | 'sudoswap-v2-erc721-pool'
-  | 'sudoswap-v2-erc1155-pool';
+  | 'aave-v3-stoken';
 
 type ChainLabelMap = Record<string, Label>;
 type LabelMap = Record<ChainId, ChainLabelMap>;
