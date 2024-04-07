@@ -84,8 +84,6 @@ const CHAINS: ChainId[] = [
   POLYGON_AMOY,
   BASE,
   BASE_SEPOLIA,
-  ARBITRUM,
-  ARBITRUM_SEPOLIA,
 ];
 
 type ChainId =
