@@ -23,6 +23,7 @@ import SafeV1_3_0AccountSource from './safe/v1.3.0-accounts.js';
 import SafeV1_3_0Source from './safe/v1.3.0.js';
 import SafeV1_4_1AccountSource from './safe/v1.4.1-accounts.js';
 import SafeV1_4_1Source from './safe/v1.4.1.js';
+import StaticSource from './static.js';
 import TokenlistSource from './tokenlists.js';
 import UniswapV2PoolSource from './uniswap/v2-pools.js';
 import UniswapV2Source from './uniswap/v2.js';
@@ -54,6 +55,7 @@ async function fetch(): Promise<LabelMap> {
 }
 
 const sources: Source[] = [
+  new StaticSource(),
   new TokenlistSource(),
   new WrappedSource(),
   new AaveV2TokenSource(),

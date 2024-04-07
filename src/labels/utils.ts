@@ -82,7 +82,7 @@ function initLabelMap(): LabelMap {
 }
 
 function toLabelMap(
-  namespace: string,
+  namespace: string | undefined,
   addresses: Record<string, Record<string, string>>,
 ): LabelMap {
   const labelMap = {} as LabelMap;
