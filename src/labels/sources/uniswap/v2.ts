@@ -1,0 +1,18 @@
+import { Source as BaseSource } from '@/labels/base.js';
+import type { LabelMap } from '@/labels/base.js';
+
+import { toLabelMap } from '../../utils.js';
+
+import addresses from './v2-addresses.json';
+
+class Source extends BaseSource {
+  override getName(): string {
+    return 'Uniswap V2';
+  }
+
+  async fetch(): Promise<LabelMap> {
+    return toLabelMap('Uniswap V2', addresses);
+  }
+}
+
+export default Source;
