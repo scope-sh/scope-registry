@@ -12,6 +12,10 @@ import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import FarcasterSource from './farcaster/index.js';
 import TokenlistSource from './tokenlists.js';
+import UniswapV2PoolSource from './uniswap/v2-pools.js';
+import UniswapV2Source from './uniswap/v2.js';
+import UniswapV3PoolSource from './uniswap/v3-pools.js';
+import UniswapV3Source from './uniswap/v3.js';
 import WrappedSource from './wrapped.js';
 
 async function fetch(): Promise<LabelMap> {
@@ -44,6 +48,10 @@ const sources: Source[] = [
   new AaveV2Source(),
   new AaveV3TokenSource(),
   new AaveV3Source(),
+  new UniswapV2Source(),
+  new UniswapV2PoolSource(),
+  new UniswapV3Source(),
+  new UniswapV3PoolSource(),
   new FarcasterSource(),
   new EnsSource(),
   new EasSource(),
