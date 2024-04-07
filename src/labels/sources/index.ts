@@ -13,6 +13,8 @@ import BiconomyV2Source from './biconomy/v2.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import FarcasterSource from './farcaster/index.js';
+import KernelV2AccountSource from './kernel/v2-accounts.js';
+import KernelV2Source from './kernel/v2.js';
 import TokenlistSource from './tokenlists.js';
 import UniswapV2PoolSource from './uniswap/v2-pools.js';
 import UniswapV2Source from './uniswap/v2.js';
@@ -59,6 +61,8 @@ const sources: Source[] = [
   new EasSource(),
   new BiconomyV2AccountSource(),
   new BiconomyV2Source(),
+  new KernelV2AccountSource(),
+  new KernelV2Source(),
 ];
 
 export { fetch };
