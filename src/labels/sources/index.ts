@@ -15,6 +15,7 @@ import EnsSource from './ens/index.js';
 import FarcasterSource from './farcaster/index.js';
 import KernelV2AccountSource from './kernel/v2-accounts.js';
 import KernelV2Source from './kernel/v2.js';
+import PimlicoSource from './pimlico/index.js';
 import RhinestoneV1ModulesSource from './rhinestone/v1-modules.js';
 import RhinestoneV1Source from './rhinestone/v1.js';
 import SafeCoreSource from './safe/core.js';
@@ -77,6 +78,7 @@ const sources: Source[] = [
   new SafeCoreSource(),
   new RhinestoneV1ModulesSource(),
   new RhinestoneV1Source(),
+  new PimlicoSource(),
 ];
 
 export { fetch };
