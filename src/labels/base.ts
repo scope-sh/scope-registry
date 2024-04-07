@@ -9,7 +9,8 @@ type LabelType =
   | 'aave-v3-atoken'
   | 'aave-v3-vtoken'
   | 'aave-v3-stoken'
-  | 'uniswap-v2-pool';
+  | 'uniswap-v2-pool'
+  | 'uniswap-v3-pool';
 
 type ChainLabelMap = Record<string, Label>;
 type LabelMap = Record<ChainId, ChainLabelMap>;
