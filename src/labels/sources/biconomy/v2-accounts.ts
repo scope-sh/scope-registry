@@ -14,7 +14,7 @@ interface Account {
   initialAuthModule: Address;
 }
 
-const FACTORY_ADDRESS = '0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f';
+const FACTORY_ADDRESS = '0x000000a56aaca3e9a4c479ea6b6cd0dbcb6634f5';
 
 class Source extends BaseSource {
   getName(): string {
