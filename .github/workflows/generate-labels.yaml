@@ -1,0 +1,33 @@
+name: Generate Labels
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 18 * * *'
+
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Clean install
+        run: bun install
+
+      - name: Generate
+        run: bun run generate:labels
+        env:
+          ALCHEMY_KEY: ${{ secrets.ALCHEMY_KEY }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_ACCESS_KEY_ID }}
+          CLOUDFLARE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
+          CLOUDFLARE_R2_BUCKET: ${{ secrets.CLOUDFLARE_R2_BUCKET }}
