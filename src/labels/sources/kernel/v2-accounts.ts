@@ -9,7 +9,7 @@ import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
-const FACTORY_ADDRESS = '0x5de4839a76cf55d0c90e2061ef4386d962E15ae3';
+const FACTORY_ADDRESS = '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3';
 
 class Source extends BaseSource {
   getName(): string {
