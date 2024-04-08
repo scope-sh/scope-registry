@@ -1,4 +1,9 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  S3ServiceException,
+} from '@aws-sdk/client-s3';
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID as string;
 const accessKeyId = process.env.CLOUDFLARE_ACCESS_KEY_ID as string;
@@ -14,9 +19,29 @@ const s3 = new S3Client({
   },
 });
 
+async function getObject(key: string): Promise<string | null> {
+  try {
+    const file = await s3.send(
+      new GetObjectCommand({ Bucket: bucket, Key: key }),
+    );
+    const fileBody = file.Body;
+    if (!fileBody) {
+      return null;
+    }
+    const fileString = await fileBody.transformToString();
+    return fileString;
+  } catch (e) {
+    if (e instanceof S3ServiceException) {
+      if (e.name === 'NoSuchKey') {
+        return null;
+      }
+    }
+    throw e;
+  }
+}
+
 async function putObject(key: string, body: string): Promise<void> {
   await s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: body }));
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { putObject };
+export { getObject, putObject };
