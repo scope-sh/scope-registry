@@ -20,6 +20,7 @@ import {
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
+import { getObject, putObject } from './storage.js';
 
 // Bun doesn't support brotli yet
 axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
@@ -34,6 +35,12 @@ interface Erc20Metadata {
 interface Event {
   data: Hex;
   topics: Hex[];
+  blockNumber: number;
+}
+
+interface EventCache {
+  events: Event[];
+  lastBlock: number;
 }
 
 function getClient(chain: ChainId): PublicClient | null {
@@ -93,8 +100,13 @@ async function getEvents(
     return [];
   }
   const latestBlock = await client.getHeight();
-  const events: Event[] = [];
-  let fromBlock = 0;
+  const cacheKey = `events/${chain}/${address}/${topic0}.json`;
+  // Read events from the cache
+  const cacheString = await getObject(cacheKey);
+  const cache =
+    cacheString === null ? null : (JSON.parse(cacheString) as EventCache);
+  const events: Event[] = cache ? cache.events : [];
+  let fromBlock = cache ? cache.lastBlock + 1 : 0;
   while (fromBlock < latestBlock) {
     const { events: pageEvents, nextBlock } = await getEventsPaginated(
       client,
@@ -105,6 +117,13 @@ async function getEvents(
     events.push(...pageEvents);
     fromBlock = nextBlock;
   }
+  // Write new events to the cache
+  const lastEvent = events.at(-1);
+  const updatedEventCache: EventCache = {
+    events,
+    lastBlock: lastEvent ? lastEvent.blockNumber : -1,
+  };
+  await putObject(cacheKey, JSON.stringify(updatedEventCache));
   return events;
 }
 
@@ -126,7 +145,7 @@ async function getEventsPaginated(
       },
     ],
     fieldSelection: {
-      log: ['data', 'topic0', 'topic1', 'topic2', 'topic3'],
+      log: ['block_number', 'data', 'topic0', 'topic1', 'topic2', 'topic3'],
     },
   };
 
@@ -134,7 +153,8 @@ async function getEventsPaginated(
   const events = response.data.logs.map((log) => {
     const topics = log.topics as Address[];
     const data = log.data as Hex;
-    return { topics, data };
+    const blockNumber = log.blockNumber;
+    return { topics, data, blockNumber };
   });
   const nextBlock = response.nextBlock;
   return {
