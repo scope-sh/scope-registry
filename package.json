@@ -20,7 +20,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.550.0",
     "@envio-dev/hypersync-client": "^0.1.9",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
