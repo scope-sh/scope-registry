@@ -1,4 +1,4 @@
-import type { ChainId } from '@/utils/chains.js';
+import type { ChainId } from '../utils/chains.js';
 
 type LabelType =
   | 'wrapped'
