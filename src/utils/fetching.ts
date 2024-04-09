@@ -77,7 +77,7 @@ function getHypersyncClient(chain: ChainId): HypersyncClient | null {
       case POLYGON:
         return 'https://polygon.hypersync.xyz';
       case POLYGON_AMOY:
-        return null;
+        return 'https://amoy.hypersync.xyz';
       default:
         return null;
     }
