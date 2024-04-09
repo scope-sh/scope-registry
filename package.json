@@ -12,6 +12,9 @@
     "url": "git://github.com/scope-sh/scope-registry.git"
   },
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "generate:labels": "bun src/labels/generate.ts",
     "lint": "bun run lint:prettier && bun run lint:eslint",
