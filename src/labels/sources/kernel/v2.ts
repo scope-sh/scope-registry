@@ -16,11 +16,11 @@ class Source extends BaseSource {
     const addresses: Record<string, Record<Address, string>> = {};
     const labels: Record<Address, string> = {
       '0xd3082872f8b06073a021b4602e022d5a070d7cfc': 'Kernel',
-      '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3': 'KernelFactory',
-      '0xb8e3c4beaacad06f6092793012da4a8cb23d6123': 'SessionKeyValidator',
+      '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3': 'Kernel Factory',
+      '0xb8e3c4beaacad06f6092793012da4a8cb23d6123': 'Session Key Validator',
       '0xd9ab5096a832b9ce79914329daee236f8eea0390': 'ECDSA Validator',
-      '0x42085b533b27b9afdaf3864a38c72ef853943dab': 'FclWebAuthnValidator',
-      '0x738e3257ee928637fe62c37f91d3e722c45dcc7c': 'P256VerifierWrapper',
+      '0x42085b533b27b9afdaf3864a38c72ef853943dab': 'Fcl WebAuthn Validator',
+      '0x738e3257ee928637fe62c37f91d3e722c45dcc7c': 'P256 Verifier Wrapper',
     };
     for (const chain of CHAINS) {
       const chainAddresses = await getDeployed(chain, labels);
