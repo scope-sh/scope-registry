@@ -44,7 +44,7 @@ import { getErc20Metadata } from '@/utils/fetching.js';
 
 import { Source as BaseSource } from '../base.js';
 import type { Label, LabelMap } from '../base.js';
-import { initLabelMap } from '../utils.js';
+import { getLabelTypeById, initLabelMap } from '../utils.js';
 
 interface TokenList {
   name: string;
@@ -183,7 +183,7 @@ class Source extends BaseSource {
       for (const asset of chainLabelAssets) {
         const label: Label = {
           value: asset.name,
-          type: 'erc20',
+          type: getLabelTypeById('erc20'),
           metadata: {
             symbol: asset.symbol,
           },

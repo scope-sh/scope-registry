@@ -4,7 +4,11 @@ import type { Hex } from 'viem';
 import uniswapV3FactoryAbi from '@/abi/uniswapV3Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
-import { initLabelMap } from '@/labels/utils.js';
+import {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initLabelMap,
+} from '@/labels/utils.js';
 import {
   CHAINS,
   ETHEREUM,
@@ -24,6 +28,8 @@ interface Pool {
   token1: string;
   fee: number;
 }
+
+const NAMESPACE = 'Uniswap V3';
 
 class Source extends BaseSource {
   getName(): string {
@@ -85,8 +91,8 @@ class Source extends BaseSource {
           pool.address,
           {
             value,
-            type: 'uniswap-v3-pool',
-            namespace: 'Uniswap V3',
+            type: getLabelTypeById('uniswap-v3-pool'),
+            namespace: getLabelNamespaceByValue(NAMESPACE),
           },
         ];
       }),
@@ -126,8 +132,8 @@ function getPoolLabel(pool: Pool, previousLabels: ChainLabelMap): string {
     !token1Label.type ||
     !token0Label.metadata ||
     !token1Label.metadata ||
-    !['wrapped', 'erc20'].includes(token0Label.type) ||
-    !['wrapped', 'erc20'].includes(token1Label.type)
+    !['wrapped', 'erc20'].includes(token0Label.type.id) ||
+    !['wrapped', 'erc20'].includes(token1Label.type.id)
   ) {
     return 'Pool';
   }

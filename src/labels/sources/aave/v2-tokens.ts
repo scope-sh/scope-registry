@@ -3,7 +3,11 @@ import { decodeEventLog, encodeEventTopics } from 'viem';
 import aaveV2LendingPoolConfiguratorAbi from '@/abi/aaveV2LendingPoolConfigurator.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainLabelMap, Label, LabelMap } from '@/labels/base.js';
-import { initLabelMap } from '@/labels/utils.js';
+import {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initLabelMap,
+} from '@/labels/utils.js';
 import {
   AVALANCHE,
   AVALANCHE_FUJI,
@@ -20,6 +24,8 @@ interface Token {
   stableDebtToken: string;
   variableDebtToken: string;
 }
+
+const NAMESPACE = 'Aave V2';
 
 class Source extends BaseSource {
   getName(): string {
@@ -82,8 +88,8 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
-                type: 'aave-v2-atoken',
-                namespace: 'Aave V2',
+                type: getLabelTypeById('aave-v2-atoken'),
+                namespace: getLabelNamespaceByValue(NAMESPACE),
               },
             ],
             [
@@ -94,8 +100,8 @@ class Source extends BaseSource {
                   'stable-debt-token',
                   previousLabels,
                 ),
-                type: 'aave-v2-stable-debt-token',
-                namespace: 'Aave V2',
+                type: getLabelTypeById('aave-v2-stable-debt-token'),
+                namespace: getLabelNamespaceByValue(NAMESPACE),
               },
             ],
             [
@@ -106,8 +112,8 @@ class Source extends BaseSource {
                   'variable-debt-token',
                   previousLabels,
                 ),
-                type: 'aave-v2-variable-debt-token',
-                namespace: 'Aave V2',
+                type: getLabelTypeById('aave-v2-variable-debt-token'),
+                namespace: getLabelNamespaceByValue(NAMESPACE),
               },
             ],
           ];
@@ -158,7 +164,7 @@ function getTokenLabel(
   }
   if (
     !underlyingLabel.type ||
-    !['wrapped', 'erc20'].includes(underlyingLabel.type)
+    !['wrapped', 'erc20'].includes(underlyingLabel.type.id)
   ) {
     return kindName;
   }

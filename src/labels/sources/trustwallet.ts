@@ -44,7 +44,7 @@ import {
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
-import { initLabelMap } from '../utils.js';
+import { getLabelTypeById, initLabelMap } from '../utils.js';
 
 interface TreeResponse {
   sha: string;
@@ -82,7 +82,7 @@ class Source extends BaseSource {
         }
         const label: Label = {
           value: name,
-          type: 'erc20',
+          type: getLabelTypeById('erc20'),
           metadata: {
             symbol,
           },

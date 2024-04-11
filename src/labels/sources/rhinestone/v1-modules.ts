@@ -4,7 +4,11 @@ import type { Address, Hex } from 'viem';
 import rhinestoneV1RegistryAbi from '@/abi/rhinestoneV1Registry.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
-import { initLabelMap } from '@/labels/utils.js';
+import {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initLabelMap,
+} from '@/labels/utils.js';
 import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
@@ -16,6 +20,7 @@ interface Module {
 }
 
 const REGISTRY_ADDRESS = '0xe0cde9239d16bef05e62bbf7aa93e420f464c826';
+const NAMESPACE = 'Rhinestone V1';
 
 class Source extends BaseSource {
   getName(): string {
@@ -67,8 +72,8 @@ class Source extends BaseSource {
           module.address,
           {
             value: 'Module',
-            type: 'rhinestone-v1-module',
-            namespace: 'Rhinestone V1',
+            type: getLabelTypeById('rhinestone-v1-module'),
+            namespace: getLabelNamespaceByValue(NAMESPACE),
           },
         ];
       }),

@@ -4,12 +4,17 @@ import type { Address, Hex } from 'viem';
 import kernelV2FactoryAbi from '@/abi/kernelV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
-import { initLabelMap } from '@/labels/utils.js';
+import {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initLabelMap,
+} from '@/labels/utils.js';
 import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3';
+const NAMESPACE = 'Kernel V2';
 
 class Source extends BaseSource {
   getName(): string {
@@ -57,8 +62,8 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
-            type: 'kernel-v2-account',
-            namespace: 'Kernel V2',
+            type: getLabelTypeById('kernel-v2-account'),
+            namespace: getLabelNamespaceByValue(NAMESPACE),
           },
         ];
       }),

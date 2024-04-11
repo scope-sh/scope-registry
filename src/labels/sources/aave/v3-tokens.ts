@@ -3,7 +3,11 @@ import { decodeEventLog, encodeEventTopics } from 'viem';
 import aaveV3PoolConfiguratorAbi from '@/abi/aaveV3PoolConfigurator.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainLabelMap, Label, LabelMap } from '@/labels/base.js';
-import { initLabelMap } from '@/labels/utils.js';
+import {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initLabelMap,
+} from '@/labels/utils.js';
 import {
   ARBITRUM,
   AVALANCHE_FUJI,
@@ -33,6 +37,8 @@ interface Token {
   sToken: string;
   vToken: string;
 }
+
+const NAMESPACE = 'Aave V3';
 
 class Source extends BaseSource {
   getName(): string {
@@ -95,24 +101,24 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
-                type: 'aave-v3-atoken',
-                namespace: 'Aave V3',
+                type: getLabelTypeById('aave-v3-atoken'),
+                namespace: getLabelNamespaceByValue(NAMESPACE),
               },
             ],
             [
               token.sToken,
               {
                 value: getTokenLabel(token, 's-token', previousLabels),
-                type: 'aave-v3-stoken',
-                namespace: 'Aave V3',
+                type: getLabelTypeById('aave-v3-stoken'),
+                namespace: getLabelNamespaceByValue(NAMESPACE),
               },
             ],
             [
               token.vToken,
               {
                 value: getTokenLabel(token, 'v-token', previousLabels),
-                type: 'aave-v3-vtoken',
-                namespace: 'Aave V3',
+                type: getLabelTypeById('aave-v3-vtoken'),
+                namespace: getLabelNamespaceByValue(NAMESPACE),
               },
             ],
           ];
@@ -189,7 +195,7 @@ function getTokenLabel(
   }
   if (
     !underlyingLabel.type ||
-    !['wrapped', 'erc20'].includes(underlyingLabel.type)
+    !['wrapped', 'erc20'].includes(underlyingLabel.type.id)
   ) {
     return kindName;
   }

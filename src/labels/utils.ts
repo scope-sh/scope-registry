@@ -38,7 +38,13 @@ import {
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 
-import type { ChainLabelMap, LabelMap } from './base.js';
+import type {
+  ChainLabelMap,
+  LabelId,
+  LabelMap,
+  LabelNamespace,
+  LabelType,
+} from './base.js';
 
 function initLabelMap(): LabelMap {
   return {
@@ -81,8 +87,64 @@ function initLabelMap(): LabelMap {
   };
 }
 
+function getLabelNamespaceByValue(value: string): LabelNamespace {
+  return {
+    id: sluggify(value),
+    value,
+  };
+}
+
+function getLabelTypeById(value: LabelId): LabelType {
+  function getLabelTypeValue(value: LabelId): string {
+    switch (value) {
+      case 'wrapped':
+        return 'Wrapped';
+      case 'erc20':
+        return 'ERC20';
+      case 'aave-v2-atoken':
+        return 'Aave V2 aToken';
+      case 'aave-v2-variable-debt-token':
+        return 'Aave V2 Variable Debt Token';
+      case 'aave-v2-stable-debt-token':
+        return 'Aave V2 Stable Debt Token';
+      case 'aave-v3-atoken':
+        return 'Aave V3 aToken';
+      case 'aave-v3-vtoken':
+        return 'Aave V3 vToken';
+      case 'aave-v3-stoken':
+        return 'Aave V3 sToken';
+      case 'biconomy-v2-account':
+        return 'Biconomy V2 Account';
+      case 'kernel-v2-account':
+        return 'Kernel V2 Account';
+      case 'rhinestone-v1-module':
+        return 'Rhinestone V1 Module';
+      case 'safe-v1.3.0-account':
+        return 'Safe V1.3.0 Account';
+      case 'safe-v1.4.1-account':
+        return 'Safe V1.4.1 Account';
+      case 'uniswap-v2-pool':
+        return 'Uniswap V2 Pool';
+      case 'uniswap-v3-pool':
+        return 'Uniswap V3 Pool';
+    }
+  }
+
+  return {
+    id: value,
+    value: getLabelTypeValue(value),
+  };
+}
+
+function sluggify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 function toLabelMap(
-  namespace: string | undefined,
+  namespaceValue: string | undefined,
   addresses: Record<string, Record<string, string>>,
 ): LabelMap {
   const labelMap = {} as LabelMap;
@@ -100,7 +162,9 @@ function toLabelMap(
       }
       chainLabelMap[address] = {
         value,
-        namespace,
+        namespace: namespaceValue
+          ? getLabelNamespaceByValue(namespaceValue)
+          : undefined,
       };
     }
     labelMap[chain] = chainLabelMap;
@@ -108,5 +172,4 @@ function toLabelMap(
   return labelMap;
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { initLabelMap, toLabelMap };
+export { getLabelNamespaceByValue, getLabelTypeById, initLabelMap, toLabelMap };

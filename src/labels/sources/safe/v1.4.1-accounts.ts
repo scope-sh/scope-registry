@@ -4,12 +4,17 @@ import type { Address, Hex } from 'viem';
 import safeV141FactoryAbi from '@/abi/safeV141Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
-import { initLabelMap } from '@/labels/utils.js';
+import {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initLabelMap,
+} from '@/labels/utils.js';
 import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67';
+const NAMESPACE = 'Safe V1.4.1';
 
 class Source extends BaseSource {
   getName(): string {
@@ -57,8 +62,8 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
-            type: 'safe-v1.4.1-account',
-            namespace: 'Safe V1.4.1',
+            type: getLabelTypeById('safe-v1.4.1-account'),
+            namespace: getLabelNamespaceByValue(NAMESPACE),
           },
         ];
       }),

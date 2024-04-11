@@ -1,6 +1,6 @@
 import type { ChainId } from '../utils/chains.js';
 
-type LabelType =
+type LabelId =
   | 'wrapped'
   | 'erc20'
   | 'aave-v2-atoken'
@@ -20,10 +20,21 @@ type LabelType =
 type ChainLabelMap = Record<string, Label>;
 type LabelMap = Record<ChainId, ChainLabelMap>;
 
+interface LabelType {
+  id: LabelId;
+  value: string;
+}
+
+interface LabelNamespace {
+  id: string;
+  value: string;
+}
+
 interface Label {
   value: string;
-  namespace?: string;
+  namespace?: LabelNamespace;
   type?: LabelType;
+  iconUrl?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -33,4 +44,11 @@ abstract class Source {
 }
 
 export { Source };
-export type { ChainLabelMap, LabelType, LabelMap, Label };
+export type {
+  ChainLabelMap,
+  Label,
+  LabelId,
+  LabelMap,
+  LabelNamespace,
+  LabelType,
+};

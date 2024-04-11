@@ -4,7 +4,11 @@ import type { Hex } from 'viem';
 import uniswapV2FactoryAbi from '@/abi/uniswapV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
-import { initLabelMap } from '@/labels/utils.js';
+import {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initLabelMap,
+} from '@/labels/utils.js';
 import { CHAINS, ETHEREUM } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
@@ -14,6 +18,8 @@ interface Pool {
   token0: string;
   token1: string;
 }
+
+const NAMESPACE = 'Uniswap V2';
 
 class Source extends BaseSource {
   getName(): string {
@@ -74,8 +80,8 @@ class Source extends BaseSource {
           pool.address,
           {
             value,
-            type: 'uniswap-v2-pool',
-            namespace: 'Uniswap V2',
+            type: getLabelTypeById('uniswap-v2-pool'),
+            namespace: getLabelNamespaceByValue(NAMESPACE),
           },
         ];
       }),
@@ -103,8 +109,8 @@ function getPoolLabel(pool: Pool, previousLabels: ChainLabelMap): string {
     !token1Label.type ||
     !token0Label.metadata ||
     !token1Label.metadata ||
-    !['wrapped', 'erc20'].includes(token0Label.type) ||
-    !['wrapped', 'erc20'].includes(token1Label.type)
+    !['wrapped', 'erc20'].includes(token0Label.type.id) ||
+    !['wrapped', 'erc20'].includes(token1Label.type.id)
   ) {
     return 'Pool';
   }
