@@ -140,7 +140,7 @@ function getPoolLabel(pool: Pool, previousLabels: ChainLabelMap): string {
   const token0Symbol = token0Label.metadata.symbol as string;
   const token1Symbol = token1Label.metadata.symbol as string;
   const feeLabel = `${100 * pool.fee}%`;
-  return `${token0Symbol}/${token1Symbol} ${feeLabel}`;
+  return `${token0Symbol}/${token1Symbol} ${feeLabel} Pool`;
 }
 
 export default Source;
