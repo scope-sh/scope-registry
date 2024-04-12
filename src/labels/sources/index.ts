@@ -32,6 +32,7 @@ import StackupSource from './stackup/index.js';
 import StaticSource from './static.js';
 import TokenlistSource from './tokenlists.js';
 import TrustwalletSource from './trustwallet.js';
+import UniPassSource from './unipass/index.js';
 import UniswapV2PoolSource from './uniswap/v2-pools.js';
 import UniswapV2Source from './uniswap/v2.js';
 import UniswapV3PoolSource from './uniswap/v3-pools.js';
@@ -98,6 +99,7 @@ const sources: Source[] = [
   new ParticleSource(),
   new PimlicoSource(),
   new StackupSource(),
+  new UniPassSource(),
   new ZeroDevInfraSource(),
   new ZeroDevKernelV2AccountSource(),
   new ZeroDevKernelV2Source(),
