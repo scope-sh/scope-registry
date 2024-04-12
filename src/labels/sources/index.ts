@@ -8,13 +8,21 @@ import AaveV2TokenSource from './aave/v2-tokens.js';
 import AaveV2Source from './aave/v2.js';
 import AaveV3TokenSource from './aave/v3-tokens.js';
 import AaveV3Source from './aave/v3.js';
+import AlchemySource from './alchemy/index.js';
+import BiconomyInfraSource from './biconomy/infra.js';
 import BiconomyV2AccountSource from './biconomy/v2-accounts.js';
 import BiconomyV2Source from './biconomy/v2.js';
+import BloctoSource from './blocto/index.js';
+import CandideSource from './candide/index.js';
+import CircleSource from './circle/index.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
+import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import KernelV2AccountSource from './kernel/v2-accounts.js';
 import KernelV2Source from './kernel/v2.js';
+import NaniSource from './nani/index.js';
+import ParticleSource from './particle/index.js';
 import PimlicoSource from './pimlico/index.js';
 import RhinestoneV1ModulesSource from './rhinestone/v1-modules.js';
 import RhinestoneV1Source from './rhinestone/v1.js';
@@ -22,6 +30,7 @@ import SafeCoreSource from './safe/core.js';
 import SafeV1_3_0Source from './safe/v1.3.0.js';
 import SafeV1_4_1AccountSource from './safe/v1.4.1-accounts.js';
 import SafeV1_4_1Source from './safe/v1.4.1.js';
+import StackupSource from './stackup/index.js';
 import StaticSource from './static.js';
 import TokenlistSource from './tokenlists.js';
 import TrustwalletSource from './trustwallet.js';
@@ -80,7 +89,16 @@ const sources: Source[] = [
   new SafeCoreSource(),
   new RhinestoneV1ModulesSource(),
   new RhinestoneV1Source(),
+  new AlchemySource(),
+  new BiconomyInfraSource(),
+  new BloctoSource(),
+  new CandideSource(),
+  new CircleSource(),
+  new EtherspotSource(),
+  new NaniSource(),
+  new ParticleSource(),
   new PimlicoSource(),
+  new StackupSource(),
 ];
 
 export { fetch };
