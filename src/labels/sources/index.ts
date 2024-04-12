@@ -19,8 +19,6 @@ import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
-import KernelV2AccountSource from './kernel/v2-accounts.js';
-import KernelV2Source from './kernel/v2.js';
 import NaniSource from './nani/index.js';
 import ParticleSource from './particle/index.js';
 import PimlicoSource from './pimlico/index.js';
@@ -39,6 +37,9 @@ import UniswapV2Source from './uniswap/v2.js';
 import UniswapV3PoolSource from './uniswap/v3-pools.js';
 import UniswapV3Source from './uniswap/v3.js';
 import WrappedSource from './wrapped.js';
+import ZeroDevInfraSource from './zerodev/infra.js';
+import ZeroDevKernelV2AccountSource from './zerodev/kernel-v2-accounts.js';
+import ZeroDevKernelV2Source from './zerodev/kernel-v2.js';
 
 async function fetch(): Promise<LabelMap> {
   const allLabels = initLabelMap();
@@ -81,8 +82,6 @@ const sources: Source[] = [
   new EasSource(),
   new BiconomyV2AccountSource(),
   new BiconomyV2Source(),
-  new KernelV2AccountSource(),
-  new KernelV2Source(),
   new SafeV1_3_0Source(),
   new SafeV1_4_1AccountSource(),
   new SafeV1_4_1Source(),
@@ -99,6 +98,9 @@ const sources: Source[] = [
   new ParticleSource(),
   new PimlicoSource(),
   new StackupSource(),
+  new ZeroDevInfraSource(),
+  new ZeroDevKernelV2AccountSource(),
+  new ZeroDevKernelV2Source(),
 ];
 
 export { fetch };

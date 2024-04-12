@@ -14,11 +14,11 @@ import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3';
-const NAMESPACE = 'Kernel V2';
+const NAMESPACE = 'ZeroDev Kernel V2';
 
 class Source extends BaseSource {
   getName(): string {
-    return 'Kernel V2 Pools';
+    return 'ZeroDev Kernel V2 Pools';
   }
 
   async fetch(): Promise<LabelMap> {
