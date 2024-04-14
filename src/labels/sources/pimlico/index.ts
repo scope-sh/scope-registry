@@ -15,6 +15,7 @@ class Source extends BaseSource {
   async fetch(): Promise<LabelMap> {
     const addresses: Record<string, Record<Address, string>> = {};
     const contracts: Record<Address, string> = {
+      '0xb02456a0ec77837b22156cba2ff53e662b326713': 'Entry Point Simulations',
       '0x000000000091a1f34f51ce866bed8983db51a97e': 'Bundle Bulker',
       '0x0000000000dd00d61091435b84d1371a1000de9a': 'Per UserOp Inflator',
       '0x564c7dc50f8293d070f490fc31fec3a0a091b9bb': 'Simple Inflator',
