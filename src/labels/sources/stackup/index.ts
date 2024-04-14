@@ -24,6 +24,7 @@ class Source extends BaseSource {
       '0x1331237a04fce5d5d4950109c3a66676315de7f8',
       '0x20e9695f25413f14e5807b530d0698bd4f155074',
       '0x226a22889b7f842fb1426b3e81130b461abda8a5',
+      '0x25df024637d4e56c1ae9563987bf3e92c9f534c0',
       '0x26d6440f50dc457735c1f0397b1f29e03d81b7e8',
       '0x305e913df6b3fed488240847759805285992fd3a',
       '0x3b40a0209c75100460f2287c8382c4f00cbc14de',
@@ -43,6 +44,7 @@ class Source extends BaseSource {
       '0x7f4d67fbcc3f1c2f7a121d6770bcd99b4a50b87f',
       '0x822ac1fd68e6d6a1d4d08d7e01607cf80dfad32c',
       '0x89381ab6795932eb661544e0f56fddc7a2142bf1',
+      '0x8cf905c50f25a481171e7f5936625754d44a9537',
       '0x8f508cef7c94883655751408b9ba80c94937288b',
       '0x9831d6f598729bf41055a0af96396cea91eab18b',
       '0xa5fdfcbceeceb5741ef73f86cf3ed6e80e5e920d',
@@ -66,6 +68,7 @@ class Source extends BaseSource {
       '0xdd9b78180997f042111d94fb1d0b1ebee94051ba',
       '0xe3ce225f0cfed860a8092c714fc254978aff53cf',
       '0xf71a57150bdf4d4ba76211e7b0a90abc2ee87bc0',
+      '0xfd72ae8ff5cc18849d83f13a252a0d8fd99eb0ac',
       '0xff5ee952e5444a1b7878f7daf175f8dd6aeb6cf7',
       '0xffa16e0834c31d74a834331c24ac340be1cb27a9',
     ];
