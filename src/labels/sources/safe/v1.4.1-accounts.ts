@@ -14,7 +14,7 @@ import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67';
-const NAMESPACE = 'Safe V1.4.1';
+const NAMESPACE = 'Safe';
 
 class Source extends BaseSource {
   getName(): string {
@@ -61,7 +61,7 @@ class Source extends BaseSource {
         return [
           account,
           {
-            value: 'Account',
+            value: 'V1.4.1 Account',
             type: getLabelTypeById('safe-v1.4.1-account'),
             namespace: getLabelNamespaceByValue(NAMESPACE),
           },

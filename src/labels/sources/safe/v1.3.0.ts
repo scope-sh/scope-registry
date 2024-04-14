@@ -12,7 +12,7 @@ class Source extends BaseSource {
   }
 
   async fetch(): Promise<LabelMap> {
-    return toLabelMap('Safe V1.3.0', addresses);
+    return toLabelMap('Safe', addresses);
   }
 }
 
