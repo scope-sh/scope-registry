@@ -14,15 +14,15 @@ class Source extends BaseSource {
 
   async fetch(): Promise<LabelMap> {
     const addresses: Record<string, Record<Address, string>> = {};
-    const labels: Record<Address, string> = {
+    const contracts: Record<Address, string> = {
       '0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789': 'Entry Point 0.6.0',
       '0x0000000071727de22e5e9d8baf0edac6f37da032': 'Entry Point 0.7.0',
       '0xca11bde05977b3631167028862be2a173976ca11': 'Multicall3',
       '0xba5ed099633d3b313e4d5f7bdc1305d3c28ba5ed': 'CreateX',
     };
     for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, labels);
-      addresses[chain] = chainAddresses;
+      const contractAddresses = await getDeployed(chain, contracts);
+      addresses[chain] = contractAddresses;
     }
     return toLabelMap(undefined, addresses);
   }
