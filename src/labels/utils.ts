@@ -146,8 +146,8 @@ function sluggify(value: string): string {
 }
 
 function toLabelMap(
-  namespaceValue: string | undefined,
   addresses: Record<string, Record<string, string>>,
+  namespaceValue?: string,
 ): LabelMap {
   const labelMap = {} as LabelMap;
   for (const chainString in addresses) {

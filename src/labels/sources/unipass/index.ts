@@ -21,7 +21,7 @@ class Source extends BaseSource {
       }
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('UniPass', addresses);
+    return toLabelMap(addresses, 'UniPass');
   }
 }
 

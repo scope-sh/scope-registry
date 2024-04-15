@@ -79,7 +79,7 @@ class Source extends BaseSource {
       }
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Particle', addresses);
+    return toLabelMap(addresses, 'Particle');
   }
 }
 

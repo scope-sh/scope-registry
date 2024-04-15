@@ -24,7 +24,7 @@ class Source extends BaseSource {
       const contractAddresses = await getDeployed(chain, contracts);
       addresses[chain] = contractAddresses;
     }
-    return toLabelMap(undefined, addresses);
+    return toLabelMap(addresses);
   }
 }
 

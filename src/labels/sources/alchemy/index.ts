@@ -36,7 +36,7 @@ class Source extends BaseSource {
       }
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Alchemy', addresses);
+    return toLabelMap(addresses, 'Alchemy');
   }
 }
 

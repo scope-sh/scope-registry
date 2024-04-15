@@ -33,7 +33,7 @@ class Source extends BaseSource {
       const chainAddresses = await getDeployed(chain, labels);
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Biconomy V2', addresses);
+    return toLabelMap(addresses, 'Biconomy V2');
   }
 }
 

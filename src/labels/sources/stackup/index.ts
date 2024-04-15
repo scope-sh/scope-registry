@@ -79,7 +79,7 @@ class Source extends BaseSource {
       }
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Stackup', addresses);
+    return toLabelMap(addresses, 'Stackup');
   }
 }
 

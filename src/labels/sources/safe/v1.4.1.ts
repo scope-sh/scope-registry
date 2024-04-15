@@ -32,7 +32,7 @@ class Source extends BaseSource {
       const chainAddresses = await getDeployed(chain, labels);
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Safe', addresses);
+    return toLabelMap(addresses, 'Safe');
   }
 }
 

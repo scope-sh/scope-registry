@@ -39,7 +39,7 @@ class Source extends BaseSource {
       }
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Etherspot', addresses);
+    return toLabelMap(addresses, 'Etherspot');
   }
 }
 

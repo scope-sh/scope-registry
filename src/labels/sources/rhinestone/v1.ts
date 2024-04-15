@@ -39,7 +39,7 @@ class Source extends BaseSource {
       const chainAddresses = await getDeployed(chain, labels);
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Rhinestone V1', addresses);
+    return toLabelMap(addresses, 'Rhinestone V1');
   }
 }
 

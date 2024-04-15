@@ -21,7 +21,7 @@ class Source extends BaseSource {
       const chainAddresses = await getDeployed(chain, labels);
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Circle', addresses);
+    return toLabelMap(addresses, 'Circle');
   }
 }
 

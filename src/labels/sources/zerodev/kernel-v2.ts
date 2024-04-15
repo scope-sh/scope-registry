@@ -26,7 +26,7 @@ class Source extends BaseSource {
       const chainAddresses = await getDeployed(chain, labels);
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('ZeroDev Kernel V2', addresses);
+    return toLabelMap(addresses, 'ZeroDev Kernel V2');
   }
 }
 

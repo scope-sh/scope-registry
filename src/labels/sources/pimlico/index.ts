@@ -993,7 +993,7 @@ class Source extends BaseSource {
       }
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Pimlico', addresses);
+    return toLabelMap(addresses, 'Pimlico');
   }
 }
 

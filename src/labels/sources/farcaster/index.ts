@@ -11,7 +11,7 @@ class Source extends BaseSource {
   }
 
   async fetch(): Promise<LabelMap> {
-    return toLabelMap('Farcaster', addresses);
+    return toLabelMap(addresses, 'Farcaster');
   }
 }
 

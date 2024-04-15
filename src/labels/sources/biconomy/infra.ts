@@ -1633,7 +1633,7 @@ class Source extends BaseSource {
       }
       addresses[chain] = chainAddresses;
     }
-    return toLabelMap('Biconomy', addresses);
+    return toLabelMap(addresses, 'Biconomy');
   }
 }
 
