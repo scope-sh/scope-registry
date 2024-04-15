@@ -65,7 +65,7 @@ class Source extends BaseSource {
         (account) =>
           account.factory.toLowerCase() === KERNEL_V3_FACTORY_STAKER_ADDRESS,
       )
-      .map((account) => account.sender);
+      .map((account) => account.sender.toLowerCase() as Address);
 
     return Object.fromEntries(
       accounts.map((account) => {
