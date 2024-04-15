@@ -14,7 +14,8 @@ import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const ENTRYPOINT_0_7_0_ADDRESS = '0x0000000071727de22e5e9d8baf0edac6f37da032';
-const KERNEL_V3_FACTORY_ADDRESS = '0x6723b44abeec4e71ebe3232bd5b455805badd22f';
+const KERNEL_V3_FACTORY_STAKER_ADDRESS =
+  '0xd703aae79538628d27099b8c4f621be4ccd142d5';
 const NAMESPACE = 'ZeroDev Kernel V3';
 
 class Source extends BaseSource {
@@ -62,7 +63,7 @@ class Source extends BaseSource {
       })
       .filter(
         (account) =>
-          account.factory.toLowerCase() === KERNEL_V3_FACTORY_ADDRESS,
+          account.factory.toLowerCase() === KERNEL_V3_FACTORY_STAKER_ADDRESS,
       )
       .map((account) => account.sender);
 
