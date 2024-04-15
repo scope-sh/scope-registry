@@ -12,6 +12,7 @@ type LabelId =
   | 'biconomy-v2-account'
   | 'kernel-v2-account'
   | 'kernel-v3-account'
+  | 'erc7579-module'
   | 'rhinestone-v1-module'
   | 'safe-v1.3.0-account'
   | 'safe-v1.4.1-account'
