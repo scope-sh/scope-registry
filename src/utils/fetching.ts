@@ -236,16 +236,17 @@ async function getErc20Metadata(
       contracts: calls,
     });
     for (const [index, address] of batch.entries()) {
+      const overwrite = getErc20Overwrite(chain, address as Address);
       const nameResult = results[2 * index];
-      if (!nameResult) {
+      if (!nameResult || nameResult.status === 'failure') {
         continue;
       }
-      const name = nameResult.result as string;
+      const name = overwrite?.name || nameResult.result;
       const symbolResult = results[2 * index + 1];
-      if (!symbolResult) {
+      if (!symbolResult || symbolResult.status === 'failure') {
         continue;
       }
-      const symbol = symbolResult.result as string;
+      const symbol = overwrite?.symbol || symbolResult.result;
       metadata[address] = {
         name,
         symbol,
@@ -254,6 +255,45 @@ async function getErc20Metadata(
   }
 
   return metadata;
+}
+
+function getErc20Overwrite(
+  chain: ChainId,
+  address: Address,
+): Erc20Metadata | null {
+  const overwrites: Partial<Record<ChainId, Record<Address, Erc20Metadata>>> = {
+    1: {
+      '0x41f7b8b9b897276b7aae926a9016935280b44e97': {
+        name: 'Wormhole USD Coin',
+        symbol: 'wormholeUSDC',
+      },
+      '0x7cd167b101d2808cfd2c45d17b2e7ea9f46b74b6': {
+        name: 'Wormhole USD Coin',
+        symbol: 'wormholeUSDC',
+      },
+    },
+    10: {
+      '0x7f5c764cbc14f9669b88837ca1490cca17c31607': {
+        name: 'Bridged USD Coin',
+        symbol: 'USDC.e',
+      },
+    },
+    137: {
+      '0x576cf361711cd940cd9c397bb98c4c896cbd38de': {
+        name: 'Wormhole USD Coin',
+        symbol: 'wormholeUSDC',
+      },
+      '0x4318cb63a2b8edf2de971e2f17f77097e499459d': {
+        name: 'Wormhole USD Coin',
+        symbol: 'wormholeUSDC',
+      },
+    },
+  };
+  const chainOverwrite = overwrites[chain];
+  if (!chainOverwrite) {
+    return null;
+  }
+  return chainOverwrite[address] || null;
 }
 
 export { getEvents, getErc20Metadata, getDeployed };
