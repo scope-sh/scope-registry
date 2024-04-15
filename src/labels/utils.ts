@@ -117,6 +117,8 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Biconomy V2 Account';
       case 'kernel-v2-account':
         return 'Kernel V2 Account';
+      case 'kernel-v3-account':
+        return 'Kernel V3 Account';
       case 'rhinestone-v1-module':
         return 'Rhinestone V1 Module';
       case 'safe-v1.3.0-account':
