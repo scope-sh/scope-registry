@@ -18,7 +18,7 @@ const NAMESPACE = 'ZeroDev Kernel V2';
 
 class Source extends BaseSource {
   getName(): string {
-    return 'ZeroDev Kernel V2 Pools';
+    return 'ZeroDev Kernel V2 Accounts';
   }
 
   async fetch(): Promise<LabelMap> {
