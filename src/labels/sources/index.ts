@@ -41,6 +41,8 @@ import WrappedSource from './wrapped.js';
 import ZeroDevInfraSource from './zerodev/infra.js';
 import ZeroDevKernelV2AccountSource from './zerodev/kernel-v2-accounts.js';
 import ZeroDevKernelV2Source from './zerodev/kernel-v2.js';
+import ZeroDevKernelV3AccountSource from './zerodev/kernel-v3-accounts.js';
+import ZeroDevKernelV3Source from './zerodev/kernel-v3.js';
 
 async function fetch(): Promise<LabelMap> {
   const allLabels = initLabelMap();
@@ -103,6 +105,8 @@ const sources: Source[] = [
   new ZeroDevInfraSource(),
   new ZeroDevKernelV2AccountSource(),
   new ZeroDevKernelV2Source(),
+  new ZeroDevKernelV3AccountSource(),
+  new ZeroDevKernelV3Source(),
 ];
 
 export { fetch };
