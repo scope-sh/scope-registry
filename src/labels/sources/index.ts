@@ -43,6 +43,7 @@ import ZeroDevInfraSource from './zerodev/infra.js';
 import ZeroDevKernelV2AccountSource from './zerodev/kernel-v2-accounts.js';
 import ZeroDevKernelV2Source from './zerodev/kernel-v2.js';
 import ZeroDevKernelV3AccountSource from './zerodev/kernel-v3-accounts.js';
+import ZeroDevKernelV3ModuleSource from './zerodev/kernel-v3-modules.js';
 import ZeroDevKernelV3Source from './zerodev/kernel-v3.js';
 
 async function fetch(): Promise<LabelMap> {
@@ -90,7 +91,8 @@ const sources: Source[] = [
   new SafeV1_4_1AccountSource(),
   new SafeV1_4_1Source(),
   new SafeCoreSource(),
-  new RhinestoneV1ModulesSource(),
+  new RhinestoneV1RegistrySource(),
+  new RhinestoneV1ModuleSource(),
   new RhinestoneV1Source(),
   new AlchemySource(),
   new BiconomyInfraSource(),
@@ -107,6 +109,7 @@ const sources: Source[] = [
   new ZeroDevKernelV2AccountSource(),
   new ZeroDevKernelV2Source(),
   new ZeroDevKernelV3AccountSource(),
+  new ZeroDevKernelV3ModuleSource(),
   new ZeroDevKernelV3Source(),
 ];
 
