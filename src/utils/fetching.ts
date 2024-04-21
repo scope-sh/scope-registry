@@ -17,6 +17,8 @@ import {
   POLYGON,
   POLYGON_AMOY,
   SEPOLIA,
+  ARBITRUM,
+  ARBITRUM_SEPOLIA,
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
@@ -78,6 +80,10 @@ function getHypersyncClient(chain: ChainId): HypersyncClient | null {
         return 'https://polygon.hypersync.xyz';
       case POLYGON_AMOY:
         return 'https://amoy.hypersync.xyz';
+      case ARBITRUM:
+        return 'https://arbitrum.hypersync.xyz';
+      case ARBITRUM_SEPOLIA:
+        return 'https://arbitrum-sepolia.hypersync.xyz';
       default:
         return null;
     }
