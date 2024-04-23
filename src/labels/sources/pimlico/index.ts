@@ -20,6 +20,8 @@ class Source extends BaseSource {
       '0x0000000000dd00d61091435b84d1371a1000de9a': 'Per UserOp Inflator',
       '0x564c7dc50f8293d070f490fc31fec3a0a091b9bb': 'Simple Inflator',
       '0x000000000041f3afe8892b48d88b6862efe0ec8d': 'USDC Paymaster',
+      '0x00000000005c50cdda9aa20b81f53dfcc86ae2fd': 'USDC Paymaster',
+      '0x00000000002731f9279fd076c9ba19a0df2d75a5': 'USDC.e Paymaster',
       '0x9d0021a869f1ed3a661ffe8c9b41ec6244261d98': 'Verifying Paymaster',
       '0xe3dc822d77f8ca7ac74c30b0dffea9fcdcaaa321': 'Verifying Paymaster',
       '0x984e2abb41a6684e5e213ab61ad4c6c830585df9': 'Verifying Paymaster',
