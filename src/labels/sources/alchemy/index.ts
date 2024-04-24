@@ -28,6 +28,8 @@ class Source extends BaseSource {
       '0x854d44777720969c18ede7778d1f110c85438eaa',
       '0x91dfdec28a8c2d946d151df2ff9c8dbd543d822e',
       '0x9a68c3b432ec182a53888b9cba8de2a631abf3ee',
+      '0xdf1201013a767f48c5901d8904b900790e71ea20',
+      '0xafd8d3e6c38558414b22379203ebadf28c9b12b9',
     ];
     for (const chain of CHAINS) {
       const chainAddresses = await getDeployed(chain, paymasters);
