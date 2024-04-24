@@ -20,6 +20,7 @@ import EnsSource from './ens/index.js';
 import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import NaniSource from './nani/index.js';
+import OverwriteSource from './overwrite.js';
 import ParticleSource from './particle/index.js';
 import PimlicoSource from './pimlico/index.js';
 import RhinestoneV1ModuleSource from './rhinestone/v1-modules.js';
@@ -111,6 +112,7 @@ const sources: Source[] = [
   new ZeroDevKernelV3AccountSource(),
   new ZeroDevKernelV3ModuleSource(),
   new ZeroDevKernelV3Source(),
+  new OverwriteSource(),
 ];
 
 export { fetch };
