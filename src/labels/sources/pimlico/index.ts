@@ -28,6 +28,7 @@ class Source extends BaseSource {
       '0x4df91e173a6cdc74efef6fc72bb5df1e8a8d7582': 'Verifying Paymaster',
       '0x2672a6a67c37c104db47d52baaa721c8eca39421': 'Verifying Paymaster',
       '0x4685d9587a7f72da32dc323bfff17627aa632c61': 'Verifying Paymaster',
+      '0xdff7fa1077bce740a6a212b3995990682c0ba66d': 'Verifying Paymaster',
       '0xa683b47e447de6c8a007d9e294e87b6db333eb18': 'USDC.e Paymaster',
       '0x49ee41bc335fb36be46a17307dcfe536a3494644': 'USDC.e Paymaster',
       '0x939263eafe57038a072cb4edd6b25dd81a8a6c56': 'USDC Paymaster',
