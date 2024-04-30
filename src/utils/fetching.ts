@@ -268,7 +268,7 @@ function getErc20Overwrite(
   address: Address,
 ): Erc20Metadata | null {
   const overwrites: Partial<Record<ChainId, Record<Address, Erc20Metadata>>> = {
-    1: {
+    [ETHEREUM]: {
       '0x41f7b8b9b897276b7aae926a9016935280b44e97': {
         name: 'Wormhole USD Coin',
         symbol: 'wormholeUSDC',
@@ -278,13 +278,13 @@ function getErc20Overwrite(
         symbol: 'wormholeUSDC',
       },
     },
-    10: {
+    [OPTIMISM]: {
       '0x7f5c764cbc14f9669b88837ca1490cca17c31607': {
         name: 'Bridged USD Coin',
         symbol: 'USDC.e',
       },
     },
-    137: {
+    [POLYGON]: {
       '0x576cf361711cd940cd9c397bb98c4c896cbd38de': {
         name: 'Wormhole USD Coin',
         symbol: 'wormholeUSDC',
@@ -292,6 +292,12 @@ function getErc20Overwrite(
       '0x4318cb63a2b8edf2de971e2f17f77097e499459d': {
         name: 'Wormhole USD Coin',
         symbol: 'wormholeUSDC',
+      },
+    },
+    [ARBITRUM]: {
+      '0xe11508d3e0cf09e6fd6e94fdf41e83836d83ce50': {
+        name: 'Parifi USDC Vault',
+        symbol: 'pfUSDC',
       },
     },
   };
