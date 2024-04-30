@@ -19,6 +19,8 @@ import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
+import FunV1AccountSource from './fun/v1-accounts.js';
+import FunV1Source from './fun/v1.js';
 import NaniSource from './nani/index.js';
 import OverwriteSource from './overwrite.js';
 import ParifiV1Source from './parifi/v1.js';
@@ -103,6 +105,8 @@ const sources: Source[] = [
   new CandideSource(),
   new CircleSource(),
   new EtherspotSource(),
+  new FunV1Source(),
+  new FunV1AccountSource(),
   new NaniSource(),
   new ParticleSource(),
   new PimlicoSource(),

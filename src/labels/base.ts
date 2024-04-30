@@ -13,6 +13,7 @@ type LabelId =
   | 'kernel-v2-account'
   | 'kernel-v3-account'
   | 'erc7579-module'
+  | 'fun-v1-account'
   | 'rhinestone-v1-module'
   | 'safe-v1.3.0-account'
   | 'safe-v1.4.1-account'

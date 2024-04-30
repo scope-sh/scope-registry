@@ -121,6 +121,8 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Kernel V3 Account';
       case 'erc7579-module':
         return 'ERC7579 Module';
+      case 'fun-v1-account':
+        return 'Fun Account';
       case 'rhinestone-v1-module':
         return 'Rhinestone V1 Module';
       case 'safe-v1.3.0-account':
