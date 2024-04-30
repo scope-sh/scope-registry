@@ -242,31 +242,35 @@ async function getErc20Metadata(
       contracts: calls,
     });
     for (const [index, address] of batch.entries()) {
-      const overwrite = getErc20Overwrite(chain, address as Address);
       const nameResult = results[2 * index];
       if (!nameResult || nameResult.status === 'failure') {
         continue;
       }
-      const name = overwrite?.name || nameResult.result;
+      const name = nameResult.result;
       const symbolResult = results[2 * index + 1];
       if (!symbolResult || symbolResult.status === 'failure') {
         continue;
       }
-      const symbol = overwrite?.symbol || symbolResult.result;
+      const symbol = symbolResult.result;
       metadata[address] = {
         name,
         symbol,
       };
     }
   }
+  const overwrite = getErc20Overwrite(chain);
+  for (const address in overwrite) {
+    const addressOverwrite = overwrite[address as Address];
+    if (!addressOverwrite) {
+      continue;
+    }
+    metadata[address] = addressOverwrite;
+  }
 
   return metadata;
 }
 
-function getErc20Overwrite(
-  chain: ChainId,
-  address: Address,
-): Erc20Metadata | null {
+function getErc20Overwrite(chain: ChainId): Record<Address, Erc20Metadata> {
   const overwrites: Partial<Record<ChainId, Record<Address, Erc20Metadata>>> = {
     [ETHEREUM]: {
       '0x41f7b8b9b897276b7aae926a9016935280b44e97': {
@@ -303,9 +307,9 @@ function getErc20Overwrite(
   };
   const chainOverwrite = overwrites[chain];
   if (!chainOverwrite) {
-    return null;
+    return {};
   }
-  return chainOverwrite[address] || null;
+  return chainOverwrite;
 }
 
 export { getEvents, getErc20Metadata, getDeployed };
