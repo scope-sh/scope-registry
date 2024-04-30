@@ -25,6 +25,8 @@ import NaniSource from './nani/index.js';
 import OverwriteSource from './overwrite.js';
 import ParifiV1Source from './parifi/v1.js';
 import ParticleSource from './particle/index.js';
+import PatchWalletV1AccountSource from './patch-wallet/v1-accounts.js';
+import PatchWalletV1Source from './patch-wallet/v1.js';
 import PimlicoSource from './pimlico/index.js';
 import RhinestoneV1ModuleSource from './rhinestone/v1-modules.js';
 import RhinestoneV1RegistrySource from './rhinestone/v1-registry.js';
@@ -96,6 +98,8 @@ const sources: Source[] = [
   new SafeV1_4_1AccountSource(),
   new SafeV1_4_1Source(),
   new SafeCoreSource(),
+  new PatchWalletV1AccountSource(),
+  new PatchWalletV1Source(),
   new RhinestoneV1RegistrySource(),
   new RhinestoneV1ModuleSource(),
   new RhinestoneV1Source(),
