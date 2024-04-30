@@ -21,6 +21,7 @@ import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import NaniSource from './nani/index.js';
 import OverwriteSource from './overwrite.js';
+import ParifiV1Source from './parifi/v1.js';
 import ParticleSource from './particle/index.js';
 import PimlicoSource from './pimlico/index.js';
 import RhinestoneV1ModuleSource from './rhinestone/v1-modules.js';
@@ -83,6 +84,7 @@ const sources: Source[] = [
   new UniswapV2PoolSource(),
   new UniswapV3Source(),
   new UniswapV3PoolSource(),
+  new ParifiV1Source(),
   new FarcasterSource(),
   new EnsSource(),
   new EasSource(),
