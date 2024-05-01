@@ -15,6 +15,8 @@ import BiconomyV2Source from './biconomy/v2.js';
 import BloctoSource from './blocto/index.js';
 import CandideSource from './candide/index.js';
 import CircleSource from './circle/index.js';
+import CoinbaseSmartWalletV1Accounts from './coinbase/smart-wallet-v1-accounts.js';
+import CoinbaseSmartWalletV1 from './coinbase/smart-wallet-v1.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import EtherspotSource from './etherspot/index.js';
@@ -94,6 +96,8 @@ const sources: Source[] = [
   new EasSource(),
   new BiconomyV2AccountSource(),
   new BiconomyV2Source(),
+  new CoinbaseSmartWalletV1Accounts(),
+  new CoinbaseSmartWalletV1(),
   new SafeV1_3_0Source(),
   new SafeV1_4_1AccountSource(),
   new SafeV1_4_1Source(),

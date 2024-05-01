@@ -115,6 +115,8 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Aave V3 sToken';
       case 'biconomy-v2-account':
         return 'Biconomy V2 Account';
+      case 'coinbase-smart-wallet-v1-account':
+        return 'Coinbase Smart Wallet V1 Account';
       case 'kernel-v2-account':
         return 'Kernel V2 Account';
       case 'kernel-v3-account':
