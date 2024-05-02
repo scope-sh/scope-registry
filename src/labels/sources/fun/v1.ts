@@ -17,6 +17,7 @@ class Source extends BaseSource {
     const labels: Record<Address, string> = {
       '0xbada4b9bdc249b788a6247e4a8a9158ed0b3e504': 'Factory',
       '0xa86096145c4ee02d08aeb434e3125d0d1b442495': 'Checkout Paymaster',
+      '0x784deed2f7182e0e92438879bf1cc3cd6542f8f7': 'Checkout Paymaster',
     };
     for (const chain of CHAINS) {
       const chainAddresses = await getDeployed(chain, labels);
