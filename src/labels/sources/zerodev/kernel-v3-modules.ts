@@ -25,6 +25,8 @@ class Source extends BaseSource {
       '0x67b436cad8a6d025df6c82c5bb43fbf11fc5b9b7': 'Sudo Policy',
       '0xb9f8f524be6ecd8c945b1b87f9ae5c192fdce20f': 'Timestamp Policy',
       '0xd990393c670dcce8b4d8f858fb98c9912dbfaa06': 'WebAuthn Validator',
+      '0xe884c2868cc82c16177ec73a93f7d9e6f3a5dc6e': 'Recovery Action',
+      '0xb230f0a1c7c95fa11001647383c8c7a8f316b900': 'Only EntryPoint Hook',
     };
     for (const chain of CHAINS) {
       const chainAddresses = await getDeployed(chain, labels);
