@@ -11,6 +11,7 @@ type LabelId =
   | 'aave-v3-stoken'
   | 'biconomy-v2-account'
   | 'coinbase-smart-wallet-v1-account'
+  | 'daimo-v1-account'
   | 'kernel-v2-account'
   | 'kernel-v3-account'
   | 'erc7579-module'

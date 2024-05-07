@@ -117,6 +117,8 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Biconomy V2 Account';
       case 'coinbase-smart-wallet-v1-account':
         return 'Coinbase Smart Wallet V1 Account';
+      case 'daimo-v1-account':
+        return 'Daimo V1 Account';
       case 'kernel-v2-account':
         return 'Kernel V2 Account';
       case 'kernel-v3-account':
