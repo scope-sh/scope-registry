@@ -69,8 +69,11 @@ class Source extends BaseSource {
   async fetch(): Promise<LabelMap> {
     const labels = initLabelMap();
     for (const chainId of CHAINS) {
+      console.log('[Trustwallet]: fetching assets');
       const assets = await this.#getAssets(chainId);
+      console.log('[Trustwallet]: fetching metadata');
       const chainMetadata = await getErc20Metadata(chainId, assets);
+      console.log('[Trustwallet]: processing');
       for (const address in chainMetadata) {
         const addressMetadata = chainMetadata[address];
         if (!addressMetadata) {
