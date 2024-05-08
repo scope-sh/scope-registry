@@ -5,6 +5,11 @@ import { putObject } from '@/utils/storage.js';
 
 import { fetch as fetchLabels } from './sources/index.js';
 
+async function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+await sleep(10 * 1000);
 const labels = await fetchLabels();
 for (const chainIdString in labels) {
   const chainId = parseInt(chainIdString) as ChainId;
