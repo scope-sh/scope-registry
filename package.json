@@ -16,7 +16,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate:labels": "bun src/labels/generate.ts",
+    "generate": "bun run generate:labels",
+    "generate:labels": "tsx src/labels/generate.ts",
     "lint": "bun run lint:prettier && bun run lint:eslint",
     "lint:prettier": "prettier -c \"src/**/*.{json,js,ts}\"",
     "lint:eslint": "eslint \"src/**/*.{js,ts}\"",
