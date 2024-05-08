@@ -16,6 +16,8 @@ type LabelId =
   | 'kernel-v3-account'
   | 'erc7579-module'
   | 'fun-v1-account'
+  | 'light-v0.1-account'
+  | 'light-v0.2-account'
   | 'patch-wallet-v1-account'
   | 'rhinestone-v1-module'
   | 'safe-v1.3.0-account'

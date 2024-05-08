@@ -25,6 +25,8 @@ import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
 import FunV1Source from './fun/v1.js';
+import LightV0_1AccountSource from './light/v0_1-accounts.js';
+import LightV0_2AccountSource from './light/v0_2-accounts.js';
 import NaniSource from './nani/index.js';
 import OverwriteSource from './overwrite.js';
 import ParifiV1Source from './parifi/v1.js';
@@ -119,6 +121,8 @@ const sources: Source[] = [
   new EtherspotSource(),
   new FunV1Source(),
   new FunV1AccountSource(),
+  new LightV0_1AccountSource(),
+  new LightV0_2AccountSource(),
   new NaniSource(),
   new ParticleSource(),
   new PimlicoSource(),

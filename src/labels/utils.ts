@@ -127,6 +127,10 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'ERC7579 Module';
       case 'fun-v1-account':
         return 'Fun Account';
+      case 'light-v0.1-account':
+        return 'Light V0.1 Account';
+      case 'light-v0.2-account':
+        return 'Light V0.2 Account';
       case 'patch-wallet-v1-account':
         return 'Patch Wallet Account';
       case 'rhinestone-v1-module':
