@@ -125,7 +125,7 @@ async function getEvents(
   }
   // Fetch new events
   let fromBlock = cacheMetadata.lastBlock + 1;
-  while (fromBlock < latestBlock) {
+  while (fromBlock <= latestBlock) {
     const { events: pageEvents, nextBlock } = await getEventsPaginated(
       client,
       address,
