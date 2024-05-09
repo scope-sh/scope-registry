@@ -112,7 +112,7 @@ async function getEvents(
   const cachePrefix = `events/${chain}/${address}/${topic0}`;
   const cacheMetadata = await getEventCacheMetadata(cachePrefix);
   // Read cache chunks one-by-one
-  const events: Event[] = [];
+  let events: Event[] = [];
   const chunks = Math.ceil(cacheMetadata.lastBlock / CHUNK_BLOCKS);
   for (let i = 0; i < chunks; i++) {
     const cacheKey = `${cachePrefix}/${i}.json`;
@@ -120,7 +120,7 @@ async function getEvents(
     const cache =
       cacheString === null ? null : (JSON.parse(cacheString) as Event[]);
     if (cache) {
-      events.concat(cache);
+      events = events.concat(cache);
     }
   }
   // Fetch new events
@@ -132,7 +132,7 @@ async function getEvents(
       topic0,
       fromBlock,
     );
-    events.push(...pageEvents);
+    events = events.concat(pageEvents);
     fromBlock = nextBlock;
   }
   // Write new events to the cache in chunks
