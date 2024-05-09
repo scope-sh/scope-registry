@@ -40,8 +40,8 @@ interface Event {
   blockNumber: number;
 }
 
-interface EventCache {
-  events: Event[];
+interface EventCacheMetadata {
+  count: number;
   lastBlock: number;
 }
 
@@ -101,18 +101,30 @@ async function getEvents(
   address: string,
   topic0: Hex,
 ): Promise<Event[]> {
+  // Note: changing this would require cleaning up the cache
+  const CHUNK_BLOCKS = 1_000_000;
   const client = getHypersyncClient(chain);
   if (!client) {
     return [];
   }
   const latestBlock = await client.getHeight();
-  const cacheKey = `events/${chain}/${address}/${topic0}.json`;
-  // Read events from the cache
-  const cacheString = await getObject(cacheKey);
-  const cache =
-    cacheString === null ? null : (JSON.parse(cacheString) as EventCache);
-  const events: Event[] = cache ? cache.events : [];
-  let fromBlock = cache ? cache.lastBlock + 1 : 0;
+  // Read cache metadata
+  const cachePrefix = `events/${chain}/${address}/${topic0}`;
+  const cacheMetadata = await getEventCacheMetadata(cachePrefix);
+  // Read cache chunks one-by-one
+  const events: Event[] = [];
+  const chunks = Math.ceil(cacheMetadata.lastBlock / CHUNK_BLOCKS);
+  for (let i = 0; i < chunks; i++) {
+    const cacheKey = `${cachePrefix}/${i}.json`;
+    const cacheString = await getObject(cacheKey);
+    const cache =
+      cacheString === null ? null : (JSON.parse(cacheString) as Event[]);
+    if (cache) {
+      events.concat(cache);
+    }
+  }
+  // Fetch new events
+  let fromBlock = cacheMetadata.lastBlock + 1;
   while (fromBlock < latestBlock) {
     const { events: pageEvents, nextBlock } = await getEventsPaginated(
       client,
@@ -123,13 +135,30 @@ async function getEvents(
     events.push(...pageEvents);
     fromBlock = nextBlock;
   }
-  // Write new events to the cache
-  const lastEvent = events.at(-1);
-  const updatedEventCache: EventCache = {
-    events,
-    lastBlock: lastEvent ? lastEvent.blockNumber : -1,
+  // Write new events to the cache in chunks
+  const firstChunk = Math.floor(cacheMetadata.lastBlock / CHUNK_BLOCKS);
+  const lastChunk = Math.floor(latestBlock / CHUNK_BLOCKS);
+  for (let i = firstChunk; i <= lastChunk; i++) {
+    const chunkStart = i * CHUNK_BLOCKS;
+    const chunkEnd = chunkStart + CHUNK_BLOCKS;
+    const chunkEvents = events.filter(
+      (event) =>
+        event.blockNumber >= chunkStart && event.blockNumber < chunkEnd,
+    );
+    if (chunkEvents.length === 0) {
+      continue;
+    }
+    const cacheKey = `${cachePrefix}/${i}.json`;
+    await putObject(cacheKey, JSON.stringify(chunkEvents));
+  }
+  // Update cache metadata
+  const metadata = `${cachePrefix}/metadata.json`;
+  const newMetadata: EventCacheMetadata = {
+    count: events.length,
+    lastBlock: latestBlock,
   };
-  await putObject(cacheKey, JSON.stringify(updatedEventCache));
+  await putObject(metadata, JSON.stringify(newMetadata));
+  // Return all events
   return events;
 }
 
@@ -167,6 +196,21 @@ async function getEventsPaginated(
     events,
     nextBlock,
   };
+}
+
+async function getEventCacheMetadata(
+  cachePrefix: string,
+): Promise<EventCacheMetadata> {
+  const cacheKey = `${cachePrefix}/metadata.json`;
+  const metadataString = await getObject(cacheKey);
+  const metadata: EventCacheMetadata =
+    metadataString === null
+      ? {
+          count: 0,
+          lastBlock: -1,
+        }
+      : JSON.parse(metadataString);
+  return metadata;
 }
 
 async function getDeployed(
