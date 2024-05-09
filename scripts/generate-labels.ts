@@ -1,9 +1,8 @@
 import 'dotenv/config';
 
+import { fetch as fetchLabels } from '@/labels/sources/index.js';
 import type { ChainId } from '@/utils/chains.js';
 import { putObject } from '@/utils/storage.js';
-
-import { fetch as fetchLabels } from './sources/index.js';
 
 const labels = await fetchLabels();
 for (const chainIdString in labels) {
