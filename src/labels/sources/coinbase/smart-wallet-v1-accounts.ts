@@ -55,13 +55,10 @@ class Source extends BaseSource {
         if (decodedEvent.eventName !== 'AccountDeployed') {
           throw new Error('Invalid event name');
         }
-        return {
-          factory: decodedEvent.args.factory,
-          sender: decodedEvent.args.sender,
-        };
+        return decodedEvent;
       })
-      .filter((account) => account.factory.toLowerCase() === FACTORY_ADDRESS)
-      .map((account) => account.sender.toLowerCase() as Address);
+      .filter((log) => log.args.factory.toLowerCase() === FACTORY_ADDRESS)
+      .map((log) => log.args.sender.toLowerCase() as Address);
 
     return Object.fromEntries(
       accounts.map((account) => {
