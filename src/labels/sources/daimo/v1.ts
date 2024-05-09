@@ -25,7 +25,7 @@ class Source extends BaseSource {
       '0x4430a644b215a187a3daa5b114fa3f3d9debc17d': 'Name Registry',
       '0xa9e1ccb08053e4f5dabb506718352389c1547462': 'Paymaster V2',
       '0xa728b16cba81772fa881dc569ad4c7f1de360869': 'Request',
-      '0x652d07389ac2ead07222e7965d30ec0b2700b388': 'Account',
+      '0x652d07389ac2ead07222e7965d30ec0b2700b388': 'Account Implementation',
       '0x8abd51a785160481db9e638ee71a3f4ec4b996d8': 'Daimo Op Inflator',
     };
     for (const chain of CHAINS) {
