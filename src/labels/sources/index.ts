@@ -63,7 +63,7 @@ import ZeroDevKernelV3Source from './zerodev/kernel-v3.js';
 async function fetch(): Promise<LabelMap> {
   const allLabels = initLabelMap();
   for (const source of sources) {
-    console.log(`Fetching from the "${source.getName()}" source…`);
+    console.info(`Fetching from the "${source.getName()}" source…`);
     const sourceLabels = await source.fetch(allLabels);
     for (const chain in sourceLabels) {
       const chainId = parseInt(chain) as ChainId;
