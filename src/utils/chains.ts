@@ -35,6 +35,8 @@ import {
   zora,
   zoraSepolia,
   aurora,
+  blast,
+  blastSepolia,
   harmonyOne,
 } from 'viem/chains';
 
@@ -73,6 +75,8 @@ const SEPOLIA = sepolia.id;
 const OPTIMISM_SEPOLIA = optimismSepolia.id;
 const ZORA_SEPOLIA = zoraSepolia.id;
 const AURORA = aurora.id;
+const BLAST = blast.id;
+const BLAST_SEPOLIA = blastSepolia.id;
 const HARMONY_SHARD_0 = harmonyOne.id;
 
 const CHAINS: ChainId[] = [
@@ -124,6 +128,8 @@ type ChainId =
   | typeof OPTIMISM_SEPOLIA
   | typeof ZORA_SEPOLIA
   | typeof AURORA
+  | typeof BLAST
+  | typeof BLAST_SEPOLIA
   | typeof HARMONY_SHARD_0;
 
 function getChainData(chain: ChainId): ChainData {
@@ -198,6 +204,10 @@ function getChainData(chain: ChainId): ChainData {
       return zoraSepolia;
     case AURORA:
       return aurora;
+    case BLAST:
+      return blast;
+    case BLAST_SEPOLIA:
+      return blastSepolia;
     case HARMONY_SHARD_0:
       return harmonyOne;
   }
@@ -240,6 +250,8 @@ export {
   OPTIMISM_SEPOLIA,
   ZORA_SEPOLIA,
   AURORA,
+  BLAST,
+  BLAST_SEPOLIA,
   HARMONY_SHARD_0,
   getChainData,
 };
