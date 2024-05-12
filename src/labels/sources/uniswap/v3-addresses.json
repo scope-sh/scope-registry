@@ -14,7 +14,8 @@
     "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": "Quoter V2",
     "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": "Swap Router 2",
     "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
-    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router"
+    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router",
+    "0xe34139463ba50bd61336e0c446bd8c0867c6fe65": "Staker"
   },
   "5": {
     "0x1f98431c8ad98523631ae4a59f267346ea31f984": "Factory",
@@ -48,7 +49,8 @@
     "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": "Quoter V2",
     "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": "Swap Router 2",
     "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
-    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router"
+    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router",
+    "0xe34139463ba50bd61336e0c446bd8c0867c6fe65": "Staker"
   },
   "56": {
     "0xdb1d10011ad0ff90774d0c6bb92e5c5c8b4461f7": "Factory",
@@ -63,7 +65,8 @@
     "0x78d78e420da98ad378d7799be8f4af69033eb077": "Quoter V2",
     "0xb971ef87ede563556b2ed4b1c0b0019111dd85d2": "Swap Router 2",
     "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
-    "0x5302086a3a25d473aabbd0356eff8dd811a4d89b": "Universal Router"
+    "0x5302086a3a25d473aabbd0356eff8dd811a4d89b": "Universal Router",
+    "0x49b53c35af9072fc71767577bf6380a88ee32c71": "Staker"
   },
   "137": {
     "0x1f98431c8ad98523631ae4a59f267346ea31f984": "Factory",
@@ -80,7 +83,22 @@
     "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": "Quoter V2",
     "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": "Swap Router 2",
     "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
-    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router"
+    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router",
+    "0xe34139463ba50bd61336e0c446bd8c0867c6fe65": "Staker"
+  },
+  "420": {
+    "0x8ce191193d15ea94e11d327b4c7ad8bbe520f6af": "Factory",
+    "0x80e4e06841bb76aa9735e0448cb8d003c0ef009a": "Multicall",
+    "0xd7303474baca835743b54d73799688990f24a79d": "Proxy Admin",
+    "0xcb7f54747f58f8944973cea5b8f4ac2209baddc5": "Tick Lens",
+    "0x4e0caff1df1ccd7cf782fdded77f020699b57f1a": "NFT Descriptor",
+    "0xd7c6e867591608d32fe476d0dbdc95d0cf584c8f": "Nonfungible Token Position Descriptor",
+    "0x1e2a708040eb6ed08893e27e35d399e8e8e7857e": "Transparent Upgradeable Proxy",
+    "0xda75cef1c93078e8b736fca5d5a30adb97c8957d": "Nonfungible Position Manager",
+    "0x0fbea6cf957d95ee9313490050f6a0da68039404": "Quoter V2",
+    "0x94cc0aac535ccdb3c01d6787d6413c739ae12bc4": "SwapRouter 2",
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
+    "0xd5bba708b39537d33f2812e5ea032622456f1a95": "Universal Router"
   },
   "8453": {
     "0x33128a8fc17869897dce68ed026d694621f6fdfd": "Factory",
@@ -95,7 +113,39 @@
     "0x3d4e44eb1374240ce5f1b871ab261cd16335b76a": "Quoter V2",
     "0x2626664c2603336e57b271c5c0b26f421741e481": "Swap Router 2",
     "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
-    "0x198ef79f1f515f02dfe9e3115ed9fc07183f02fc": "Universal Router"
+    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router",
+    "0x42be4d6527829fefa1493e1fb9f3676d2425c3c1": "Staker"
+  },
+  "81457": {
+    "0x792edade80af5fc680d96a2ed80a44247d2cf6fd": "Factory",
+    "0xdc7f370de7631ce9e2c2e1dcda6b3b5744cf4705": "Multicall",
+    "0x7c9caa4ac84c8fad8bd504dbf90e791f91f41705": "Proxy Admin",
+    "0x2e95185bcdd928a3e984b7e2d6560ab1b17d7274": "Tick Lens",
+    "0xaa32bd3926097fd04d22b4433e9867417ee79333": "NFT Descriptor",
+    "0x497089d9450bb58f536c38c1c0d0a37472303508": "Nonfungible Token Position Descriptor",
+    "0xb22ef02e13b1900ebf10391e57162402c11bff05": "Transparent Upgradeable Proxy",
+    "0xb218e4f7cf0533d4696fdfc419a0023d33345f28": "Nonfungible Position Manager",
+    "0x15ca7043cd84c5d21ae76ba0a1a967d42c40ece0": "Migrator",
+    "0x6cdcd65e03c1cec3730aeecd45bc140d57a25c77": "Quoter V2",
+    "0x549feb8c9bd4c12ad2ab27022da12492ac452b66": "Swap Router 2",
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
+    "0x643770e279d5d0733f21d6dc03a8efbabf3255b4": "Universal Router",
+    "0xecaf7c276f746170642e97de961f2f0361e1acc8": "Staker"
+  },
+  "84532": {
+    "0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24": "Factory",
+    "0xd867e273eabd6c853fcd0ca0bfb6a3ae6491d2c1": "Multicall",
+    "0xd7303474baca835743b54d73799688990f24a79d": "Proxy Admin",
+    "0xedf6066a2b290c185783862c7f4776a2c8077ad1": "Tick Lens",
+    "0x4e0caff1df1ccd7cf782fdded77f020699b57f1a": "NFT Descriptor",
+    "0xd7c6e867591608d32fe476d0dbdc95d0cf584c8f": "Nonfungible Token Position Descriptor",
+    "0x1e2a708040eb6ed08893e27e35d399e8e8e7857e": "Transparent Upgradeable Proxy",
+    "0x27f971cb582bf9e50f397e4d29a5c7a34f11faa2": "Nonfungible Position Manager",
+    "0xcbf8b7f80800bd4888fbc7bf1713b80fe4e23e10": "V3 Migrator",
+    "0xc5290058841028f1614f3a6f0f5816cad0df5e27": "Quoter V2",
+    "0x94cc0aac535ccdb3c01d6787d6413c739ae12bc4": "Swap Router 2",
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
+    "0x050e797f3625ec8785265e1d9bdd4799b97528a1": "Universal Router"
   },
   "42161": {
     "0x1f98431c8ad98523631ae4a59f267346ea31f984": "Factory",
@@ -112,7 +162,8 @@
     "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": "Quoter V2",
     "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": "Swap Router 2",
     "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
-    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router"
+    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router",
+    "0xe34139463ba50bd61336e0c446bd8c0867c6fe65": "Staker"
   },
   "42220": {
     "0xafe208a311b21f13ef87e33a90049fc17a7acdec": "Factory",
@@ -127,6 +178,47 @@
     "0x3d79edaabc0eab6f08ed885c05fc0b014290d95a": "Nonfungible Position Manager",
     "0x3cfd4d48edfdcc53d3f173f596f621064614c582": "Migrator",
     "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
-    "0x5dc88340e1c5c6366864ee415d6034cadd1a9897": "Universal Router"
+    "0x5dc88340e1c5c6366864ee415d6034cadd1a9897": "Universal Router",
+    "0x6586fb35393abf7ff454977a9b3c912d218791c6": "Staker"
+  },
+  "43114": {
+    "0x740b1c1de25031c31ff4fc9a62f554a55cdc1bad": "Factory",
+    "0x0139141cd4ee88df3cdb65881d411bae271ef0c2": "Multicall",
+    "0x9ada7d7879214073f40183f3410f2b3f088c6381": "Proxy Admin",
+    "0xeb9ffc8bf81b4ffd11fb6a63a6b0f098c6e21950": "Tick Lens",
+    "0x27dd7ee7fe723e83bf3612a75a034951fe299e99": "NFT Descriptor",
+    "0xe89b7c295d73fcce88ef263f86e7310925daebaf": "Nonfungible Token Position Descriptor",
+    "0xe1f93a7cb6ffa2db4f9d5a2fd43158a428993c09": "Transparent Upgradeable Proxy",
+    "0x655c406ebfa14ee2006250925e54ec43ad184f8b": "Nonfungible Position Manager",
+    "0x44f5f1f5e452ea8d29c890e8f6e893fc0f1f0f97": "Migrator",
+    "0xbe0f5544ec67e9b3b2d979aaa43f18fd87e6257f": "Quoter V2",
+    "0xbb00ff08d01d300023c629e8ffffcb65a5a578ce": "Swap Router 2",
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
+    "0x4dae2f939acf50408e13d58534ff8c2776d45265": "Universal Router",
+    "0xca9d0668c600c4dd07ca54be1615fe5cdfd76ac3": "Staker"
+  },
+  "421614": {
+    "0x248ab79bbb9bc29bb72f7cd42f17e054fc40188e": "Factory",
+    "0x2b718b475e385ed29f56775a66aab1f5cc6b2a0a": "Multicall",
+    "0x0fd18587734e5c2dce2dccdcc7dd1ec89ba557d9": "Tick Lens",
+    "0x6b2937bde17889edcf8fbd8de31c3c2a70bc4d65": "Nonfungible Position Manager",
+    "0x398f43ef2c67b941147157da1c5a868e906e043d": "Migrator",
+    "0x2779a0cc1c3e0e44d2542ec3e79e3864ae93ef0b": "Quoter V2",
+    "0x101f443b4d1b059569d643917553c771e1b9663e": "SwapRouter 2",
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
+    "0x4a7b5da61326a6379179b40d00f57e5bbdc962c2": "Universal Router"
+  },
+  "11155111": {
+    "0x0227628f3F023bb0B980b67D528571c95c6DaC1c": "Factory",
+    "0xD7F33bCdb21b359c8ee6F0251d30E94832baAd07": "Multicall2",
+    "0x0b343475d44EC2b4b8243EBF81dc888BF0A14b36": "Proxy Admin",
+    "0x3B5E3c5E595D85fbFBC2a42ECC091e183E76697C": "NFT Descriptor",
+    "0x5bE4DAa6982C69aD20A57F1e68cBcA3D37de6207": "Nonfungible Token Position Descriptor",
+    "0x1238536071E1c677A632429e3655c799b22cDA52": "Nonfungible Position Manager",
+    "0x729004182cF005CEC8Bd85df140094b6aCbe8b15": "Migrator",
+    "0xEd1f6473345F45b75F8179591dd5bA1888cf2FB3": "Quoter V2",
+    "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E": "Swap Router 2",
+    "0x000000000022D473030F116dDEE9F6B43aC78BA3": "Permit2",
+    "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD": "Universal Router"
   }
 }
