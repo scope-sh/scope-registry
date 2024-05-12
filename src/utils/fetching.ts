@@ -325,6 +325,10 @@ function getErc20Overwrite(chain: ChainId): Record<Address, Erc20Metadata> {
         name: 'Wormhole USD Coin',
         symbol: 'wormholeUSDC',
       },
+      '0x1cdd2eab61112697626f7b4bb0e23da4febf7b7c': {
+        name: 'Wormhole Tether',
+        symbol: 'wormholeUSDT',
+      },
     },
     [OPTIMISM]: {
       '0x7f5c764cbc14f9669b88837ca1490cca17c31607': {
