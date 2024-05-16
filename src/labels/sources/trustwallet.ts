@@ -40,6 +40,8 @@ import {
   AURORA,
   HARMONY_SHARD_0,
   CHAINS,
+  BLAST,
+  BLAST_SEPOLIA,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
@@ -166,6 +168,10 @@ class Source extends BaseSource {
           return null;
         case AURORA:
           return 'aurora';
+        case BLAST:
+          return 'blast';
+        case BLAST_SEPOLIA:
+          return null;
         case HARMONY_SHARD_0:
           return 'harmony';
       }
