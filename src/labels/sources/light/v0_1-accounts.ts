@@ -47,10 +47,8 @@ class Source extends BaseSource {
       .map((event) => {
         const decodedEvent = decodeEventLog({
           abi: entryPointV0_6_0Abi,
-          data: event.data as Hex,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          topics: event.topics,
+          data: event.data,
+          topics: event.topics as [Hex, ...Hex[]],
         });
         if (decodedEvent.eventName !== 'AccountDeployed') {
           throw new Error('Invalid event name');

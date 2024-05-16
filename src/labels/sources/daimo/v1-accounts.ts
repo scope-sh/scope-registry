@@ -45,10 +45,8 @@ class Source extends BaseSource {
     const accounts: Address[] = events.map((event) => {
       const decodedEvent = decodeEventLog({
         abi: daimoV1NameRegistryAbi,
-        data: event.data as Hex,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        topics: event.topics,
+        data: event.data,
+        topics: event.topics as [Hex, ...Hex[]],
       });
       if (decodedEvent.eventName !== 'Registered') {
         throw new Error('Invalid event name');

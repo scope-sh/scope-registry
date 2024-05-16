@@ -50,9 +50,7 @@ class Source extends BaseSource {
       const decodedEvent = decodeEventLog({
         abi: safeV141FactoryAbi,
         data: event.data as Hex,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        topics: event.topics,
+        topics: event.topics as [Hex, ...Hex[]],
       });
       if (decodedEvent.eventName !== 'ProxyCreation') {
         throw new Error('Invalid event name');

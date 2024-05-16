@@ -1,4 +1,4 @@
-import { decodeEventLog, encodeEventTopics } from 'viem';
+import { Hex, decodeEventLog, encodeEventTopics } from 'viem';
 
 import aaveV2LendingPoolConfiguratorAbi from '@/abi/aaveV2LendingPoolConfigurator.js';
 import { Source as BaseSource } from '@/labels/base.js';
@@ -65,9 +65,7 @@ class Source extends BaseSource {
       const decodedEvent = decodeEventLog({
         abi: aaveV2LendingPoolConfiguratorAbi,
         data: event.data,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        topics: event.topics,
+        topics: event.topics as [Hex, ...Hex[]],
       });
       if (decodedEvent.eventName !== 'ReserveInitialized') {
         throw new Error('Invalid event name');

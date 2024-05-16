@@ -55,10 +55,8 @@ class Source extends BaseSource {
     const accounts: Account[] = events.map((event) => {
       const decodedEvent = decodeEventLog({
         abi: biconomyV2FactoryAbi,
-        data: event.data as Hex,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        topics: event.topics,
+        data: event.data,
+        topics: event.topics as [Hex, ...Hex[]],
       });
       if (decodedEvent.eventName !== 'AccountCreation') {
         throw new Error('Invalid event name');
@@ -100,10 +98,8 @@ class Source extends BaseSource {
     const accounts: Account[] = events.map((event) => {
       const decodedEvent = decodeEventLog({
         abi: biconomyV2FactoryAbi,
-        data: event.data as Hex,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        topics: event.topics,
+        data: event.data,
+        topics: event.topics as [Hex, ...Hex[]],
       });
       if (decodedEvent.eventName !== 'AccountCreationWithoutIndex') {
         throw new Error('Invalid event name');
