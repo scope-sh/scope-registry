@@ -48,6 +48,8 @@ import { getErc20Metadata } from '@/utils/fetching.js';
 
 import { getLabelTypeById, initLabelMap } from '../utils.js';
 
+const githubToken = process.env.GITHUB_TOKEN as string;
+
 interface TreeResponse {
   sha: string;
   url: string;
@@ -61,6 +63,9 @@ interface Tree {
 
 const githubClient = axios.create({
   baseURL: 'https://api.github.com/repos/trustwallet/assets/git/trees/',
+  headers: {
+    Authorization: `Bearer ${githubToken}`,
+  },
 });
 
 class Source extends BaseSource {
