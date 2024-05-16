@@ -13,6 +13,10 @@ import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
+const VALID_SINGLETONS = [
+  '0x41675c099f32341bf84bfc5382af534df5c7461a',
+  '0x29fcb43b46531bca003ddc8fcb67ffe91900c762',
+];
 const FACTORY_ADDRESS = '0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67';
 const NAMESPACE = 'Safe';
 
@@ -42,7 +46,7 @@ class Source extends BaseSource {
     }
     const events = await getEvents(chain, FACTORY_ADDRESS, topic);
 
-    const accounts: Address[] = events.map((event) => {
+    const factoryDeployments = events.map((event) => {
       const decodedEvent = decodeEventLog({
         abi: safeV141FactoryAbi,
         data: event.data as Hex,
@@ -53,8 +57,14 @@ class Source extends BaseSource {
       if (decodedEvent.eventName !== 'ProxyCreation') {
         throw new Error('Invalid event name');
       }
-      return decodedEvent.args.proxy.toLowerCase() as Address;
+      return {
+        proxy: decodedEvent.args.proxy.toLowerCase() as Address,
+        singleton: decodedEvent.args.singleton.toLowerCase() as Address,
+      };
     });
+    const accounts = factoryDeployments
+      .filter((deployment) => VALID_SINGLETONS.includes(deployment.singleton))
+      .map((deployment) => deployment.proxy);
 
     return Object.fromEntries(
       accounts.map((account) => {
