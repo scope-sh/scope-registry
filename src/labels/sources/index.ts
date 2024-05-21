@@ -30,6 +30,7 @@ import LightV0_1Source from './light/v0_1.js';
 import LightV0_2AccountSource from './light/v0_2-accounts.js';
 import LightV0_2Source from './light/v0_2.js';
 import NaniSource from './nani/index.js';
+import OpenseaSeaportSource from './opensea/seaport.js';
 import OverwriteSource from './overwrite.js';
 import ParifiV1Source from './parifi/v1.js';
 import ParticleSource from './particle/index.js';
@@ -100,6 +101,8 @@ const sources: Source[] = [
   new UniswapV2Source(),
   new UniswapV3PoolSource(),
   new UniswapV3Source(),
+  // NFT
+  new OpenseaSeaportSource(),
   // Social
   new EasSource(),
   new EnsSource(),
