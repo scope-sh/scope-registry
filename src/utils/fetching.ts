@@ -45,6 +45,88 @@ interface EventCacheMetadata {
   lastBlock: number;
 }
 
+type BlockFieldSelection = 'number' | 'timestamp';
+type TransactionFieldSelection =
+  | 'block_number'
+  | 'transaction_index'
+  | 'hash'
+  | 'from'
+  | 'to'
+  | 'input'
+  | 'value'
+  | 'gas_price'
+  | 'status';
+type LogFieldSelection =
+  | 'log_index'
+  | 'transaction_hash'
+  | 'block_number'
+  | 'address'
+  | 'data'
+  | 'topic0'
+  | 'topic1'
+  | 'topic2'
+  | 'topic3';
+
+interface Query {
+  from_block?: number;
+  to_block?: number;
+  logs?: {
+    address?: Address[];
+    topics?: Hex[][];
+  }[];
+  transactions?: {
+    from?: Address[];
+    to?: Address[];
+  }[];
+  max_num_transactions?: number;
+  max_num_logs?: number;
+  field_selection: {
+    block?: BlockFieldSelection[];
+    transaction?: TransactionFieldSelection[];
+    log?: LogFieldSelection[];
+  };
+}
+
+interface QueryResponse {
+  data: {
+    blocks?: QueryBlock[];
+    transactions?: QueryTransaction[];
+    logs?: QueryLog[];
+  }[];
+  next_block?: number;
+  prev_block?: number;
+  archive_height: number;
+}
+
+interface QueryBlock {
+  number: number;
+  timestamp: Hex;
+}
+
+interface QueryTransaction {
+  block_number: number;
+  from: Address;
+  gas_price: Hex;
+  hash: Hex;
+  input: Hex;
+  to: Hex | null;
+  transaction_index: number;
+  value: Hex;
+  status: 1;
+}
+
+interface QueryLog {
+  log_index: number;
+  transaction_hash: Hex;
+  block_number: number;
+  address: Address;
+  data: Hex;
+  topic0: Hex;
+  topic1: Hex;
+  topic2: Hex;
+  topic3: null;
+}
+
 function getClient(chain: ChainId): PublicClient | null {
   const chainData = getChainData(chain);
   if (!chainData) {
@@ -61,49 +143,50 @@ function getClient(chain: ChainId): PublicClient | null {
   });
 }
 
-function getHypersyncClient(chain: ChainId): HypersyncClient | null {
-  function getUrl(chain: ChainId): string | null {
-    switch (chain) {
-      case ETHEREUM:
-        return 'https://eth.hypersync.xyz';
-      case SEPOLIA:
-        return 'https://sepolia.hypersync.xyz';
-      case OPTIMISM:
-        return 'https://optimism.hypersync.xyz';
-      case OPTIMISM_SEPOLIA:
-        return 'https://optimism-sepolia.hypersync.xyz';
-      case BASE:
-        return 'https://base.hypersync.xyz';
-      case BASE_SEPOLIA:
-        return 'https://base-sepolia.hypersync.xyz';
-      case POLYGON:
-        return 'https://polygon.hypersync.xyz';
-      case POLYGON_AMOY:
-        return 'https://amoy.hypersync.xyz';
-      case ARBITRUM:
-        return 'https://arbitrum.hypersync.xyz';
-      case ARBITRUM_SEPOLIA:
-        return 'https://arbitrum-sepolia.hypersync.xyz';
-      default:
-        return null;
-    }
+function getHypersyncUrl(chain: ChainId): string | null {
+  switch (chain) {
+    case ETHEREUM:
+      return 'https://eth.hypersync.xyz';
+    case SEPOLIA:
+      return 'https://sepolia.hypersync.xyz';
+    case OPTIMISM:
+      return 'https://optimism.hypersync.xyz';
+    case OPTIMISM_SEPOLIA:
+      return 'https://optimism-sepolia.hypersync.xyz';
+    case BASE:
+      return 'https://base.hypersync.xyz';
+    case BASE_SEPOLIA:
+      return 'https://base-sepolia.hypersync.xyz';
+    case POLYGON:
+      return 'https://polygon.hypersync.xyz';
+    case POLYGON_AMOY:
+      return 'https://amoy.hypersync.xyz';
+    case ARBITRUM:
+      return 'https://arbitrum.hypersync.xyz';
+    case ARBITRUM_SEPOLIA:
+      return 'https://arbitrum-sepolia.hypersync.xyz';
+    default:
+      return null;
   }
-
-  const url = getUrl(chain);
-  if (!url) {
-    return null;
-  }
-  return HypersyncClient.new({ url });
 }
 
 async function getEvents(
   chain: ChainId,
-  address: string,
+  address: Address,
   topic0: Hex,
 ): Promise<Event[]> {
+  function shouldUseBinary(): boolean {
+    return true;
+  }
+
   // Note: changing this would require cleaning up the cache
   const CHUNK_BLOCKS = 1_000_000;
-  const client = getHypersyncClient(chain);
+  const url = getHypersyncUrl(chain);
+  if (!url) {
+    return [];
+  }
+  const client = HypersyncClient.new({ url });
+  const useBinary = shouldUseBinary();
   if (!client) {
     return [];
   }
@@ -126,12 +209,9 @@ async function getEvents(
   // Fetch new events
   let fromBlock = cacheMetadata.lastBlock + 1;
   while (fromBlock <= latestBlock) {
-    const { events: pageEvents, nextBlock } = await getEventsPaginated(
-      client,
-      address,
-      topic0,
-      fromBlock,
-    );
+    const { events: pageEvents, nextBlock } = useBinary
+      ? await getBinaryEventsPaginated(client, address, topic0, fromBlock)
+      : await getEventsPaginated(url, address, topic0, fromBlock);
     events = events.concat(pageEvents);
     fromBlock = nextBlock;
   }
@@ -162,7 +242,7 @@ async function getEvents(
   return events;
 }
 
-async function getEventsPaginated(
+async function getBinaryEventsPaginated(
   client: HypersyncClient,
   address: string,
   topic0: Hex,
@@ -192,6 +272,63 @@ async function getEventsPaginated(
     return { topics, data, blockNumber };
   });
   const nextBlock = response.nextBlock;
+  return {
+    events,
+    nextBlock,
+  };
+}
+
+async function getEventsPaginated(
+  endpointUrl: string,
+  address: Address,
+  topic0: Hex,
+  startBlock: number,
+): Promise<{
+  events: Event[];
+  nextBlock: number;
+}> {
+  const query: Query = {
+    from_block: startBlock,
+    logs: [
+      {
+        address: [address],
+        topics: [[topic0]],
+      },
+    ],
+    field_selection: {
+      log: ['block_number', 'data', 'topic0', 'topic1', 'topic2', 'topic3'],
+    },
+  };
+
+  const response = await fetch(endpointUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(query),
+  });
+  const json = (await response.json()) as QueryResponse;
+  console.log(json);
+  const dataItem = json.data[0];
+  if (!dataItem) {
+    throw new Error('Invalid response');
+  }
+  const logs = dataItem.logs;
+  if (!logs) {
+    throw new Error('Invalid response');
+  }
+  const events = logs.map((log) => {
+    const topics = [log.topic0, log.topic1, log.topic2, log.topic3].filter(
+      (topic): topic is Hex => topic !== null,
+    );
+    const data = log.data as Hex;
+    const blockNumber = log.block_number;
+    return { topics, data, blockNumber };
+  });
+  const nextBlock = json.next_block;
+  if (!nextBlock) {
+    throw new Error('Invalid response');
+  }
   return {
     events,
     nextBlock,
