@@ -34,6 +34,8 @@ import {
   OPTIMISM_SEPOLIA,
   ZORA_SEPOLIA,
   AURORA,
+  BLAST,
+  BLAST_SEPOLIA,
   HARMONY_SHARD_0,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
@@ -83,6 +85,8 @@ function initLabelMap(): LabelMap {
     [OPTIMISM_SEPOLIA]: {},
     [ZORA_SEPOLIA]: {},
     [AURORA]: {},
+    [BLAST]: {},
+    [BLAST_SEPOLIA]: {},
     [HARMONY_SHARD_0]: {},
   };
 }

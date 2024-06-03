@@ -1,5 +1,5 @@
 import { decodeEventLog, encodeEventTopics } from 'viem';
-import type { Hex } from 'viem';
+import type { Address, Hex } from 'viem';
 
 import uniswapV2FactoryAbi from '@/abi/uniswapV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
@@ -86,7 +86,7 @@ class Source extends BaseSource {
     );
   }
 
-  private getFactoryAddress(chain: ChainId): string | null {
+  private getFactoryAddress(chain: ChainId): Address | null {
     switch (chain) {
       case ETHEREUM:
         return '0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f';

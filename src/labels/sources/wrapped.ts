@@ -34,6 +34,8 @@ import {
   OPTIMISM_SEPOLIA,
   ZORA_SEPOLIA,
   AURORA,
+  BLAST,
+  BLAST_SEPOLIA,
   HARMONY_SHARD_0,
 } from '@/utils/chains.js';
 
@@ -252,6 +254,16 @@ class Source extends BaseSource {
           },
         },
       },
+      [BLAST]: {
+        '0x4300000000000000000000000000000000000004': {
+          value: 'Wrapped Ether',
+          type,
+          metadata: {
+            symbol: 'WETH',
+          },
+        },
+      },
+      [BLAST_SEPOLIA]: {},
       [HARMONY_SHARD_0]: {
         '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a': {
           value: 'Wrapped One',

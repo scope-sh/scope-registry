@@ -37,6 +37,8 @@ import {
   OPTIMISM_SEPOLIA,
   ZORA_SEPOLIA,
   AURORA,
+  BLAST,
+  BLAST_SEPOLIA,
   HARMONY_SHARD_0,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
@@ -135,6 +137,8 @@ class Source extends BaseSource {
       [OPTIMISM_SEPOLIA]: {},
       [ZORA_SEPOLIA]: {},
       [AURORA]: {},
+      [BLAST]: {},
+      [BLAST_SEPOLIA]: {},
       [HARMONY_SHARD_0]: {},
     };
     for (const chainId of CHAINS) {

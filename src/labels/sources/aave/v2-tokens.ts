@@ -1,4 +1,4 @@
-import { Hex, decodeEventLog, encodeEventTopics } from 'viem';
+import { Address, Hex, decodeEventLog, encodeEventTopics } from 'viem';
 
 import aaveV2LendingPoolConfiguratorAbi from '@/abi/aaveV2LendingPoolConfigurator.js';
 import { Source as BaseSource } from '@/labels/base.js';
@@ -121,7 +121,7 @@ class Source extends BaseSource {
     );
   }
 
-  private getPoolConfiguratorAddress(chain: ChainId): string | null {
+  private getPoolConfiguratorAddress(chain: ChainId): Address | null {
     switch (chain) {
       case ETHEREUM:
         return '0x311bb771e4f8952e6da169b425e7e92d6ac45756';
