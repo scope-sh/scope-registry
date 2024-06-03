@@ -11,9 +11,12 @@ import {
 } from '@/labels/utils.js';
 import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
+import {
+  ENTRYPOINT_0_7_0_ADDRESS,
+  getEntryPoint0_7_0Predicate,
+} from '@/utils/entryPoint.js';
 import { getEvents } from '@/utils/fetching.js';
 
-const ENTRYPOINT_0_7_0_ADDRESS = '0x0000000071727de22e5e9d8baf0edac6f37da032';
 const KERNEL_V3_FACTORY_STAKER_ADDRESS =
   '0xd703aae79538628d27099b8c4f621be4ccd142d5';
 const NAMESPACE = 'ZeroDev Kernel V3';
@@ -42,28 +45,24 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, ENTRYPOINT_0_7_0_ADDRESS, topic);
+    const events = await getEvents(
+      chain,
+      ENTRYPOINT_0_7_0_ADDRESS,
+      topic,
+      getEntryPoint0_7_0Predicate(KERNEL_V3_FACTORY_STAKER_ADDRESS),
+    );
 
-    const accounts: Address[] = events
-      .map((event) => {
-        const decodedEvent = decodeEventLog({
-          abi: entryPointV0_7_0Abi,
-          data: event.data,
-          topics: event.topics as [Hex, ...Hex[]],
-        });
-        if (decodedEvent.eventName !== 'AccountDeployed') {
-          throw new Error('Invalid event name');
-        }
-        return {
-          factory: decodedEvent.args.factory,
-          sender: decodedEvent.args.sender,
-        };
-      })
-      .filter(
-        (account) =>
-          account.factory.toLowerCase() === KERNEL_V3_FACTORY_STAKER_ADDRESS,
-      )
-      .map((account) => account.sender.toLowerCase() as Address);
+    const accounts: Address[] = events.map((event) => {
+      const decodedEvent = decodeEventLog({
+        abi: entryPointV0_7_0Abi,
+        data: event.data,
+        topics: event.topics as [Hex, ...Hex[]],
+      });
+      if (decodedEvent.eventName !== 'AccountDeployed') {
+        throw new Error('Invalid event name');
+      }
+      return decodedEvent.args.sender.toLowerCase() as Address;
+    });
 
     return Object.fromEntries(
       accounts.map((account) => {

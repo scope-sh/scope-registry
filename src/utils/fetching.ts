@@ -174,6 +174,7 @@ async function getEvents(
   chain: ChainId,
   address: Address,
   topic0: Hex,
+  predicate?: (event: Event) => boolean,
 ): Promise<Event[]> {
   function shouldUseBinary(): boolean {
     return true;
@@ -212,7 +213,10 @@ async function getEvents(
     const { events: pageEvents, nextBlock } = useBinary
       ? await getBinaryEventsPaginated(client, address, topic0, fromBlock)
       : await getEventsPaginated(url, address, topic0, fromBlock);
-    events = events.concat(pageEvents);
+    const filteredEvents = predicate
+      ? pageEvents.filter(predicate)
+      : pageEvents;
+    events = events.concat(filteredEvents);
     fromBlock = nextBlock;
   }
   // Write new events to the cache in chunks

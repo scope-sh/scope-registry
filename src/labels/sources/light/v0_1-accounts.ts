@@ -11,9 +11,12 @@ import {
 } from '@/labels/utils.js';
 import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
+import {
+  ENTRYPOINT_0_6_0_ADDRESS,
+  getEntryPoint0_6_0Predicate,
+} from '@/utils/entryPoint.js';
 import { getEvents } from '@/utils/fetching.js';
 
-const ENTRYPOINT_0_6_0_ADDRESS = '0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789';
 const FACTORY_0_1_ADDRESS = '0x0000000000756d3e6464f5efe7e413a0af1c7474';
 const NAMESPACE = 'Light V0.1';
 
@@ -41,27 +44,24 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, ENTRYPOINT_0_6_0_ADDRESS, topic);
+    const events = await getEvents(
+      chain,
+      ENTRYPOINT_0_6_0_ADDRESS,
+      topic,
+      getEntryPoint0_6_0Predicate(FACTORY_0_1_ADDRESS),
+    );
 
-    const accounts: Address[] = events
-      .map((event) => {
-        const decodedEvent = decodeEventLog({
-          abi: entryPointV0_6_0Abi,
-          data: event.data,
-          topics: event.topics as [Hex, ...Hex[]],
-        });
-        if (decodedEvent.eventName !== 'AccountDeployed') {
-          throw new Error('Invalid event name');
-        }
-        return {
-          factory: decodedEvent.args.factory,
-          sender: decodedEvent.args.sender,
-        };
-      })
-      .filter(
-        (account) => account.factory.toLowerCase() === FACTORY_0_1_ADDRESS,
-      )
-      .map((account) => account.sender.toLowerCase() as Address);
+    const accounts: Address[] = events.map((event) => {
+      const decodedEvent = decodeEventLog({
+        abi: entryPointV0_6_0Abi,
+        data: event.data,
+        topics: event.topics as [Hex, ...Hex[]],
+      });
+      if (decodedEvent.eventName !== 'AccountDeployed') {
+        throw new Error('Invalid event name');
+      }
+      return decodedEvent.args.sender.toLowerCase() as Address;
+    });
 
     return Object.fromEntries(
       accounts.map((account) => {

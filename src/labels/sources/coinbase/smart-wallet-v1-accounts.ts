@@ -11,9 +11,12 @@ import {
 } from '@/labels/utils.js';
 import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
+import {
+  ENTRYPOINT_0_6_0_ADDRESS,
+  getEntryPoint0_6_0Predicate,
+} from '@/utils/entryPoint.js';
 import { getEvents } from '@/utils/fetching.js';
 
-const ENTRYPOINT_0_6_0_ADDRESS = '0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789';
 const FACTORY_ADDRESS = '0x0ba5ed0c6aa8c49038f819e587e2633c4a9f428a';
 const NAMESPACE = 'Coinbase Smart Wallet';
 
@@ -41,22 +44,24 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, ENTRYPOINT_0_6_0_ADDRESS, topic);
+    const events = await getEvents(
+      chain,
+      ENTRYPOINT_0_6_0_ADDRESS,
+      topic,
+      getEntryPoint0_6_0Predicate(FACTORY_ADDRESS),
+    );
 
-    const accounts: Address[] = events
-      .map((event) => {
-        const decodedEvent = decodeEventLog({
-          abi: entryPointV0_6_0Abi,
-          data: event.data,
-          topics: event.topics as [Hex, ...Hex[]],
-        });
-        if (decodedEvent.eventName !== 'AccountDeployed') {
-          throw new Error('Invalid event name');
-        }
-        return decodedEvent;
-      })
-      .filter((log) => log.args.factory.toLowerCase() === FACTORY_ADDRESS)
-      .map((log) => log.args.sender.toLowerCase() as Address);
+    const accounts: Address[] = events.map((event) => {
+      const decodedEvent = decodeEventLog({
+        abi: entryPointV0_6_0Abi,
+        data: event.data,
+        topics: event.topics as [Hex, ...Hex[]],
+      });
+      if (decodedEvent.eventName !== 'AccountDeployed') {
+        throw new Error('Invalid event name');
+      }
+      return decodedEvent.args.sender.toLowerCase() as Address;
+    });
 
     return Object.fromEntries(
       accounts.map((account) => {
