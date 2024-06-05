@@ -1,7 +1,7 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { LabelMap } from '@/labels/base.js';
+import type { SingleLabelMap } from '@/labels/base.js';
 import { CHAINS } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
@@ -12,7 +12,7 @@ class Source extends BaseSource {
     return 'Alchemy';
   }
 
-  async fetch(): Promise<LabelMap> {
+  async fetch(): Promise<SingleLabelMap> {
     const addresses: Record<string, Record<Address, string>> = {};
     const paymasters: Record<Address, string> = {
       '0x4fd9098af9ddcb41da48a1d78f91f1398965addc': 'Paymaster',

@@ -2,11 +2,17 @@ import { Address, Hex, decodeEventLog, encodeEventTopics } from 'viem';
 
 import aaveV3PoolConfiguratorAbi from '@/abi/aaveV3PoolConfigurator.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainLabelMap, Label, LabelMap } from '@/labels/base.js';
+import type {
+  ChainLabelMap,
+  ChainSingleLabelMap,
+  Label,
+  LabelMap,
+  SingleLabelMap,
+} from '@/labels/base.js';
 import {
   getLabelNamespaceByValue,
   getLabelTypeById,
-  initLabelMap,
+  initSingleLabelMap,
 } from '@/labels/utils.js';
 import {
   ARBITRUM,
@@ -32,10 +38,10 @@ import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 interface Token {
-  underlying: string;
-  aToken: string;
-  sToken: string;
-  vToken: string;
+  underlying: Address;
+  aToken: Address;
+  sToken: Address;
+  vToken: Address;
 }
 
 const NAMESPACE = 'Aave V3';
@@ -45,8 +51,8 @@ class Source extends BaseSource {
     return 'Aave V3 Tokens';
   }
 
-  async fetch(previousLabels: LabelMap): Promise<LabelMap> {
-    const labels = initLabelMap();
+  async fetch(previousLabels: LabelMap): Promise<SingleLabelMap> {
+    const labels = initSingleLabelMap();
     for (const chain of CHAINS) {
       const chainPreviousLabels = previousLabels[chain];
       const chainLabels = await this.fetchChain(chain, chainPreviousLabels);
@@ -59,7 +65,7 @@ class Source extends BaseSource {
   private async fetchChain(
     chain: ChainId,
     previousLabels: ChainLabelMap,
-  ): Promise<ChainLabelMap> {
+  ): Promise<ChainSingleLabelMap> {
     const address = this.getPoolConfiguratorAddress(chain);
     if (!address) {
       return {};
@@ -84,10 +90,10 @@ class Source extends BaseSource {
         throw new Error('Invalid event name');
       }
       return {
-        underlying: decodedEvent.args.asset.toLowerCase(),
-        aToken: decodedEvent.args.aToken.toLowerCase(),
-        sToken: decodedEvent.args.stableDebtToken.toLowerCase(),
-        vToken: decodedEvent.args.variableDebtToken.toLowerCase(),
+        underlying: decodedEvent.args.asset.toLowerCase() as Address,
+        aToken: decodedEvent.args.aToken.toLowerCase() as Address,
+        sToken: decodedEvent.args.stableDebtToken.toLowerCase() as Address,
+        vToken: decodedEvent.args.variableDebtToken.toLowerCase() as Address,
       };
     });
 
@@ -191,13 +197,16 @@ function getTokenLabel(
   if (!underlyingLabel) {
     return kindName;
   }
-  if (
-    !underlyingLabel.type ||
-    !['wrapped', 'erc20'].includes(underlyingLabel.type.id)
-  ) {
+  const label = underlyingLabel.find(
+    (label) => label.type && ['erc20', 'wrapped'].includes(label.type.id),
+  );
+  if (!label) {
     return kindName;
   }
-  const tokenSymbol = underlyingLabel.metadata?.symbol;
+  if (!label.metadata) {
+    return kindName;
+  }
+  const tokenSymbol = label.metadata.symbol;
   return `${tokenSymbol} ${kindName}`;
 }
 

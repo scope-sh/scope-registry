@@ -1,5 +1,5 @@
 import { Source as BaseSource } from '@/labels/base.js';
-import type { LabelMap } from '@/labels/base.js';
+import type { SingleLabelMap } from '@/labels/base.js';
 
 import { toLabelMap } from '../../utils.js';
 
@@ -10,7 +10,7 @@ class Source extends BaseSource {
     return 'Uniswap V2';
   }
 
-  async fetch(): Promise<LabelMap> {
+  async fetch(): Promise<SingleLabelMap> {
     return toLabelMap(addresses, 'Uniswap V2');
   }
 }

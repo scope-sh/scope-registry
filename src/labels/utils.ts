@@ -1,94 +1,31 @@
-import {
-  ETHEREUM,
-  OPTIMISM,
-  BNB,
-  BNB_TESTNET,
-  GNOSIS_CHAIN,
-  POLYGON,
-  FANTOM,
-  ZKSYNC,
-  KLAYTN_BAOBAB,
-  METIS,
-  POLYGON_ZKEVM,
-  MOONBEAM,
-  MOONRIVER,
-  FANTOM_TESTNET,
-  CANTO,
-  KLAYTN,
-  BASE,
-  GNOSIS_CHIADO,
-  ARBITRUM,
-  ARBITRUM_NOVA,
-  CELO,
-  AVALANCHE_FUJI,
-  AVALANCHE,
-  LINEA_SEPOLIA,
-  LINEA,
-  POLYGON_AMOY,
-  BASE_SEPOLIA,
-  ARBITRUM_SEPOLIA,
-  SCROLL_SEPOLIA,
-  SCROLL,
-  ZORA,
-  SEPOLIA,
-  OPTIMISM_SEPOLIA,
-  ZORA_SEPOLIA,
-  AURORA,
-  BLAST,
-  BLAST_SEPOLIA,
-  HARMONY_SHARD_0,
-} from '@/utils/chains.js';
+import { Address } from 'viem';
+
+import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 
 import type {
-  ChainLabelMap,
+  ChainSingleLabelMap,
   LabelId,
-  LabelMap,
   LabelNamespace,
   LabelType,
+  LabelMap,
+  SingleLabelMap,
 } from './base.js';
 
+function initSingleLabelMap(): SingleLabelMap {
+  const map = {} as SingleLabelMap;
+  for (const chain of CHAINS) {
+    map[chain] = {};
+  }
+  return map;
+}
+
 function initLabelMap(): LabelMap {
-  return {
-    [ETHEREUM]: {},
-    [OPTIMISM]: {},
-    [BNB]: {},
-    [BNB_TESTNET]: {},
-    [GNOSIS_CHAIN]: {},
-    [POLYGON]: {},
-    [FANTOM]: {},
-    [ZKSYNC]: {},
-    [KLAYTN_BAOBAB]: {},
-    [METIS]: {},
-    [POLYGON_ZKEVM]: {},
-    [MOONBEAM]: {},
-    [MOONRIVER]: {},
-    [FANTOM_TESTNET]: {},
-    [CANTO]: {},
-    [KLAYTN]: {},
-    [BASE]: {},
-    [GNOSIS_CHIADO]: {},
-    [ARBITRUM]: {},
-    [ARBITRUM_NOVA]: {},
-    [CELO]: {},
-    [AVALANCHE_FUJI]: {},
-    [AVALANCHE]: {},
-    [LINEA_SEPOLIA]: {},
-    [LINEA]: {},
-    [POLYGON_AMOY]: {},
-    [BASE_SEPOLIA]: {},
-    [ARBITRUM_SEPOLIA]: {},
-    [SCROLL_SEPOLIA]: {},
-    [SCROLL]: {},
-    [ZORA]: {},
-    [SEPOLIA]: {},
-    [OPTIMISM_SEPOLIA]: {},
-    [ZORA_SEPOLIA]: {},
-    [AURORA]: {},
-    [BLAST]: {},
-    [BLAST_SEPOLIA]: {},
-    [HARMONY_SHARD_0]: {},
-  };
+  const map = {} as LabelMap;
+  for (const chain of CHAINS) {
+    map[chain] = {};
+  }
+  return map;
 }
 
 function getLabelNamespaceByValue(value: string): LabelNamespace {
@@ -167,16 +104,17 @@ function toLabelMap(
   addresses: Record<string, Record<string, string>>,
   namespaceValue?: string,
   id?: LabelId,
-): LabelMap {
-  const labelMap = {} as LabelMap;
+): SingleLabelMap {
+  const labelMap = {} as SingleLabelMap;
   for (const chainString in addresses) {
-    const chainLabelMap: ChainLabelMap = {};
+    const chainLabelMap: ChainSingleLabelMap = {};
     const chain = parseInt(chainString) as ChainId;
     const chainAddresses = addresses[chainString];
     if (!chainAddresses) {
       continue;
     }
-    for (const address in chainAddresses) {
+    for (const addressString in chainAddresses) {
+      const address = addressString as Address;
       const value = chainAddresses[address];
       if (!value) {
         continue;
@@ -194,4 +132,10 @@ function toLabelMap(
   return labelMap;
 }
 
-export { getLabelNamespaceByValue, getLabelTypeById, initLabelMap, toLabelMap };
+export {
+  getLabelNamespaceByValue,
+  getLabelTypeById,
+  initSingleLabelMap,
+  initLabelMap,
+  toLabelMap,
+};

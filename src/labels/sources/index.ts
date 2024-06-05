@@ -1,3 +1,5 @@
+import { Address } from 'viem';
+
 import type { ChainId } from '@/utils/chains.js';
 
 import { Source } from '../base.js';
@@ -72,12 +74,21 @@ async function fetch(): Promise<LabelMap> {
         continue;
       }
       const chainLabels = sourceLabels[chainId];
-      for (const address in chainLabels) {
+      for (const addressString in chainLabels) {
+        const address = addressString as Address;
         const sourceLabel = sourceLabels[chainId][address];
         if (!sourceLabel) {
           continue;
         }
-        allLabels[chainId][address] = sourceLabel;
+        const addressLabels = allLabels[chainId][address] || [];
+        // Append a label if there is no label with the same type
+        const hasSameType = addressLabels.some(
+          (label) => sourceLabel.type && label.type === sourceLabel.type,
+        );
+        if (!hasSameType) {
+          addressLabels.push(sourceLabel);
+        }
+        allLabels[chainId][address] = addressLabels;
       }
     }
   }

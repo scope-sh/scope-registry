@@ -1,7 +1,7 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { LabelMap } from '@/labels/base.js';
+import type { SingleLabelMap } from '@/labels/base.js';
 import { CHAINS } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
@@ -12,7 +12,7 @@ class Source extends BaseSource {
     return 'Coinbase Smart Wallet V1';
   }
 
-  async fetch(): Promise<LabelMap> {
+  async fetch(): Promise<SingleLabelMap> {
     const addresses: Record<string, Record<Address, string>> = {};
     const labels: Record<Address, string> = {
       '0x0ba5ed0c6aa8c49038f819e587e2633c4a9f428a': 'Factory',

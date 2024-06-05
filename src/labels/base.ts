@@ -1,3 +1,5 @@
+import { Address } from 'viem';
+
 import type { ChainId } from '../utils/chains.js';
 
 type LabelId =
@@ -25,7 +27,9 @@ type LabelId =
   | 'uniswap-v2-pool'
   | 'uniswap-v3-pool';
 
-type ChainLabelMap = Record<string, Label>;
+type ChainSingleLabelMap = Record<Address, Label>;
+type ChainLabelMap = Record<Address, Label[]>;
+type SingleLabelMap = Record<ChainId, ChainSingleLabelMap>;
 type LabelMap = Record<ChainId, ChainLabelMap>;
 
 interface LabelType {
@@ -48,15 +52,17 @@ interface Label {
 
 abstract class Source {
   abstract getName(): string;
-  abstract fetch(previousLabels: LabelMap): Promise<LabelMap>;
+  abstract fetch(previousLabels: LabelMap): Promise<SingleLabelMap>;
 }
 
 export { Source };
 export type {
+  ChainSingleLabelMap,
   ChainLabelMap,
   Label,
   LabelId,
   LabelMap,
   LabelNamespace,
   LabelType,
+  SingleLabelMap,
 };

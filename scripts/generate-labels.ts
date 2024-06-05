@@ -12,7 +12,13 @@ for (const chainIdString in labels) {
     Object.entries(labels[chainId]).map(([key, value]) => {
       return [
         key,
-        { type: value.type, value: value.value, namespace: value.namespace },
+        value.map((value) => {
+          return {
+            type: value.type,
+            value: value.value,
+            namespace: value.namespace,
+          };
+        }),
       ];
     }),
   );

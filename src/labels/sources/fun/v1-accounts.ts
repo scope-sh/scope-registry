@@ -3,11 +3,11 @@ import type { Address, Hex } from 'viem';
 
 import funV1FactoryAbi from '@/abi/funV1Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SingleLabelMap } from '@/labels/base.js';
 import {
   getLabelNamespaceByValue,
   getLabelTypeById,
-  initLabelMap,
+  initSingleLabelMap,
 } from '@/labels/utils.js';
 import { CHAINS } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
@@ -21,8 +21,8 @@ class Source extends BaseSource {
     return 'Fun V1 Accounts';
   }
 
-  async fetch(): Promise<LabelMap> {
-    const labels = initLabelMap();
+  async fetch(): Promise<SingleLabelMap> {
+    const labels = initSingleLabelMap();
     for (const chain of CHAINS) {
       const accounts = await this.fetchAccounts(chain);
       labels[chain] = accounts;
@@ -31,7 +31,7 @@ class Source extends BaseSource {
     return labels;
   }
 
-  private async fetchAccounts(chain: ChainId): Promise<ChainLabelMap> {
+  private async fetchAccounts(chain: ChainId): Promise<ChainSingleLabelMap> {
     const topics = encodeEventTopics({
       abi: funV1FactoryAbi,
       eventName: 'AccountCreated',

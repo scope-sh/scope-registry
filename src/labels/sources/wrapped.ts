@@ -40,7 +40,7 @@ import {
 } from '@/utils/chains.js';
 
 import { Source as BaseSource } from '../base.js';
-import type { LabelMap } from '../base.js';
+import type { SingleLabelMap } from '../base.js';
 import { getLabelTypeById } from '../utils.js';
 
 class Source extends BaseSource {
@@ -48,9 +48,9 @@ class Source extends BaseSource {
     return 'Wrapped Native Assets';
   }
 
-  async fetch(): Promise<LabelMap> {
+  async fetch(): Promise<SingleLabelMap> {
     const type = getLabelTypeById('wrapped');
-    const labels: LabelMap = {
+    const labels: SingleLabelMap = {
       [ETHEREUM]: {
         '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': {
           value: 'Wrapped Ether',

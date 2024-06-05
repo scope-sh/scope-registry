@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { Label, LabelMap } from '@/labels/base.js';
+import type { Label, SingleLabelMap } from '@/labels/base.js';
 import {
   ETHEREUM,
   OPTIMISM,
@@ -46,7 +47,7 @@ import {
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
-import { getLabelTypeById, initLabelMap } from '../utils.js';
+import { getLabelTypeById, initSingleLabelMap } from '../utils.js';
 
 const githubToken = process.env.GITHUB_TOKEN as string;
 
@@ -73,12 +74,13 @@ class Source extends BaseSource {
     return 'Trustwallet';
   }
 
-  async fetch(): Promise<LabelMap> {
-    const labels = initLabelMap();
+  async fetch(): Promise<SingleLabelMap> {
+    const labels = initSingleLabelMap();
     for (const chainId of CHAINS) {
       const assets = await this.#getAssets(chainId);
       const chainMetadata = await getErc20Metadata(chainId, assets);
-      for (const address in chainMetadata) {
+      for (const addressString in chainMetadata) {
+        const address = addressString as Address;
         const addressMetadata = chainMetadata[address];
         if (!addressMetadata) {
           continue;

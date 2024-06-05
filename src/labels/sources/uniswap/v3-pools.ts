@@ -3,11 +3,16 @@ import type { Address, Hex } from 'viem';
 
 import uniswapV3FactoryAbi from '@/abi/uniswapV3Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainLabelMap, LabelMap } from '@/labels/base.js';
+import type {
+  ChainLabelMap,
+  ChainSingleLabelMap,
+  LabelMap,
+  SingleLabelMap,
+} from '@/labels/base.js';
 import {
   getLabelNamespaceByValue,
   getLabelTypeById,
-  initLabelMap,
+  initSingleLabelMap,
 } from '@/labels/utils.js';
 import {
   CHAINS,
@@ -29,9 +34,9 @@ import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 interface Pool {
-  address: string;
-  token0: string;
-  token1: string;
+  address: Address;
+  token0: Address;
+  token1: Address;
   fee: number;
 }
 
@@ -42,8 +47,8 @@ class Source extends BaseSource {
     return 'Uniswap V3 Pools';
   }
 
-  async fetch(previousLabels: LabelMap): Promise<LabelMap> {
-    const labels = initLabelMap();
+  async fetch(previousLabels: LabelMap): Promise<SingleLabelMap> {
+    const labels = initSingleLabelMap();
     for (const chain of CHAINS) {
       const chainPreviousLabels = previousLabels[chain];
       const chainLabels = await this.fetchChain(chain, chainPreviousLabels);
@@ -56,7 +61,7 @@ class Source extends BaseSource {
   private async fetchChain(
     chain: ChainId,
     previousLabels: ChainLabelMap,
-  ): Promise<ChainLabelMap> {
+  ): Promise<ChainSingleLabelMap> {
     const address = this.getFactoryAddress(chain);
     if (!address) {
       return {};
@@ -81,9 +86,9 @@ class Source extends BaseSource {
         throw new Error('Invalid event name');
       }
       return {
-        address: decodedEvent.args.pool.toLowerCase(),
-        token0: decodedEvent.args.token0.toLowerCase(),
-        token1: decodedEvent.args.token1.toLowerCase(),
+        address: decodedEvent.args.pool.toLowerCase() as Address,
+        token0: decodedEvent.args.token0.toLowerCase() as Address,
+        token1: decodedEvent.args.token1.toLowerCase() as Address,
         fee: decodedEvent.args.fee / 1000000,
       };
     });
@@ -138,18 +143,23 @@ class Source extends BaseSource {
 }
 
 function getPoolLabel(pool: Pool, previousLabels: ChainLabelMap): string {
-  const token0Label = previousLabels[pool.token0];
-  const token1Label = previousLabels[pool.token1];
-  if (!token0Label || !token1Label) {
+  const token0Labels = previousLabels[pool.token0];
+  const token1Labels = previousLabels[pool.token1];
+  if (!token0Labels || !token1Labels) {
     return 'Pool';
   }
+  const token0Label = token0Labels.find(
+    (label) => label.type && ['wrapped', 'erc20'].includes(label.type.id),
+  );
+  const token1Label = token1Labels.find(
+    (label) => label.type && ['wrapped', 'erc20'].includes(label.type.id),
+  );
+
   if (
-    !token0Label.type ||
-    !token1Label.type ||
+    !token0Label ||
+    !token1Label ||
     !token0Label.metadata ||
-    !token1Label.metadata ||
-    !['wrapped', 'erc20'].includes(token0Label.type.id) ||
-    !['wrapped', 'erc20'].includes(token1Label.type.id)
+    !token1Label.metadata
   ) {
     return 'Pool';
   }

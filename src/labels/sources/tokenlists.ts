@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Address } from 'viem';
 
 import {
   CHAINS,
@@ -45,8 +46,8 @@ import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
 import { Source as BaseSource } from '../base.js';
-import type { Label, LabelMap } from '../base.js';
-import { getLabelTypeById, initLabelMap } from '../utils.js';
+import type { Label, SingleLabelMap } from '../base.js';
+import { getLabelTypeById, initSingleLabelMap } from '../utils.js';
 
 interface TokenList {
   name: string;
@@ -91,8 +92,8 @@ class Source extends BaseSource {
     return 'Tokenlists';
   }
 
-  async fetch(): Promise<LabelMap> {
-    const labels = initLabelMap();
+  async fetch(): Promise<SingleLabelMap> {
+    const labels = initSingleLabelMap();
     const lists: TokenList[] = [];
     for (const listUrl of listUrls) {
       const list = await this.#getList(listUrl);
@@ -192,7 +193,7 @@ class Source extends BaseSource {
             symbol: asset.symbol,
           },
         };
-        labels[chainId][asset.address.toLowerCase()] = label;
+        labels[chainId][asset.address.toLowerCase() as Address] = label;
       }
     }
     return labels;
