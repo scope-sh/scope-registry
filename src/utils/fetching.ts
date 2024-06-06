@@ -150,12 +150,16 @@ class EventReadable extends Readable {
       const eventString = JSON.stringify(event);
       const buffer = Buffer.from(eventString, 'utf-8');
       this.push(buffer);
-      this.index += 1;
 
-      if (this.index === this.events.length - 1) {
+      if (this.index < this.events.length - 1) {
+        const buffer = Buffer.from(',', 'utf-8');
+        this.push(buffer);
+      } else {
         const buffer = Buffer.from(']', 'utf-8');
         this.push(buffer);
       }
+
+      this.index += 1;
     } else {
       // No more data to push, signal the end of the stream
       this.push(null);
