@@ -213,10 +213,7 @@ async function getEvents(
     const { events: pageEvents, nextBlock } = useBinary
       ? await getBinaryEventsPaginated(client, address, topic0, fromBlock)
       : await getEventsPaginated(url, address, topic0, fromBlock);
-    const filteredEvents = predicate
-      ? pageEvents.filter(predicate)
-      : pageEvents;
-    events = events.concat(filteredEvents);
+    events = events.concat(pageEvents);
     fromBlock = nextBlock;
   }
   // Write new events to the cache in chunks
@@ -242,8 +239,9 @@ async function getEvents(
     lastBlock: latestBlock,
   };
   await putObject(metadata, JSON.stringify(newMetadata));
-  // Return all events
-  return events;
+  // Filter events if needed
+  const filteredEvents = predicate ? events.filter(predicate) : events;
+  return filteredEvents;
 }
 
 async function getBinaryEventsPaginated(
