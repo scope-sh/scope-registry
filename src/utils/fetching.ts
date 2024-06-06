@@ -1,3 +1,5 @@
+import { Readable } from 'node:stream';
+
 import {
   HypersyncClient,
   Query as HypersyncQuery,
@@ -22,7 +24,7 @@ import {
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
-import { getObject, putObject } from './storage.js';
+import { getObject, putObject, putReadableObject } from './storage.js';
 
 // Bun doesn't support brotli yet
 axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
@@ -125,6 +127,40 @@ interface QueryLog {
   topic1: Hex;
   topic2: Hex;
   topic3: null;
+}
+
+class EventReadable extends Readable {
+  events: Event[];
+  index: number;
+
+  constructor(events: Event[]) {
+    super();
+    this.events = events;
+    this.index = 0;
+  }
+
+  override _read(): void {
+    if (this.index < this.events.length) {
+      if (this.index === 0) {
+        const buffer = Buffer.from('[', 'utf-8');
+        this.push(buffer);
+      }
+
+      const event = this.events[this.index];
+      const eventString = JSON.stringify(event);
+      const buffer = Buffer.from(eventString, 'utf-8');
+      this.push(buffer);
+      this.index += 1;
+
+      if (this.index === this.events.length - 1) {
+        const buffer = Buffer.from(']', 'utf-8');
+        this.push(buffer);
+      }
+    } else {
+      // No more data to push, signal the end of the stream
+      this.push(null);
+    }
+  }
 }
 
 function getClient(chain: ChainId): PublicClient | null {
@@ -239,6 +275,8 @@ async function getEvents(
     lastBlock: latestBlock,
   };
   await putObject(metadata, JSON.stringify(newMetadata));
+  const readable = new EventReadable(events);
+  await putReadableObject(metadata, readable);
   // Filter events if needed
   const filteredEvents = predicate ? events.filter(predicate) : events;
   return filteredEvents;

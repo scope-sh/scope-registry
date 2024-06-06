@@ -46,4 +46,8 @@ async function putObject(key: string, body: string): Promise<void> {
   await minioClient.putObject(bucket, key, body);
 }
 
-export { getObject, putObject };
+async function putReadableObject(key: string, stream: Readable): Promise<void> {
+  await minioClient.putObject(bucket, key, stream);
+}
+
+export { getObject, putObject, putReadableObject };
