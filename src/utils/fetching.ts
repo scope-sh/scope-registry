@@ -266,7 +266,8 @@ async function getEvents(
       continue;
     }
     const cacheKey = `${cachePrefix}/${i}.json`;
-    await putObject(cacheKey, JSON.stringify(chunkEvents));
+    const readable = new EventReadable(chunkEvents);
+    await putReadableObject(cacheKey, readable);
   }
   // Update cache metadata
   const metadata = `${cachePrefix}/metadata.json`;
@@ -275,8 +276,6 @@ async function getEvents(
     lastBlock: latestBlock,
   };
   await putObject(metadata, JSON.stringify(newMetadata));
-  const readable = new EventReadable(events);
-  await putReadableObject(metadata, readable);
   // Filter events if needed
   const filteredEvents = predicate ? events.filter(predicate) : events;
   return filteredEvents;
