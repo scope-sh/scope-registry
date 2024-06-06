@@ -16,7 +16,7 @@ import BiconomyV2Source from './biconomy/v2.js';
 import BloctoSource from './blocto/index.js';
 import CandideSource from './candide/index.js';
 import CircleSource from './circle/index.js';
-import CoinbaseSmartWalletV1Accounts from './coinbase/smart-wallet-v1-accounts.js';
+// import CoinbaseSmartWalletV1Accounts from './coinbase/smart-wallet-v1-accounts.js';
 import CoinbaseSmartWalletV1 from './coinbase/smart-wallet-v1.js';
 import DaimoV1AccountSource from './daimo/v1-accounts.js';
 import DaimoV1Source from './daimo/v1.js';
@@ -26,9 +26,9 @@ import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
 import FunV1Source from './fun/v1.js';
-import LightV0_1AccountSource from './light/v0_1-accounts.js';
+// import LightV0_1AccountSource from './light/v0_1-accounts.js';
 import LightV0_1Source from './light/v0_1.js';
-import LightV0_2AccountSource from './light/v0_2-accounts.js';
+// import LightV0_2AccountSource from './light/v0_2-accounts.js';
 import LightV0_2Source from './light/v0_2.js';
 import NaniSource from './nani/index.js';
 import OpenseaSeaportSource from './opensea/seaport.js';
@@ -122,15 +122,15 @@ const sources: Source[] = [
   new CandideSource(),
   new CircleSource(),
   new CoinbaseSmartWalletV1(),
-  new CoinbaseSmartWalletV1Accounts(),
+  // new CoinbaseSmartWalletV1Accounts(),
   new DaimoV1AccountSource(),
   new DaimoV1Source(),
   new EtherspotSource(),
   new FunV1AccountSource(),
   new FunV1Source(),
-  new LightV0_1AccountSource(),
+  // new LightV0_1AccountSource(),
   new LightV0_1Source(),
-  new LightV0_2AccountSource(),
+  // new LightV0_2AccountSource(),
   new LightV0_2Source(),
   new NaniSource(),
   new ParticleSource(),
