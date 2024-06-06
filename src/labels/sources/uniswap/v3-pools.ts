@@ -3,19 +3,9 @@ import type { Address, Hex } from 'viem';
 
 import uniswapV3FactoryAbi from '@/abi/uniswapV3Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type {
-  ChainLabelMap,
-  ChainSingleLabelMap,
-  LabelMap,
-  SingleLabelMap,
-} from '@/labels/base.js';
+import type { ChainLabelMap, ChainSingleLabelMap } from '@/labels/base.js';
+import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
 import {
-  getLabelNamespaceByValue,
-  getLabelTypeById,
-  initSingleLabelMap,
-} from '@/labels/utils.js';
-import {
-  CHAINS,
   ETHEREUM,
   OPTIMISM,
   BNB,
@@ -47,18 +37,7 @@ class Source extends BaseSource {
     return 'Uniswap V3 Pools';
   }
 
-  async fetch(previousLabels: LabelMap): Promise<SingleLabelMap> {
-    const labels = initSingleLabelMap();
-    for (const chain of CHAINS) {
-      const chainPreviousLabels = previousLabels[chain];
-      const chainLabels = await this.fetchChain(chain, chainPreviousLabels);
-      labels[chain] = chainLabels;
-    }
-
-    return labels;
-  }
-
-  private async fetchChain(
+  async fetch(
     chain: ChainId,
     previousLabels: ChainLabelMap,
   ): Promise<ChainSingleLabelMap> {

@@ -52,7 +52,10 @@ interface Label {
 
 abstract class Source {
   abstract getName(): string;
-  abstract fetch(previousLabels: LabelMap): Promise<SingleLabelMap>;
+  abstract fetch(
+    chain: ChainId,
+    previousLabels: ChainLabelMap,
+  ): Promise<ChainSingleLabelMap>;
 }
 
 export { Source };

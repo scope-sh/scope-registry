@@ -1,19 +1,18 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { getDeployed } from '@/utils/fetching.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
+import { ChainId } from '../index.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'ZeroDev Kernel V3 Modules';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0x8104e3ad430ea6d354d013a6789fdfc71e671c43': 'ECDSA Validator',
       '0x6a6f069e2a08c2468e7724ab3250cdbfba14d4ff': 'ECDSA Signer',
@@ -28,11 +27,12 @@ class Source extends BaseSource {
       '0xe884c2868cc82c16177ec73a93f7d9e6f3a5dc6e': 'Recovery Action',
       '0xb230f0a1c7c95fa11001647383c8c7a8f316b900': 'Only EntryPoint Hook',
     };
-    for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, labels);
-      addresses[chain] = chainAddresses;
-    }
-    return toLabelMap(addresses, 'ZeroDev Kernel V3', 'erc7579-module');
+    const chainAddresses = await getDeployed(chain, labels);
+    return toChainLabelMap(
+      chainAddresses,
+      'ZeroDev Kernel V3',
+      'erc7579-module',
+    );
   }
 }
 

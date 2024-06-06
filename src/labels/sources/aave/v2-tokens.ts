@@ -6,18 +6,11 @@ import type {
   ChainLabelMap,
   ChainSingleLabelMap,
   Label,
-  LabelMap,
-  SingleLabelMap,
 } from '@/labels/base.js';
-import {
-  getLabelNamespaceByValue,
-  getLabelTypeById,
-  initSingleLabelMap,
-} from '@/labels/utils.js';
+import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
 import {
   AVALANCHE,
   AVALANCHE_FUJI,
-  CHAINS,
   ETHEREUM,
   POLYGON,
 } from '@/utils/chains.js';
@@ -38,18 +31,7 @@ class Source extends BaseSource {
     return 'Aave V2 Tokens';
   }
 
-  async fetch(previousLabels: LabelMap): Promise<SingleLabelMap> {
-    const labels: SingleLabelMap = initSingleLabelMap();
-    for (const chain of CHAINS) {
-      const chainPreviousLabels = previousLabels[chain];
-      const chainLabels = await this.fetchChain(chain, chainPreviousLabels);
-      labels[chain] = chainLabels;
-    }
-
-    return labels;
-  }
-
-  private async fetchChain(
+  async fetch(
     chain: ChainId,
     previousLabels: ChainLabelMap,
   ): Promise<ChainSingleLabelMap> {

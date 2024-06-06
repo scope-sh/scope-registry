@@ -3,13 +3,8 @@ import type { Address, Hex } from 'viem';
 
 import biconomyV2FactoryAbi from '@/abi/biconomyV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap, SingleLabelMap } from '@/labels/base.js';
-import {
-  getLabelNamespaceByValue,
-  getLabelTypeById,
-  initSingleLabelMap,
-} from '@/labels/utils.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
@@ -26,18 +21,13 @@ class Source extends BaseSource {
     return 'Biconomy V2 Accounts';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const labels = initSingleLabelMap();
-    for (const chain of CHAINS) {
-      const creations = await this.fetchCreations(chain);
-      const creationsWithoutIndex =
-        await this.fetchCreationsWithoutIndex(chain);
-      labels[chain] = {
-        ...creations,
-        ...creationsWithoutIndex,
-      };
-    }
-
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+    const creations = await this.fetchCreations(chain);
+    const creationsWithoutIndex = await this.fetchCreationsWithoutIndex(chain);
+    const labels = {
+      ...creations,
+      ...creationsWithoutIndex,
+    };
     return labels;
   }
 

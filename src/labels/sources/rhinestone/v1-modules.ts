@@ -1,19 +1,18 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'Rhinestone V1 Modules';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0xbf2137a23f439ca5aa4360cc6970d70b24d07ea2': 'Ownable Validator',
       '0x1c936be884ce91ecfbdd10c7898c22b473eab81a': 'Webauthn Validator',
@@ -31,11 +30,8 @@ class Source extends BaseSource {
       '0xab614e4a5398bb2a2a0bf73f9c913ec7ff47d81f': 'Deadman Switch',
       '0x6d561a8aee519807b7bf1313d59fd6d41372ed7f': 'Hook Multiplexer',
     };
-    for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, labels);
-      addresses[chain] = chainAddresses;
-    }
-    return toLabelMap(addresses, 'Rhinestone V1', 'erc7579-module');
+    const chainAddresses = await getDeployed(chain, labels);
+    return toChainLabelMap(chainAddresses, 'Rhinestone V1', 'erc7579-module');
   }
 }
 

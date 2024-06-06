@@ -1,15 +1,14 @@
 import 'dotenv/config';
 
 import { fetch as fetchLabels } from '@/labels/sources/index.js';
-import type { ChainId } from '@/utils/chains.js';
+import { CHAINS } from '@/utils/chains.js';
 import { putObject } from '@/utils/storage.js';
 
-const labels = await fetchLabels();
-for (const chainIdString in labels) {
-  const chainId = parseInt(chainIdString) as ChainId;
+for (const chain of CHAINS) {
+  const labels = await fetchLabels(chain);
   // Metadata is only used to generate the labels, remove it
   const labelsNoMetadata = Object.fromEntries(
-    Object.entries(labels[chainId]).map(([key, value]) => {
+    Object.entries(labels).map(([key, value]) => {
       return [
         key,
         value.map((value) => {
@@ -23,5 +22,5 @@ for (const chainIdString in labels) {
     }),
   );
   const string = JSON.stringify(labelsNoMetadata, null, 2);
-  await putObject(`labels/${chainId}.json`, string);
+  await putObject(`labels/${chain}.json`, string);
 }

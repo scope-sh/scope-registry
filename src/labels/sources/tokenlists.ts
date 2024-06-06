@@ -1,53 +1,12 @@
 import axios from 'axios';
 import { Address } from 'viem';
 
-import {
-  CHAINS,
-  ETHEREUM,
-  OPTIMISM,
-  BNB,
-  BNB_TESTNET,
-  GNOSIS_CHAIN,
-  POLYGON,
-  FANTOM,
-  ZKSYNC,
-  KLAYTN_BAOBAB,
-  METIS,
-  POLYGON_ZKEVM,
-  MOONBEAM,
-  MOONRIVER,
-  FANTOM_TESTNET,
-  CANTO,
-  KLAYTN,
-  BASE,
-  GNOSIS_CHIADO,
-  ARBITRUM,
-  ARBITRUM_NOVA,
-  CELO,
-  AVALANCHE_FUJI,
-  AVALANCHE,
-  LINEA_SEPOLIA,
-  LINEA,
-  POLYGON_AMOY,
-  BASE_SEPOLIA,
-  ARBITRUM_SEPOLIA,
-  SCROLL_SEPOLIA,
-  SCROLL,
-  ZORA,
-  SEPOLIA,
-  OPTIMISM_SEPOLIA,
-  ZORA_SEPOLIA,
-  AURORA,
-  BLAST,
-  BLAST_SEPOLIA,
-  HARMONY_SHARD_0,
-} from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
 import { Source as BaseSource } from '../base.js';
-import type { Label, SingleLabelMap } from '../base.js';
-import { getLabelTypeById, initSingleLabelMap } from '../utils.js';
+import type { ChainSingleLabelMap, Label } from '../base.js';
+import { getLabelTypeById } from '../utils.js';
 
 interface TokenList {
   name: string;
@@ -92,8 +51,8 @@ class Source extends BaseSource {
     return 'Tokenlists';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const labels = initSingleLabelMap();
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+    const labels = {} as ChainSingleLabelMap;
     const lists: TokenList[] = [];
     for (const listUrl of listUrls) {
       const list = await this.#getList(listUrl);
@@ -102,99 +61,54 @@ class Source extends BaseSource {
       }
       lists.push(list);
     }
-    const assets: Record<ChainId, Record<string, MetadataWithCount>> = {
-      [ETHEREUM]: {},
-      [OPTIMISM]: {},
-      [BNB]: {},
-      [BNB_TESTNET]: {},
-      [GNOSIS_CHAIN]: {},
-      [POLYGON]: {},
-      [FANTOM]: {},
-      [ZKSYNC]: {},
-      [KLAYTN_BAOBAB]: {},
-      [METIS]: {},
-      [POLYGON_ZKEVM]: {},
-      [MOONBEAM]: {},
-      [MOONRIVER]: {},
-      [FANTOM_TESTNET]: {},
-      [CANTO]: {},
-      [KLAYTN]: {},
-      [BASE]: {},
-      [GNOSIS_CHIADO]: {},
-      [ARBITRUM]: {},
-      [ARBITRUM_NOVA]: {},
-      [CELO]: {},
-      [AVALANCHE_FUJI]: {},
-      [AVALANCHE]: {},
-      [LINEA_SEPOLIA]: {},
-      [LINEA]: {},
-      [POLYGON_AMOY]: {},
-      [BASE_SEPOLIA]: {},
-      [ARBITRUM_SEPOLIA]: {},
-      [SCROLL_SEPOLIA]: {},
-      [SCROLL]: {},
-      [ZORA]: {},
-      [SEPOLIA]: {},
-      [OPTIMISM_SEPOLIA]: {},
-      [ZORA_SEPOLIA]: {},
-      [AURORA]: {},
-      [BLAST]: {},
-      [BLAST_SEPOLIA]: {},
-      [HARMONY_SHARD_0]: {},
-    };
-    for (const chainId of CHAINS) {
-      const chainAssets = assets[chainId];
-      if (!chainAssets) {
-        continue;
-      }
-      for (const list of lists) {
-        const tokens = list.tokens.filter((token) => token.chainId === chainId);
-        for (const token of tokens) {
-          const address = token.address.toLowerCase();
-          if (!chainAssets[address]) {
-            chainAssets[address] = {
-              count: 0,
-              address,
-              name: token.name,
-              symbol: token.symbol,
-            };
-          }
-          const asset = chainAssets[address];
-          if (!asset) {
-            continue;
-          }
-          asset.count++;
+    const assets: Record<Address, MetadataWithCount> = {};
+    for (const list of lists) {
+      const tokens = list.tokens.filter((token) => token.chainId === chain);
+      for (const token of tokens) {
+        const address = token.address.toLowerCase() as Address;
+        if (!assets[address]) {
+          assets[address] = {
+            count: 0,
+            address,
+            name: token.name,
+            symbol: token.symbol,
+          };
         }
+        const asset = assets[address];
+        if (!asset) {
+          continue;
+        }
+        asset.count++;
       }
-      const chainTokenlistAssets = Object.values(chainAssets);
-      chainTokenlistAssets.sort((a, b) =>
-        a.count === b.count ? a.name.localeCompare(b.name) : b.count - a.count,
-      );
-      const chainTokenlistAssetAddresses = chainTokenlistAssets.map(
-        (asset) => asset.address,
-      );
-      const chainMetadata = await getErc20Metadata(
-        chainId,
-        chainTokenlistAssetAddresses,
-      );
-      const chainLabelAssets = chainTokenlistAssets.map((asset) => {
-        const { address, name, symbol } = asset;
-        return {
-          address,
-          name: chainMetadata[address]?.name || name,
-          symbol: chainMetadata[address]?.symbol || symbol,
-        };
-      });
-      for (const asset of chainLabelAssets) {
-        const label: Label = {
-          value: asset.name,
-          type: getLabelTypeById('erc20'),
-          metadata: {
-            symbol: asset.symbol,
-          },
-        };
-        labels[chainId][asset.address.toLowerCase() as Address] = label;
-      }
+    }
+    const chainTokenlistAssets = Object.values(assets);
+    chainTokenlistAssets.sort((a, b) =>
+      a.count === b.count ? a.name.localeCompare(b.name) : b.count - a.count,
+    );
+    const chainTokenlistAssetAddresses = chainTokenlistAssets.map(
+      (asset) => asset.address,
+    );
+    const chainMetadata = await getErc20Metadata(
+      chain,
+      chainTokenlistAssetAddresses,
+    );
+    const labelAssets = chainTokenlistAssets.map((asset) => {
+      const { address, name, symbol } = asset;
+      return {
+        address,
+        name: chainMetadata[address]?.name || name,
+        symbol: chainMetadata[address]?.symbol || symbol,
+      };
+    });
+    for (const asset of labelAssets) {
+      const label: Label = {
+        value: asset.name,
+        type: getLabelTypeById('erc20'),
+        metadata: {
+          symbol: asset.symbol,
+        },
+      };
+      labels[asset.address.toLowerCase() as Address] = label;
     }
     return labels;
   }

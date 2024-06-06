@@ -1,27 +1,23 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'Nani';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0x00000000000009b4ab3f1bc2b029bd7513fbd8ed': 'Paymaster',
     };
-    for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, labels);
-      addresses[chain] = chainAddresses;
-    }
-    return toLabelMap(addresses, 'Nani');
+    const chainAddresses = await getDeployed(chain, labels);
+    return toChainLabelMap(chainAddresses, 'Nani');
   }
 }
 

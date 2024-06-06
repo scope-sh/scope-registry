@@ -1,27 +1,22 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'ZeroDev Infra';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(): Promise<ChainSingleLabelMap> {
     const bundlers: Address[] = ['0x3cfeb8b4b35bd5093990798b30a8610c80809bd8'];
-    for (const chain of CHAINS) {
-      const chainAddresses: Record<Address, string> = {};
-      for (const bundler of bundlers) {
-        chainAddresses[bundler] = 'Bundler';
-      }
-      addresses[chain] = chainAddresses;
+    const chainAddresses: Record<Address, string> = {};
+    for (const bundler of bundlers) {
+      chainAddresses[bundler] = 'Bundler';
     }
-    return toLabelMap(addresses, 'ZeroDev');
+    return toChainLabelMap(chainAddresses, 'ZeroDev');
   }
 }
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { Label, SingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, Label } from '@/labels/base.js';
 import {
   ETHEREUM,
   OPTIMISM,
@@ -40,14 +40,13 @@ import {
   ZORA_SEPOLIA,
   AURORA,
   HARMONY_SHARD_0,
-  CHAINS,
   BLAST,
   BLAST_SEPOLIA,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
-import { getLabelTypeById, initSingleLabelMap } from '../utils.js';
+import { getLabelTypeById } from '../utils.js';
 
 const githubToken = process.env.GITHUB_TOKEN as string;
 
@@ -74,30 +73,28 @@ class Source extends BaseSource {
     return 'Trustwallet';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const labels = initSingleLabelMap();
-    for (const chainId of CHAINS) {
-      const assets = await this.#getAssets(chainId);
-      const chainMetadata = await getErc20Metadata(chainId, assets);
-      for (const addressString in chainMetadata) {
-        const address = addressString as Address;
-        const addressMetadata = chainMetadata[address];
-        if (!addressMetadata) {
-          continue;
-        }
-        const { name, symbol } = addressMetadata;
-        if (!name || !symbol) {
-          continue;
-        }
-        const label: Label = {
-          value: name,
-          type: getLabelTypeById('erc20'),
-          metadata: {
-            symbol,
-          },
-        };
-        labels[chainId][address] = label;
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+    const labels = {} as ChainSingleLabelMap;
+    const assets = await this.#getAssets(chain);
+    const chainMetadata = await getErc20Metadata(chain, assets);
+    for (const addressString in chainMetadata) {
+      const address = addressString as Address;
+      const addressMetadata = chainMetadata[address];
+      if (!addressMetadata) {
+        continue;
       }
+      const { name, symbol } = addressMetadata;
+      if (!name || !symbol) {
+        continue;
+      }
+      const label: Label = {
+        value: name,
+        type: getLabelTypeById('erc20'),
+        metadata: {
+          symbol,
+        },
+      };
+      labels[address] = label;
     }
     return labels;
   }

@@ -1,7 +1,10 @@
-import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
+import { Address } from 'viem';
 
-import { toLabelMap } from '../../utils.js';
+import { Source as BaseSource } from '@/labels/base.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+
+import { toChainLabelMap } from '../../utils.js';
+import { ChainId } from '../index.js';
 
 import addresses from './v1.3.0-addresses.json';
 
@@ -11,8 +14,11 @@ class Source extends BaseSource {
     return 'Safe V1.3.0';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    return toLabelMap(addresses, 'Safe');
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+    const chainAddresses = (
+      addresses as Partial<Record<ChainId, Record<Address, string>>>
+    )[chain];
+    return toChainLabelMap(chainAddresses, 'Safe');
   }
 }
 

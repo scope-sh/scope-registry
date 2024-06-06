@@ -1,19 +1,18 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'OpenSea Seaport';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const contracts: Record<Address, string> = {
       '0x00000000006c3852cbef3e08e8df289169ede581': '1.1',
       '0x00000000000006c7676171937c444f6bde3d6282': '1.2',
@@ -25,11 +24,8 @@ class Source extends BaseSource {
       '0x00e5f120f500006757e984f1ded400fc00370000': 'Validator',
       '0x0000f00000627d293ab4dfb40082001724db006f': 'Navigator',
     };
-    for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, contracts);
-      addresses[chain] = chainAddresses;
-    }
-    return toLabelMap(addresses, 'OpenSea Seaport');
+    const chainAddresses = await getDeployed(chain, contracts);
+    return toChainLabelMap(chainAddresses, 'OpenSea Seaport');
   }
 }
 

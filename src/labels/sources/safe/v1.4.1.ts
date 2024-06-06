@@ -1,19 +1,18 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'Safe V1.4.1';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0xfd0732dc9e303f09fcef3a7388ad10a83459ec99':
         'V1.4.1 Compatibility Fallback Handler',
@@ -28,11 +27,8 @@ class Source extends BaseSource {
       '0x3d4ba2e0884aa488718476ca2fb8efc291a46199':
         'V1.4.1 Simulate Tx Accessor',
     };
-    for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, labels);
-      addresses[chain] = chainAddresses;
-    }
-    return toLabelMap(addresses, 'Safe');
+    const chainAddresses = await getDeployed(chain, labels);
+    return toChainLabelMap(chainAddresses, 'Safe');
   }
 }
 

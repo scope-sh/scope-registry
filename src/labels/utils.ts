@@ -1,32 +1,11 @@
 import { Address } from 'viem';
 
-import { CHAINS } from '@/utils/chains.js';
-import type { ChainId } from '@/utils/chains.js';
-
 import type {
   ChainSingleLabelMap,
   LabelId,
   LabelNamespace,
   LabelType,
-  LabelMap,
-  SingleLabelMap,
 } from './base.js';
-
-function initSingleLabelMap(): SingleLabelMap {
-  const map = {} as SingleLabelMap;
-  for (const chain of CHAINS) {
-    map[chain] = {};
-  }
-  return map;
-}
-
-function initLabelMap(): LabelMap {
-  const map = {} as LabelMap;
-  for (const chain of CHAINS) {
-    map[chain] = {};
-  }
-  return map;
-}
 
 function getLabelNamespaceByValue(value: string): LabelNamespace {
   return {
@@ -100,42 +79,30 @@ function sluggify(value: string): string {
     .replace(/^-|-$/g, '');
 }
 
-function toLabelMap(
-  addresses: Record<string, Record<string, string>>,
+function toChainLabelMap(
+  addresses?: Record<Address, string>,
   namespaceValue?: string,
   id?: LabelId,
-): SingleLabelMap {
-  const labelMap = {} as SingleLabelMap;
-  for (const chainString in addresses) {
-    const chainLabelMap: ChainSingleLabelMap = {};
-    const chain = parseInt(chainString) as ChainId;
-    const chainAddresses = addresses[chainString];
-    if (!chainAddresses) {
+): ChainSingleLabelMap {
+  const map: ChainSingleLabelMap = {};
+  if (!addresses) {
+    return map;
+  }
+  for (const addressString in addresses) {
+    const address = addressString as Address;
+    const value = addresses[address];
+    if (!value) {
       continue;
     }
-    for (const addressString in chainAddresses) {
-      const address = addressString as Address;
-      const value = chainAddresses[address];
-      if (!value) {
-        continue;
-      }
-      chainLabelMap[address] = {
-        value,
-        type: id ? getLabelTypeById(id) : undefined,
-        namespace: namespaceValue
-          ? getLabelNamespaceByValue(namespaceValue)
-          : undefined,
-      };
-    }
-    labelMap[chain] = chainLabelMap;
+    map[address] = {
+      value,
+      type: id ? getLabelTypeById(id) : undefined,
+      namespace: namespaceValue
+        ? getLabelNamespaceByValue(namespaceValue)
+        : undefined,
+    };
   }
-  return labelMap;
+  return map;
 }
 
-export {
-  getLabelNamespaceByValue,
-  getLabelTypeById,
-  initSingleLabelMap,
-  initLabelMap,
-  toLabelMap,
-};
+export { getLabelNamespaceByValue, getLabelTypeById, toChainLabelMap };

@@ -3,13 +3,8 @@ import type { Address, Hex } from 'viem';
 
 import kernelV2FactoryAbi from '@/abi/kernelV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap, SingleLabelMap } from '@/labels/base.js';
-import {
-  getLabelNamespaceByValue,
-  getLabelTypeById,
-  initSingleLabelMap,
-} from '@/labels/utils.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
@@ -21,17 +16,7 @@ class Source extends BaseSource {
     return 'ZeroDev Kernel V2 Accounts';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const labels = initSingleLabelMap();
-    for (const chain of CHAINS) {
-      const chainLabels = await this.fetchChain(chain);
-      labels[chain] = chainLabels;
-    }
-
-    return labels;
-  }
-
-  private async fetchChain(chain: ChainId): Promise<ChainSingleLabelMap> {
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const topics = encodeEventTopics({
       abi: kernelV2FactoryAbi,
       eventName: 'Deployed',

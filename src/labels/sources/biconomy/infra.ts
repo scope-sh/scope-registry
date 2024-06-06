@@ -1,19 +1,18 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'Biconomy Infra';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0x000031dd6d9d3a133e663660b959162870d755d4': 'Paymaster',
       '0x00000f79b7faf42eebadba19acc07cd08af44789': 'Paymaster',
@@ -1821,14 +1820,11 @@ class Source extends BaseSource {
       '0xff84fe5116a6fffbeca8bb31e96f05976413e5f0',
       '0xfff9c92679546752faf791b96459303f7170ab01',
     ];
-    for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, labels);
-      for (const bundler of bundlers) {
-        chainAddresses[bundler] = 'Bundler';
-      }
-      addresses[chain] = chainAddresses;
+    const chainAddresses = await getDeployed(chain, labels);
+    for (const bundler of bundlers) {
+      chainAddresses[bundler] = 'Bundler';
     }
-    return toLabelMap(addresses, 'Biconomy');
+    return toChainLabelMap(chainAddresses, 'Biconomy');
   }
 }
 

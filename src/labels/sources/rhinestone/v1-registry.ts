@@ -3,13 +3,8 @@ import type { Address, Hex } from 'viem';
 
 import rhinestoneV1RegistryAbi from '@/abi/rhinestoneV1Registry.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap, SingleLabelMap } from '@/labels/base.js';
-import {
-  getLabelNamespaceByValue,
-  getLabelTypeById,
-  initSingleLabelMap,
-} from '@/labels/utils.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
+import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
@@ -27,17 +22,7 @@ class Source extends BaseSource {
     return 'Rhinestone V1 Registry';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const labels = initSingleLabelMap();
-    for (const chain of CHAINS) {
-      const chainLabels = await this.fetchLabels(chain);
-      labels[chain] = chainLabels;
-    }
-
-    return labels;
-  }
-
-  private async fetchLabels(chain: ChainId): Promise<ChainSingleLabelMap> {
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const topics = encodeEventTopics({
       abi: rhinestoneV1RegistryAbi,
       eventName: 'ModuleRegistration',

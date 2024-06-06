@@ -1,19 +1,18 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { SingleLabelMap } from '@/labels/base.js';
-import { CHAINS } from '@/utils/chains.js';
+import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { getDeployed } from '@/utils/fetching.js';
 
-import { toLabelMap } from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
+import { ChainId } from '../index.js';
 
 class Source extends BaseSource {
   override getName(): string {
     return 'Daimo V1';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
-    const addresses: Record<string, Record<Address, string>> = {};
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0x4adca7cb84497c9c4c308063d2f219c7b6041183': 'Notes V1',
       '0xfbdb4f1172aadaddfe4233550e9cd5e4aa1dae00': 'Notes V1',
@@ -28,11 +27,8 @@ class Source extends BaseSource {
       '0x652d07389ac2ead07222e7965d30ec0b2700b388': 'Account Implementation',
       '0x8abd51a785160481db9e638ee71a3f4ec4b996d8': 'Daimo Op Inflator',
     };
-    for (const chain of CHAINS) {
-      const chainAddresses = await getDeployed(chain, labels);
-      addresses[chain] = chainAddresses;
-    }
-    return toLabelMap(addresses, 'Daimo');
+    const chainAddresses = await getDeployed(chain, labels);
+    return toChainLabelMap(chainAddresses, 'Daimo');
   }
 }
 

@@ -3,8 +3,7 @@ import { Address } from 'viem';
 import type { ChainId } from '@/utils/chains.js';
 
 import { Source } from '../base.js';
-import type { Label, LabelType, LabelMap } from '../base.js';
-import { initLabelMap } from '../utils.js';
+import type { Label, LabelType, LabelMap, ChainLabelMap } from '../base.js';
 
 import AaveV2TokenSource from './aave/v2-tokens.js';
 import AaveV2Source from './aave/v2.js';
@@ -63,36 +62,32 @@ import ZeroDevKernelV3AccountSource from './zerodev/kernel-v3-accounts.js';
 import ZeroDevKernelV3ModuleSource from './zerodev/kernel-v3-modules.js';
 import ZeroDevKernelV3Source from './zerodev/kernel-v3.js';
 
-async function fetch(): Promise<LabelMap> {
-  const allLabels = initLabelMap();
+async function fetch(chain: ChainId): Promise<ChainLabelMap> {
+  const labels: ChainLabelMap = {};
   for (const source of sources) {
     console.info(`Fetching from the "${source.getName()}" source…`);
-    const sourceLabels = await source.fetch(allLabels);
-    for (const chain in sourceLabels) {
-      const chainId = parseInt(chain) as ChainId;
-      if (!allLabels[chainId]) {
+    const sourceLabels = await source.fetch(chain, labels);
+    for (const addressString in sourceLabels) {
+      const address = addressString as Address;
+      const sourceLabel = sourceLabels[address];
+      if (!sourceLabel) {
         continue;
       }
-      const chainLabels = sourceLabels[chainId];
-      for (const addressString in chainLabels) {
-        const address = addressString as Address;
-        const sourceLabel = sourceLabels[chainId][address];
-        if (!sourceLabel) {
-          continue;
-        }
-        const addressLabels = allLabels[chainId][address] || [];
-        // Append a label if there is no label with the same type
-        const hasSameType = addressLabels.some(
-          (label) => sourceLabel.type && label.type === sourceLabel.type,
-        );
-        if (!hasSameType) {
-          addressLabels.push(sourceLabel);
-        }
-        allLabels[chainId][address] = addressLabels;
+      const addressLabels = labels[address] || [];
+      // Append a label if there is no label with the same type
+      const hasSameType = addressLabels.some(
+        (label) =>
+          label.type &&
+          sourceLabel.type &&
+          label.type.id === sourceLabel.type.id,
+      );
+      if (!hasSameType) {
+        addressLabels.push(sourceLabel);
       }
+      labels[address] = addressLabels;
     }
   }
-  return allLabels;
+  return labels;
 }
 
 const sources: Source[] = [

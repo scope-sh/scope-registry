@@ -37,10 +37,11 @@ import {
   BLAST,
   BLAST_SEPOLIA,
   HARMONY_SHARD_0,
+  ChainId,
 } from '@/utils/chains.js';
 
 import { Source as BaseSource } from '../base.js';
-import type { SingleLabelMap } from '../base.js';
+import type { ChainSingleLabelMap, SingleLabelMap } from '../base.js';
 import { getLabelTypeById } from '../utils.js';
 
 class Source extends BaseSource {
@@ -48,7 +49,7 @@ class Source extends BaseSource {
     return 'Wrapped Native Assets';
   }
 
-  async fetch(): Promise<SingleLabelMap> {
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const type = getLabelTypeById('wrapped');
     const labels: SingleLabelMap = {
       [ETHEREUM]: {
@@ -275,7 +276,7 @@ class Source extends BaseSource {
       },
     };
 
-    return labels;
+    return labels[chain] || {};
   }
 }
 
