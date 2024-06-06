@@ -36,7 +36,7 @@ class Source extends BaseSource {
       if (decodedEvent.eventName !== 'Deployed') {
         throw new Error('Invalid event name');
       }
-      return decodedEvent.args.proxy;
+      return decodedEvent.args.proxy.toLowerCase() as Address;
     });
 
     return Object.fromEntries(
