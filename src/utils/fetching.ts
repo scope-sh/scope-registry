@@ -4,11 +4,9 @@ import {
   HypersyncClient,
   Query as HypersyncQuery,
 } from '@envio-dev/hypersync-client';
+import { JSONParser } from '@streamparser/json';
 import axios from 'axios';
 import { AlchemyChain, alchemy } from 'evm-providers';
-import { chain } from 'stream-chain';
-import { parser } from 'stream-json';
-import { streamValues } from 'stream-json/streamers/StreamValues';
 import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
 
 import erc20Abi from '@/abi/erc20.js';
@@ -293,11 +291,19 @@ async function getEvents(
 }
 
 async function getCache(readable: Readable): Promise<Event[]> {
-  const pipeline = chain([readable, parser(), streamValues()]);
   const events: Event[] = [];
+  const parser = new JSONParser({ keepStack: false });
+
   return new Promise((resolve) => {
-    pipeline.on('data', (data: Event) => events.push(data));
-    pipeline.on('end', () => resolve(events));
+    parser.onValue = ({ value }): void => {
+      if (value instanceof Object && !(value instanceof Array)) {
+        events.push(value as unknown as Event);
+      }
+    };
+    parser.onEnd = (): void => {
+      resolve(events);
+    };
+    readable.on('data', (chunk) => parser.write(chunk));
   });
 }
 
