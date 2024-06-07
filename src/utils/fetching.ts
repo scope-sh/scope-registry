@@ -1,10 +1,7 @@
-import { Readable } from 'node:stream';
-
 import {
   HypersyncClient,
   Query as HypersyncQuery,
 } from '@envio-dev/hypersync-client';
-import { JSONParser } from '@streamparser/json';
 import axios from 'axios';
 import { AlchemyChain, alchemy } from 'evm-providers';
 import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
@@ -25,12 +22,8 @@ import {
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
-import {
-  getObject,
-  getReadableObject,
-  putObject,
-  putReadableObject,
-} from './storage.js';
+import { ENTRYPOINT_0_6_0_ADDRESS } from './entryPoint.js';
+import { getObject, putObject } from './storage.js';
 
 // Bun doesn't support brotli yet
 axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
@@ -135,44 +128,6 @@ interface QueryLog {
   topic3: null;
 }
 
-class EventReadable extends Readable {
-  events: Event[];
-  index: number;
-
-  constructor(events: Event[]) {
-    super();
-    this.events = events;
-    this.index = 0;
-  }
-
-  override _read(): void {
-    if (this.index < this.events.length) {
-      if (this.index === 0) {
-        const buffer = Buffer.from('[', 'utf-8');
-        this.push(buffer);
-      }
-
-      const event = this.events[this.index];
-      const eventString = JSON.stringify(event);
-      const buffer = Buffer.from(eventString, 'utf-8');
-      this.push(buffer);
-
-      if (this.index < this.events.length - 1) {
-        const buffer = Buffer.from(',', 'utf-8');
-        this.push(buffer);
-      } else {
-        const buffer = Buffer.from(']', 'utf-8');
-        this.push(buffer);
-      }
-
-      this.index += 1;
-    } else {
-      // No more data to push, signal the end of the stream
-      this.push(null);
-    }
-  }
-}
-
 function getClient(chain: ChainId): PublicClient | null {
   const chainData = getChainData(chain);
   if (!chainData) {
@@ -225,9 +180,17 @@ async function getEvents(
   function shouldUseBinary(): boolean {
     return true;
   }
-
   // Note: changing this would require cleaning up the cache
-  const CHUNK_BLOCKS = 1_000_000;
+  function getChunkSize(chain: ChainId, address: Address): number {
+    // Polygon EntryPoint event list is too large for a standard chunk size
+    // In the future, we might extend this to other cases
+    if (chain === POLYGON && address === ENTRYPOINT_0_6_0_ADDRESS) {
+      return 100_000;
+    }
+    return 1_000_000;
+  }
+
+  const chunkSize = getChunkSize(chain, address);
   const url = getHypersyncUrl(chain);
   if (!url) {
     return [];
@@ -243,11 +206,12 @@ async function getEvents(
   const cacheMetadata = await getEventCacheMetadata(cachePrefix);
   // Read cache chunks one-by-one
   let events: Event[] = [];
-  const chunks = Math.ceil(cacheMetadata.lastBlock / CHUNK_BLOCKS);
+  const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
   for (let i = 0; i < chunks; i++) {
     const cacheKey = `${cachePrefix}/${i}.json`;
-    const cacheReadable = await getReadableObject(cacheKey);
-    const cache = cacheReadable === null ? null : await getCache(cacheReadable);
+    const cacheString = await getObject(cacheKey);
+    const cache =
+      cacheString === null ? null : (JSON.parse(cacheString) as Event[]);
     if (cache) {
       events = events.concat(cache);
     }
@@ -262,11 +226,11 @@ async function getEvents(
     fromBlock = nextBlock;
   }
   // Write new events to the cache in chunks
-  const firstChunk = Math.floor(cacheMetadata.lastBlock / CHUNK_BLOCKS);
-  const lastChunk = Math.floor(latestBlock / CHUNK_BLOCKS);
+  const firstChunk = Math.floor(cacheMetadata.lastBlock / chunkSize);
+  const lastChunk = Math.floor(latestBlock / chunkSize);
   for (let i = firstChunk; i <= lastChunk; i++) {
-    const chunkStart = i * CHUNK_BLOCKS;
-    const chunkEnd = chunkStart + CHUNK_BLOCKS;
+    const chunkStart = i * chunkSize;
+    const chunkEnd = chunkStart + chunkSize;
     const chunkEvents = events.filter(
       (event) =>
         event.blockNumber >= chunkStart && event.blockNumber < chunkEnd,
@@ -275,8 +239,7 @@ async function getEvents(
       continue;
     }
     const cacheKey = `${cachePrefix}/${i}.json`;
-    const readable = new EventReadable(chunkEvents);
-    await putReadableObject(cacheKey, readable);
+    await putObject(cacheKey, JSON.stringify(chunkEvents));
   }
   // Update cache metadata
   const metadata = `${cachePrefix}/metadata.json`;
@@ -288,23 +251,6 @@ async function getEvents(
   // Filter events if needed
   const filteredEvents = predicate ? events.filter(predicate) : events;
   return filteredEvents;
-}
-
-async function getCache(readable: Readable): Promise<Event[]> {
-  const events: Event[] = [];
-  const parser = new JSONParser({ keepStack: false });
-
-  return new Promise((resolve) => {
-    parser.onValue = ({ value }): void => {
-      if (value instanceof Object && !(value instanceof Array)) {
-        events.push(value as unknown as Event);
-      }
-    };
-    parser.onEnd = (): void => {
-      resolve(events);
-    };
-    readable.on('data', (chunk) => parser.write(chunk));
-  });
 }
 
 async function getBinaryEventsPaginated(
