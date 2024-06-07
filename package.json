@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@envio-dev/hypersync-client": "^0.1.9",
-    "@streamparser/json": "^0.0.21",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "evm-providers": "^0.4.3",
