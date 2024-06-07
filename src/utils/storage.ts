@@ -42,6 +42,15 @@ async function getObject(key: string): Promise<string | null> {
   }
 }
 
+async function getReadableObject(key: string): Promise<Readable | null> {
+  try {
+    const file = await minioClient.getObject(bucket, key);
+    return file;
+  } catch (e) {
+    return null;
+  }
+}
+
 async function putObject(key: string, body: string): Promise<void> {
   await minioClient.putObject(bucket, key, body);
 }
@@ -50,4 +59,4 @@ async function putReadableObject(key: string, stream: Readable): Promise<void> {
   await minioClient.putObject(bucket, key, stream);
 }
 
-export { getObject, putObject, putReadableObject };
+export { getObject, getReadableObject, putObject, putReadableObject };

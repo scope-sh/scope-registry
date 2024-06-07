@@ -6,6 +6,9 @@ import {
 } from '@envio-dev/hypersync-client';
 import axios from 'axios';
 import { AlchemyChain, alchemy } from 'evm-providers';
+import { chain } from 'stream-chain';
+import { parser } from 'stream-json';
+import { streamValues } from 'stream-json/streamers/StreamValues';
 import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
 
 import erc20Abi from '@/abi/erc20.js';
@@ -24,7 +27,12 @@ import {
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
-import { getObject, putObject, putReadableObject } from './storage.js';
+import {
+  getObject,
+  getReadableObject,
+  putObject,
+  putReadableObject,
+} from './storage.js';
 
 // Bun doesn't support brotli yet
 axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
@@ -240,9 +248,8 @@ async function getEvents(
   const chunks = Math.ceil(cacheMetadata.lastBlock / CHUNK_BLOCKS);
   for (let i = 0; i < chunks; i++) {
     const cacheKey = `${cachePrefix}/${i}.json`;
-    const cacheString = await getObject(cacheKey);
-    const cache =
-      cacheString === null ? null : (JSON.parse(cacheString) as Event[]);
+    const cacheReadable = await getReadableObject(cacheKey);
+    const cache = cacheReadable === null ? null : await getCache(cacheReadable);
     if (cache) {
       events = events.concat(cache);
     }
@@ -283,6 +290,15 @@ async function getEvents(
   // Filter events if needed
   const filteredEvents = predicate ? events.filter(predicate) : events;
   return filteredEvents;
+}
+
+async function getCache(readable: Readable): Promise<Event[]> {
+  const pipeline = chain([readable, parser(), streamValues()]);
+  const events: Event[] = [];
+  return new Promise((resolve) => {
+    pipeline.on('data', (data: Event) => events.push(data));
+    pipeline.on('end', () => resolve(events));
+  });
 }
 
 async function getBinaryEventsPaginated(
