@@ -5,14 +5,8 @@ import type {
   LabelId,
   LabelNamespace,
   LabelType,
+  NamespaceId,
 } from './base.js';
-
-function getLabelNamespaceByValue(value: string): LabelNamespace {
-  return {
-    id: sluggify(value),
-    value,
-  };
-}
 
 function getLabelTypeById(value: LabelId): LabelType {
   function getLabelTypeValue(value: LabelId): string {
@@ -72,16 +66,87 @@ function getLabelTypeById(value: LabelId): LabelType {
   };
 }
 
-function sluggify(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+function getNamespaceById(id: NamespaceId): LabelNamespace {
+  function getNamespaceValue(id: NamespaceId): string {
+    switch (id) {
+      case 'aave-v2':
+        return 'Aave V2';
+      case 'aave-v3':
+        return 'Aave V3';
+      case 'alchemy':
+        return 'Alchemy';
+      case 'biconomy':
+        return 'Biconomy ';
+      case 'biconomy-v2':
+        return 'Biconomy V2';
+      case 'blocto':
+        return 'Blocto ';
+      case 'candide':
+        return 'Candide';
+      case 'circle':
+        return 'Circle ';
+      case 'coinbase-smart-wallet':
+        return 'Coinbase Smart Wallet';
+      case 'daimo':
+        return 'Daimo';
+      case 'ethereum-attestation-service':
+        return 'Ethereum Attestation Service ';
+      case 'ens':
+        return 'ENS';
+      case 'etherspot':
+        return 'Etherspot';
+      case 'farcaster':
+        return 'Farcaster';
+      case 'fun':
+        return 'Fun';
+      case 'light-v0.1':
+        return 'Light V0.1 ';
+      case 'light-v0.2':
+        return 'Light V0.2 ';
+      case 'nani':
+        return 'Nani ';
+      case 'opensea-seaport':
+        return 'OpenSea Seaport';
+      case 'parifi-v1':
+        return 'Parifi V1';
+      case 'particle':
+        return 'Particle ';
+      case 'patch-wallet':
+        return 'Patch Wallet ';
+      case 'pimlico':
+        return 'Pimlico';
+      case 'rhinestone-v1':
+        return 'Rhinestone V1';
+      case 'safe-core':
+        return 'Safe Core';
+      case 'safe':
+        return 'Safe ';
+      case 'stackup':
+        return 'Stackup';
+      case 'unipass':
+        return 'UniPass';
+      case 'uniswap-v2':
+        return 'Uniswap V2 ';
+      case 'uniswap-v3':
+        return 'Uniswap V3 ';
+      case 'zerodev':
+        return 'ZeroDev';
+      case 'zerodev-kernel-v2':
+        return 'ZeroDev Kernel V2';
+      case 'zerodev-kernel-v3':
+        return 'ZeroDev Kernel V3';
+    }
+  }
+
+  return {
+    id,
+    value: getNamespaceValue(id),
+  };
 }
 
 function toChainLabelMap(
   addresses?: Record<Address, string>,
-  namespaceValue?: string,
+  namespaceId?: NamespaceId,
   id?: LabelId,
 ): ChainSingleLabelMap {
   const map: ChainSingleLabelMap = {};
@@ -97,12 +162,10 @@ function toChainLabelMap(
     map[address] = {
       value,
       type: id ? getLabelTypeById(id) : undefined,
-      namespace: namespaceValue
-        ? getLabelNamespaceByValue(namespaceValue)
-        : undefined,
+      namespace: namespaceId ? getNamespaceById(namespaceId) : undefined,
     };
   }
   return map;
 }
 
-export { getLabelNamespaceByValue, getLabelTypeById, toChainLabelMap };
+export { getLabelTypeById, getNamespaceById, toChainLabelMap };

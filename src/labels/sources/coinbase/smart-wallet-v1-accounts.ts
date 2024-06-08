@@ -4,7 +4,7 @@ import type { Address, Hex } from 'viem';
 import entryPointV0_6_0Abi from '@/abi/entryPointV0_6_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import {
   ENTRYPOINT_0_6_0_ADDRESS,
@@ -13,7 +13,6 @@ import {
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x0ba5ed0c6aa8c49038f819e587e2633c4a9f428a';
-const NAMESPACE = 'Coinbase Smart Wallet';
 
 class Source extends BaseSource {
   getName(): string {
@@ -55,7 +54,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('coinbase-smart-wallet-v1-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('coinbase-smart-wallet'),
           },
         ];
       }),

@@ -18,7 +18,7 @@ class Source extends BaseSource {
       '0x8fb3cfdf2082c2be7d3205d361067748ea1abf63': 'Implementation',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'Light V0.1');
+    return toChainLabelMap(chainAddresses, 'light-v0.1');
   }
 }
 

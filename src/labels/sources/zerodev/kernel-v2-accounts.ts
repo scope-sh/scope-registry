@@ -4,12 +4,11 @@ import type { Address, Hex } from 'viem';
 import kernelV2FactoryAbi from '@/abi/kernelV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3';
-const NAMESPACE = 'ZeroDev Kernel V2';
 
 class Source extends BaseSource {
   getName(): string {
@@ -46,7 +45,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('kernel-v2-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('zerodev-kernel-v2'),
           },
         ];
       }),

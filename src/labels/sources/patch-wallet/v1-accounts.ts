@@ -4,12 +4,11 @@ import type { Address, Hex } from 'viem';
 import patchWalletV1FactoryAbi from '@/abi/patchWalletV1Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x33ddf684dcc6937ffe59d8405aa80c41fb518c5c';
-const NAMESPACE = 'Patch Wallet';
 
 class Source extends BaseSource {
   getName(): string {
@@ -46,7 +45,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('patch-wallet-v1-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('patch-wallet'),
           },
         ];
       }),

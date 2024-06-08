@@ -34,7 +34,7 @@ class Source extends BaseSource {
     for (const bundler of bundlers) {
       chainAddresses[bundler] = 'Bundler';
     }
-    return toChainLabelMap(chainAddresses, 'Etherspot');
+    return toChainLabelMap(chainAddresses, 'etherspot');
   }
 }
 

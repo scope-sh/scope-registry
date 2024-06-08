@@ -7,7 +7,7 @@ import type {
   ChainSingleLabelMap,
   Label,
 } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import {
   ARBITRUM,
   AVALANCHE_FUJI,
@@ -36,8 +36,6 @@ interface Token {
   sToken: Address;
   vToken: Address;
 }
-
-const NAMESPACE = 'Aave V3';
 
 class Source extends BaseSource {
   getName(): string {
@@ -88,7 +86,7 @@ class Source extends BaseSource {
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
                 type: getLabelTypeById('aave-v3-atoken'),
-                namespace: getLabelNamespaceByValue(NAMESPACE),
+                namespace: getNamespaceById('aave-v3'),
               },
             ],
             [
@@ -96,7 +94,7 @@ class Source extends BaseSource {
               {
                 value: getTokenLabel(token, 's-token', previousLabels),
                 type: getLabelTypeById('aave-v3-stoken'),
-                namespace: getLabelNamespaceByValue(NAMESPACE),
+                namespace: getNamespaceById('aave-v3'),
               },
             ],
             [
@@ -104,7 +102,7 @@ class Source extends BaseSource {
               {
                 value: getTokenLabel(token, 'v-token', previousLabels),
                 type: getLabelTypeById('aave-v3-vtoken'),
-                namespace: getLabelNamespaceByValue(NAMESPACE),
+                namespace: getNamespaceById('aave-v3'),
               },
             ],
           ];

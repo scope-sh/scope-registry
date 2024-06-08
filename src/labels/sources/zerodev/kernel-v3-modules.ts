@@ -30,7 +30,7 @@ class Source extends BaseSource {
     const chainAddresses = await getDeployed(chain, labels);
     return toChainLabelMap(
       chainAddresses,
-      'ZeroDev Kernel V3',
+      'zerodev-kernel-v3',
       'erc7579-module',
     );
   }

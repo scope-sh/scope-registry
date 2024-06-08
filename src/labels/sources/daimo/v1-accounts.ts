@@ -4,12 +4,11 @@ import type { Address, Hex } from 'viem';
 import daimoV1NameRegistryAbi from '@/abi/daimoV1NameRegistry.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const REGISTRY_ADDRESS = '0x4430a644b215a187a3daa5b114fa3f3d9debc17d';
-const NAMESPACE = 'Daimo';
 
 class Source extends BaseSource {
   getName(): string {
@@ -46,7 +45,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('daimo-v1-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('daimo'),
           },
         ];
       }),

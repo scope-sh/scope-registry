@@ -25,7 +25,7 @@ class Source extends BaseSource {
       '0x0000f00000627d293ab4dfb40082001724db006f': 'Navigator',
     };
     const chainAddresses = await getDeployed(chain, contracts);
-    return toChainLabelMap(chainAddresses, 'OpenSea Seaport');
+    return toChainLabelMap(chainAddresses, 'opensea-seaport');
   }
 }
 

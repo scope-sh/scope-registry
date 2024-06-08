@@ -7,7 +7,7 @@ import type {
   ChainSingleLabelMap,
   Label,
 } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import {
   AVALANCHE,
   AVALANCHE_FUJI,
@@ -23,8 +23,6 @@ interface Token {
   stableDebtToken: Address;
   variableDebtToken: Address;
 }
-
-const NAMESPACE = 'Aave V2';
 
 class Source extends BaseSource {
   getName(): string {
@@ -77,7 +75,7 @@ class Source extends BaseSource {
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
                 type: getLabelTypeById('aave-v2-atoken'),
-                namespace: getLabelNamespaceByValue(NAMESPACE),
+                namespace: getNamespaceById('aave-v2'),
               },
             ],
             [
@@ -89,7 +87,7 @@ class Source extends BaseSource {
                   previousLabels,
                 ),
                 type: getLabelTypeById('aave-v2-stable-debt-token'),
-                namespace: getLabelNamespaceByValue(NAMESPACE),
+                namespace: getNamespaceById('aave-v2'),
               },
             ],
             [
@@ -101,7 +99,7 @@ class Source extends BaseSource {
                   previousLabels,
                 ),
                 type: getLabelTypeById('aave-v2-variable-debt-token'),
-                namespace: getLabelNamespaceByValue(NAMESPACE),
+                namespace: getNamespaceById('aave-v2'),
               },
             ],
           ];

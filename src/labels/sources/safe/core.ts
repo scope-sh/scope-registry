@@ -20,7 +20,7 @@ class Source extends BaseSource {
       '0xbd3b9ba8162b23bcb0373e265cb07127e5b1b644': '7579 Launchpad',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'Safe Core');
+    return toChainLabelMap(chainAddresses, 'safe-core');
   }
 }
 

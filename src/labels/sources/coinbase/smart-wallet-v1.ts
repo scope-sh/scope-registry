@@ -19,7 +19,7 @@ class Source extends BaseSource {
       '0x011a61c07dbf256a68256b1cb51a5e246730ab92': 'Magic Spend',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'Coinbase Smart Wallet');
+    return toChainLabelMap(chainAddresses, 'coinbase-smart-wallet');
   }
 }
 

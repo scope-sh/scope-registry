@@ -4,7 +4,7 @@ import type { Address, Hex } from 'viem';
 import entryPointV0_6_0Abi from '@/abi/entryPointV0_6_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import {
   ENTRYPOINT_0_6_0_ADDRESS,
@@ -13,7 +13,6 @@ import {
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_0_2_ADDRESS = '0x00000000001269b052c004ffb71b47ab22c898b0';
-const NAMESPACE = 'Light V0.2';
 
 class Source extends BaseSource {
   getName(): string {
@@ -55,7 +54,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('light-v0.2-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('light-v0.2'),
           },
         ];
       }),

@@ -28,7 +28,7 @@ class Source extends BaseSource {
       '0x8abd51a785160481db9e638ee71a3f4ec4b996d8': 'Daimo Op Inflator',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'Daimo');
+    return toChainLabelMap(chainAddresses, 'daimo');
   }
 }
 

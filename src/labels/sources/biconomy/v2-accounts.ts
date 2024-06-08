@@ -4,7 +4,7 @@ import type { Address, Hex } from 'viem';
 import biconomyV2FactoryAbi from '@/abi/biconomyV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
@@ -14,7 +14,6 @@ interface Account {
 }
 
 const FACTORY_ADDRESS = '0x000000a56aaca3e9a4c479ea6b6cd0dbcb6634f5';
-const NAMESPACE = 'Biconomy V2';
 
 class Source extends BaseSource {
   getName(): string {
@@ -65,7 +64,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('biconomy-v2-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('biconomy-v2'),
           },
         ];
       }),
@@ -108,7 +107,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('biconomy-v2-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('biconomy-v2'),
           },
         ];
       }),

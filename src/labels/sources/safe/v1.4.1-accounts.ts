@@ -4,7 +4,7 @@ import type { Address, Hex } from 'viem';
 import safeV141FactoryAbi from '@/abi/safeV141Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
@@ -13,7 +13,6 @@ const VALID_SINGLETONS = [
   '0x29fcb43b46531bca003ddc8fcb67ffe91900c762',
 ];
 const FACTORY_ADDRESS = '0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67';
-const NAMESPACE = 'Safe';
 
 class Source extends BaseSource {
   getName(): string {
@@ -56,7 +55,7 @@ class Source extends BaseSource {
           {
             value: 'V1.4.1 Account',
             type: getLabelTypeById('safe-v1.4.1-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('safe'),
           },
         ];
       }),

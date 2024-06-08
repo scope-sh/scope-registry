@@ -4,7 +4,7 @@ import type { Address, Hex } from 'viem';
 import entryPointV0_7_0Abi from '@/abi/entryPointV0_7_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import {
   ENTRYPOINT_0_7_0_ADDRESS,
@@ -14,7 +14,6 @@ import { getEvents } from '@/utils/fetching.js';
 
 const KERNEL_V3_FACTORY_STAKER_ADDRESS =
   '0xd703aae79538628d27099b8c4f621be4ccd142d5';
-const NAMESPACE = 'ZeroDev Kernel V3';
 
 class Source extends BaseSource {
   getName(): string {
@@ -56,7 +55,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('kernel-v3-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('zerodev-kernel-v3'),
           },
         ];
       }),

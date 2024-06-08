@@ -4,12 +4,11 @@ import type { Address, Hex } from 'viem';
 import funV1FactoryAbi from '@/abi/funV1Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelNamespaceByValue, getLabelTypeById } from '@/labels/utils.js';
+import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEvents } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0xbada4b9bdc249b788a6247e4a8a9158ed0b3e504';
-const NAMESPACE = 'Fun';
 
 class Source extends BaseSource {
   getName(): string {
@@ -46,7 +45,7 @@ class Source extends BaseSource {
           {
             value: 'Account',
             type: getLabelTypeById('fun-v1-account'),
-            namespace: getLabelNamespaceByValue(NAMESPACE),
+            namespace: getNamespaceById('fun'),
           },
         ];
       }),
