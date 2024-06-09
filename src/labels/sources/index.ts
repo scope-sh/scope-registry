@@ -32,7 +32,6 @@ import LightV0_2AccountSource from './light/v0_2-accounts.js';
 import LightV0_2Source from './light/v0_2.js';
 import NaniSource from './nani/index.js';
 import OpenseaSeaportSource from './opensea/seaport.js';
-import OverwriteSource from './overwrite.js';
 import ParifiV1Source from './parifi/v1.js';
 import ParticleSource from './particle/index.js';
 import PatchWalletV1AccountSource from './patch-wallet/v1-accounts.js';
@@ -152,8 +151,6 @@ const sources: Source[] = [
   new ZeroDevKernelV3AccountSource(),
   new ZeroDevKernelV3ModuleSource(),
   new ZeroDevKernelV3Source(),
-  // Overwrite
-  new OverwriteSource(),
 ];
 
 export { fetch };
