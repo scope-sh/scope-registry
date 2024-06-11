@@ -20,6 +20,7 @@ import CoinbaseSmartWalletV1Accounts from './coinbase/smart-wallet-v1-accounts.j
 import CoinbaseSmartWalletV1 from './coinbase/smart-wallet-v1.js';
 import DaimoV1AccountSource from './daimo/v1-accounts.js';
 import DaimoV1Source from './daimo/v1.js';
+import DefillamaTokensSource from './defillama/tokens.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import EnsNamesSource from './ens/names.js';
@@ -97,6 +98,7 @@ const sources: Source[] = [
   new TokenlistSource(),
   new TrustwalletSource(),
   new WrappedSource(),
+  new DefillamaTokensSource(),
   // DeFi
   new AaveV2Source(),
   new AaveV2TokenSource(),
