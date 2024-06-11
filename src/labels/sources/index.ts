@@ -22,6 +22,7 @@ import DaimoV1AccountSource from './daimo/v1-accounts.js';
 import DaimoV1Source from './daimo/v1.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
+import EnsNamesSource from './ens/names.js';
 import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
@@ -111,6 +112,7 @@ const sources: Source[] = [
   // Social
   new EasSource(),
   new EnsSource(),
+  new EnsNamesSource(),
   new FarcasterSource(),
   // Account Abstraction
   new AlchemySource(),
