@@ -183,8 +183,14 @@ async function getEvents(
   // Note: changing this would require cleaning up the cache
   function getChunkSize(chain: ChainId, address: Address): number {
     // Polygon EntryPoint event list is too large for a standard chunk size
-    // In the future, we might extend this to other cases
     if (chain === POLYGON && address === ENTRYPOINT_0_6_0_ADDRESS) {
+      return 100_000;
+    }
+    // Legacy ENS ETH registrar event list is too large for a standard chunk size
+    if (
+      chain === ETHEREUM &&
+      address === '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5'
+    ) {
       return 100_000;
     }
     return 1_000_000;
