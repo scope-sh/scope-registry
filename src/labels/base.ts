@@ -5,6 +5,8 @@ import type { ChainId } from '../utils/chains.js';
 type LabelId =
   | 'wrapped'
   | 'erc20'
+  | 'erc721'
+  | 'erc1155'
   | 'aave-v2-atoken'
   | 'aave-v2-variable-debt-token'
   | 'aave-v2-stable-debt-token'

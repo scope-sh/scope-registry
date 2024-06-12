@@ -33,6 +33,7 @@ import LightV0_1Source from './light/v0_1.js';
 import LightV0_2AccountSource from './light/v0_2-accounts.js';
 import LightV0_2Source from './light/v0_2.js';
 import NaniSource from './nani/index.js';
+import OpenseaCollectionSource from './opensea/collections.js';
 import OpenseaSeaportSource from './opensea/seaport.js';
 import ParifiV1Source from './parifi/v1.js';
 import ParticleSource from './particle/index.js';
@@ -111,6 +112,7 @@ const sources: Source[] = [
   new UniswapV3Source(),
   // NFT
   new OpenseaSeaportSource(),
+  new OpenseaCollectionSource(),
   // Social
   new EasSource(),
   new EnsSource(),
