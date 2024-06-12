@@ -13,9 +13,8 @@ for (const chain of CHAINS) {
         key,
         value.map((value) => {
           return {
-            type: value.type,
-            value: value.value,
-            namespace: value.namespace,
+            ...value,
+            metadata: undefined,
           };
         }),
       ];
