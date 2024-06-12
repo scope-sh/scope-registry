@@ -161,7 +161,10 @@ class Source extends BaseSource {
         .concat(legacyNameRenewals)
         .concat(nameRegistrations)
         .concat(nameRenewals)
-        .map((name) => [namehash(`${name}.eth`), name]),
+        .map((name) => {
+          const fullName = `${name}.eth`;
+          return [namehash(fullName), fullName];
+        }),
     );
     return map;
   }
