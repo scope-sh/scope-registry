@@ -9,7 +9,7 @@ import {
   ChainSingleLabelMap,
   Label,
 } from '@/labels/base.js';
-import { ETHEREUM, ChainId } from '@/utils/chains';
+import { ChainId, ETHEREUM, SEPOLIA } from '@/utils/chains';
 import { getEvents } from '@/utils/fetching';
 
 const ADDRESS_ETH_REGISTRAR = '0x253553366da8546fc250f225fe3d25d0c782303b';
@@ -36,7 +36,7 @@ class Source extends BaseSource {
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
-    if (chain !== ETHEREUM) {
+    if (chain !== ETHEREUM && chain !== SEPOLIA) {
       return {};
     }
     const labelHashMap = await this.#getLabelHashMap(chain);
