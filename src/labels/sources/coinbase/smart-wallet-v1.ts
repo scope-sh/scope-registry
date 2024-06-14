@@ -17,6 +17,7 @@ class Source extends BaseSource {
       '0x0ba5ed0c6aa8c49038f819e587e2633c4a9f428a': 'Factory',
       '0x000100abaad02f1cfc8bbe32bd5a564817339e72': 'Implementation',
       '0x011a61c07dbf256a68256b1cb51a5e246730ab92': 'Magic Spend',
+      '0xa270ef92c1e11f1c1f95753c2e56801e8125fa83': 'Limiting Paymaster',
     };
     const chainAddresses = await getDeployed(chain, labels);
     return toChainLabelMap(chainAddresses, 'coinbase-smart-wallet');
