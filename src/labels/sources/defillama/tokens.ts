@@ -17,7 +17,7 @@ interface TokenMapValue {
   logoURI2: string | null;
 }
 
-type TokenMap = Record<ChainId, TokenMapValue[]>;
+type TokenMap = Partial<Record<ChainId, TokenMapValue[]>>;
 
 // Source: DefiLlama Swap page
 class Source extends BaseSource {
