@@ -144,31 +144,8 @@ function getClient(chain: ChainId): PublicClient | null {
   });
 }
 
-function getHypersyncUrl(chain: ChainId): string | null {
-  switch (chain) {
-    case ETHEREUM:
-      return 'https://eth.hypersync.xyz';
-    case SEPOLIA:
-      return 'https://sepolia.hypersync.xyz';
-    case OPTIMISM:
-      return 'https://optimism.hypersync.xyz';
-    case OPTIMISM_SEPOLIA:
-      return 'https://optimism-sepolia.hypersync.xyz';
-    case BASE:
-      return 'https://base.hypersync.xyz';
-    case BASE_SEPOLIA:
-      return 'https://base-sepolia.hypersync.xyz';
-    case POLYGON:
-      return 'https://polygon.hypersync.xyz';
-    case POLYGON_AMOY:
-      return 'https://amoy.hypersync.xyz';
-    case ARBITRUM:
-      return 'https://arbitrum.hypersync.xyz';
-    case ARBITRUM_SEPOLIA:
-      return 'https://arbitrum-sepolia.hypersync.xyz';
-    default:
-      return null;
-  }
+function getHypersyncUrl(chain: ChainId): string {
+  return `https://${chain}.hypersync.xyz`;
 }
 
 async function getEvents(
@@ -198,9 +175,6 @@ async function getEvents(
 
   const chunkSize = getChunkSize(chain, address);
   const url = getHypersyncUrl(chain);
-  if (!url) {
-    return [];
-  }
   const client = HypersyncClient.new({ url });
   const useBinary = shouldUseBinary();
   if (!client) {
