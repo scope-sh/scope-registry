@@ -15,6 +15,10 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Wrapped';
       case 'erc20':
         return 'ERC20';
+      case 'erc721':
+        return 'ERC721';
+      case 'erc1155':
+        return 'ERC1155';
       case 'aave-v2-atoken':
         return 'Aave V2 aToken';
       case 'aave-v2-variable-debt-token':
