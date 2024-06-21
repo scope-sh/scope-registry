@@ -336,7 +336,7 @@ async function getEventsPaginated(
   }
   const events = logs.map((log) => {
     const topics = [log.topic0, log.topic1, log.topic2, log.topic3].filter(
-      (topic): topic is Hex => topic !== null,
+      (topic) => topic !== null,
     );
     const data = log.data as Hex;
     const blockNumber = log.block_number;
