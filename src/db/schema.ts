@@ -2,6 +2,7 @@ import { integer, text, sqliteTable } from 'drizzle-orm/sqlite-core';
 
 const labels = sqliteTable('labels', {
   id: integer('id').primaryKey(),
+  chain: integer('chain').notNull(),
   address: text('address').notNull(),
   value: text('value').notNull(),
   typeId: text('typeId'),
@@ -11,6 +12,7 @@ const labels = sqliteTable('labels', {
 
 const logs = sqliteTable('logs', {
   id: integer('id').primaryKey(),
+  chain: integer('chain').notNull(),
   address: text('address').notNull(),
   blockNumber: integer('blockNumber').notNull(),
   logIndex: integer('logIndex').notNull(),
