@@ -7,10 +7,16 @@ on:
 
 jobs:
   deploy:
+    name: Run
     runs-on: ubuntu-latest
-    name: Deploy
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
