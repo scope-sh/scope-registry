@@ -122,6 +122,7 @@ class Source extends BaseSource {
           throw new Error('Unexpected event name');
         }
         return {
+          block: event.blockNumber,
           name: decodedEvent.args.name,
           expires: decodedEvent.args.expires,
         };
@@ -137,6 +138,7 @@ class Source extends BaseSource {
         throw new Error('Unexpected event name');
       }
       return {
+        block: event.blockNumber,
         name: decodedEvent.args.name,
         expires: decodedEvent.args.expires,
       };
@@ -151,6 +153,7 @@ class Source extends BaseSource {
         throw new Error('Unexpected event name');
       }
       return {
+        block: event.blockNumber,
         name: decodedEvent.args.name,
         expires: decodedEvent.args.expires,
       };
@@ -165,6 +168,7 @@ class Source extends BaseSource {
         throw new Error('Unexpected event name');
       }
       return {
+        block: event.blockNumber,
         name: decodedEvent.args.name,
         expires: decodedEvent.args.expires,
       };
@@ -175,6 +179,7 @@ class Source extends BaseSource {
       ...nameRegistrations,
       ...nameRenewals,
     ];
+    registrationList.sort((a, b) => a.block - b.block);
     // Store the most recent registration for each name
     // But preserve the order of name registrations to get the first name for each address
     const names: Record<string, bigint> = {};
