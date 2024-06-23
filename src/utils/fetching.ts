@@ -9,16 +9,10 @@ import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
 import erc20Abi from '@/abi/erc20.js';
 
 import {
-  BASE,
-  BASE_SEPOLIA,
   ETHEREUM,
   OPTIMISM,
-  OPTIMISM_SEPOLIA,
   POLYGON,
-  POLYGON_AMOY,
-  SEPOLIA,
   ARBITRUM,
-  ARBITRUM_SEPOLIA,
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
