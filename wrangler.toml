@@ -1,7 +1,10 @@
 name = "scope-registry"
-main = "src/index.ts"
+main = "src/worker.ts"
 compatibility_date = "2023-07-07"
 node_compat = true
+
+[build.upload]
+type = "module"
 
 [[d1_databases]]
 binding = "DB"
