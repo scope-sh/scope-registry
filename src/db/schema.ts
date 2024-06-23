@@ -9,5 +9,16 @@ const labels = sqliteTable('labels', {
   iconUrl: text('iconUrl'),
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { labels };
+const logs = sqliteTable('logs', {
+  id: integer('id').primaryKey(),
+  address: text('address').notNull(),
+  blockNumber: integer('blockNumber').notNull(),
+  logIndex: integer('logIndex').notNull(),
+  topic0: text('topics'),
+  topic1: text('topics'),
+  topic2: text('topics'),
+  topic3: text('topics'),
+  data: text('data'),
+});
+
+export { labels, logs };
