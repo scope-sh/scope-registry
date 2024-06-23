@@ -15,6 +15,13 @@
       "when": 1719163090591,
       "tag": "0001_wonderful_cerise",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1719163154118,
+      "tag": "0002_boring_dark_beast",
+      "breakpoints": true
     }
   ]
 }
