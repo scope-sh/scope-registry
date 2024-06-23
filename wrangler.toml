@@ -1,6 +1,6 @@
 name = "scope-registry"
 main = "src/index.ts"
-compatibility_date = "2022-11-07"
+compatibility_date = "2023-07-07"
 node_compat = true
 
 [d1_databases]
