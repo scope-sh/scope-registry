@@ -1,0 +1,9 @@
+name = "scope-registry"
+main = "src/index.ts"
+compatibility_date = "2022-11-07"
+node_compat = true
+
+[d1_databases]
+binding = "DB"
+database_name = "scope-labels"
+database_id = "a1421537-18f6-4f34-8533-fbe588d6e0c3"
