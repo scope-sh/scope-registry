@@ -23,4 +23,7 @@ const logs = sqliteTable('logs', {
   data: text('data'),
 });
 
+type Label = typeof labels.$inferInsert;
+
 export { labels, logs };
+export type { Label };
