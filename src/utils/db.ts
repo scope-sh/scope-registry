@@ -87,37 +87,55 @@ async function getLogCache(
   address: Address,
   topic0: Hex,
 ): Promise<Log[]> {
+  const PER_PAGE = 10_000;
+
   const db = getDb();
-  const rows = await db
-    .select({
-      data: logs.data,
-      topic0: logs.topic0,
-      topic1: logs.topic1,
-      topic2: logs.topic2,
-      topic3: logs.topic3,
-      blockNumber: logs.blockNumber,
-      logIndex: logs.logIndex,
-    })
-    .from(logs)
-    .where(
-      and(
-        eq(logs.chain, chain),
-        eq(logs.address, address),
-        eq(logs.topic0, topic0),
-      ),
-    )
-    .orderBy(asc(logs.blockNumber), asc(logs.logIndex))
-    .all();
-  return rows.map((row) => {
-    return {
-      data: row.data as Hex,
-      topics: [row.topic0, row.topic1, row.topic2, row.topic3].filter(
-        (topic) => topic !== null,
-      ) as Hex[],
-      blockNumber: row.blockNumber,
-      logIndex: row.logIndex,
-    };
-  });
+  let page = 0;
+  let cache: Log[] = [];
+  while (cache.length === page * PER_PAGE) {
+    console.log('getLogCache', {
+      chain,
+      address,
+      topic0,
+      page,
+      cacheSize: cache.length,
+    });
+    const rows = await db
+      .select({
+        data: logs.data,
+        topic0: logs.topic0,
+        topic1: logs.topic1,
+        topic2: logs.topic2,
+        topic3: logs.topic3,
+        blockNumber: logs.blockNumber,
+        logIndex: logs.logIndex,
+      })
+      .from(logs)
+      .where(
+        and(
+          eq(logs.chain, chain),
+          eq(logs.address, address),
+          eq(logs.topic0, topic0),
+        ),
+      )
+      .orderBy(asc(logs.blockNumber), asc(logs.logIndex))
+      .limit(PER_PAGE)
+      .offset(page * PER_PAGE)
+      .all();
+    const pageLogs = rows.map((row) => {
+      return {
+        data: row.data as Hex,
+        topics: [row.topic0, row.topic1, row.topic2, row.topic3].filter(
+          (topic) => topic !== null,
+        ) as Hex[],
+        blockNumber: row.blockNumber,
+        logIndex: row.logIndex,
+      };
+    });
+    cache = cache.concat(pageLogs);
+    page++;
+  }
+  return cache;
 }
 
 async function setLogCache(
