@@ -145,9 +145,9 @@ async function setLogCache(
         address,
         topic0,
         data: log.data,
-        topic1: log.topics[0],
-        topic2: log.topics[1],
-        topic3: log.topics[2],
+        topic1: log.topics[1],
+        topic2: log.topics[2],
+        topic3: log.topics[3],
         blockNumber: log.blockNumber,
         logIndex: log.logIndex,
       })
