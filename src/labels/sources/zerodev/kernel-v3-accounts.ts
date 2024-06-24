@@ -10,7 +10,7 @@ import {
   ENTRYPOINT_0_7_0_ADDRESS,
   getEntryPoint0_7_0Predicate,
 } from '@/utils/entryPoint.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 const KERNEL_V3_FACTORY_STAKER_ADDRESS =
   '0xd703aae79538628d27099b8c4f621be4ccd142d5';
@@ -29,23 +29,23 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(
+    const logs = await getLogs(
       chain,
       ENTRYPOINT_0_7_0_ADDRESS,
       topic,
       getEntryPoint0_7_0Predicate(KERNEL_V3_FACTORY_STAKER_ADDRESS),
     );
 
-    const accounts: Address[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const accounts: Address[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: entryPointV0_7_0Abi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'AccountDeployed') {
+      if (decodedLog.eventName !== 'AccountDeployed') {
         throw new Error('Invalid event name');
       }
-      return decodedEvent.args.sender.toLowerCase() as Address;
+      return decodedLog.args.sender.toLowerCase() as Address;
     });
 
     return Object.fromEntries(

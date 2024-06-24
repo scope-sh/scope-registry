@@ -6,7 +6,7 @@ import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 const VALID_SINGLETONS = [
   '0x41675c099f32341bf84bfc5382af534df5c7461a',
@@ -28,20 +28,20 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
 
-    const factoryDeployments = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const factoryDeployments = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: safeV141FactoryAbi,
-        data: event.data as Hex,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data as Hex,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'ProxyCreation') {
+      if (decodedLog.eventName !== 'ProxyCreation') {
         throw new Error('Invalid event name');
       }
       return {
-        proxy: decodedEvent.args.proxy.toLowerCase() as Address,
-        singleton: decodedEvent.args.singleton.toLowerCase() as Address,
+        proxy: decodedLog.args.proxy.toLowerCase() as Address,
+        singleton: decodedLog.args.singleton.toLowerCase() as Address,
       };
     });
     const accounts = factoryDeployments

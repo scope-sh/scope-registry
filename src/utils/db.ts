@@ -210,3 +210,4 @@ export {
   removeLabels,
   setLabel,
 };
+export type { Log };

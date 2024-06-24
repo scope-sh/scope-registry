@@ -11,7 +11,7 @@ import {
   Label,
 } from '@/labels/base.js';
 import { ChainId, ETHEREUM, SEPOLIA } from '@/utils/chains';
-import { getEvents } from '@/utils/fetching';
+import { getLogs } from '@/utils/fetching';
 
 const ADDRESS_ETH_REGISTRAR = '0x253553366da8546fc250f225fe3d25d0c782303b';
 const ADDRESS_PUBLIC_RESOLVER = '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63';
@@ -90,87 +90,85 @@ class Source extends BaseSource {
   }
 
   async #getLabelHashMap(chain: ChainId): Promise<Record<Hex, string>> {
-    const legacyNameRegistrationEvents = await getEvents(
+    const legacyNameRegistrationLogs = await getLogs(
       chain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED_LEGACY,
     );
-    const legacyNameRenewalEvents = await getEvents(
+    const legacyNameRenewalLogs = await getLogs(
       chain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
     );
-    const nameRegistrationEvents = await getEvents(
+    const nameRegistrationLogs = await getLogs(
       chain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED,
     );
-    const nameRenewalEvents = await getEvents(
+    const nameRenewalLogs = await getLogs(
       chain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
     );
 
-    const legacyNameRegistrations = legacyNameRegistrationEvents.map(
-      (event) => {
-        const decodedEvent = decodeEventLog({
-          abi: ensLegacyEthRegistrarControllerAbi,
-          data: event.data,
-          topics: event.topics as [Hex, ...Hex[]],
-        });
-        if (decodedEvent.eventName !== 'NameRegistered') {
-          throw new Error('Unexpected event name');
-        }
-        return {
-          block: event.blockNumber,
-          name: decodedEvent.args.name,
-          expires: decodedEvent.args.expires,
-        };
-      },
-    );
-    const legacyNameRenewals = legacyNameRenewalEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const legacyNameRegistrations = legacyNameRegistrationLogs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: ensLegacyEthRegistrarControllerAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'NameRenewed') {
+      if (decodedLog.eventName !== 'NameRegistered') {
         throw new Error('Unexpected event name');
       }
       return {
-        block: event.blockNumber,
-        name: decodedEvent.args.name,
-        expires: decodedEvent.args.expires,
+        block: log.blockNumber,
+        name: decodedLog.args.name,
+        expires: decodedLog.args.expires,
       };
     });
-    const nameRegistrations = nameRegistrationEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
-        abi: ensEthRegistrarControllerAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+    const legacyNameRenewals = legacyNameRenewalLogs.map((log) => {
+      const decodedLog = decodeEventLog({
+        abi: ensLegacyEthRegistrarControllerAbi,
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'NameRegistered') {
+      if (decodedLog.eventName !== 'NameRenewed') {
         throw new Error('Unexpected event name');
       }
       return {
-        block: event.blockNumber,
-        name: decodedEvent.args.name,
-        expires: decodedEvent.args.expires,
+        block: log.blockNumber,
+        name: decodedLog.args.name,
+        expires: decodedLog.args.expires,
       };
     });
-    const nameRenewals = nameRenewalEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const nameRegistrations = nameRegistrationLogs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: ensEthRegistrarControllerAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'NameRenewed') {
+      if (decodedLog.eventName !== 'NameRegistered') {
         throw new Error('Unexpected event name');
       }
       return {
-        block: event.blockNumber,
-        name: decodedEvent.args.name,
-        expires: decodedEvent.args.expires,
+        block: log.blockNumber,
+        name: decodedLog.args.name,
+        expires: decodedLog.args.expires,
+      };
+    });
+    const nameRenewals = nameRenewalLogs.map((log) => {
+      const decodedLog = decodeEventLog({
+        abi: ensEthRegistrarControllerAbi,
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
+      });
+      if (decodedLog.eventName !== 'NameRenewed') {
+        throw new Error('Unexpected event name');
+      }
+      return {
+        block: log.blockNumber,
+        name: decodedLog.args.name,
+        expires: decodedLog.args.expires,
       };
     });
     const registrationList = [
@@ -203,62 +201,62 @@ class Source extends BaseSource {
   }
 
   async #getReverseClaimMap(chain: ChainId): Promise<Record<Address, string>> {
-    const reverseClaimedEvents = await getEvents(
+    const reverseClaimedLogs = await getLogs(
       chain,
       ADDRESS_REVERSE_REGISTRAR,
       TOPIC_REVERSE_CLAIMED,
     );
-    const reverseClaims = reverseClaimedEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const reverseClaims = reverseClaimedLogs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: ensReverseRegistrarAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'ReverseClaimed') {
+      if (decodedLog.eventName !== 'ReverseClaimed') {
         throw new Error('Unexpected event name');
       }
       return {
-        node: decodedEvent.args.node,
-        address: decodedEvent.args.addr.toLowerCase() as Address,
+        node: decodedLog.args.node,
+        address: decodedLog.args.addr.toLowerCase() as Address,
       };
     });
 
-    const legacyNameChangedEvents = await getEvents(
+    const legacyNameChangedLogs = await getLogs(
       chain,
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
     );
-    const nameChangedEvents = await getEvents(
+    const nameChangedLogs = await getLogs(
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
     );
-    const legacyNameChanges = legacyNameChangedEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const legacyNameChanges = legacyNameChangedLogs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: ensLegacyPublicResolverAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'NameChanged') {
+      if (decodedLog.eventName !== 'NameChanged') {
         throw new Error('Unexpected event name');
       }
       return {
-        node: decodedEvent.args.node,
-        name: decodedEvent.args.name,
+        node: decodedLog.args.node,
+        name: decodedLog.args.name,
       };
     });
-    const nameChanges = nameChangedEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const nameChanges = nameChangedLogs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: ensPublicResolverAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'NameChanged') {
+      if (decodedLog.eventName !== 'NameChanged') {
         throw new Error('Unexpected event name');
       }
       return {
-        node: decodedEvent.args.node,
-        name: decodedEvent.args.name,
+        node: decodedLog.args.node,
+        name: decodedLog.args.name,
       };
     });
     const nameMap = Object.fromEntries(
@@ -277,42 +275,42 @@ class Source extends BaseSource {
 
   async #getAddressMap(chain: ChainId): Promise<Record<Hex, Address>> {
     // Process "AddrChanged" events to get actively set addresses
-    const legacyAddrChangedEvents = await getEvents(
+    const legacyAddrChangedLogs = await getLogs(
       chain,
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_ADDR_CHANGED,
     );
-    const addrChangedEvents = await getEvents(
+    const addrChangedLogs = await getLogs(
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_ADDR_CHANGED,
     );
-    const legacyAddressChanges = legacyAddrChangedEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const legacyAddressChanges = legacyAddrChangedLogs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: ensLegacyPublicResolverAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'AddrChanged') {
+      if (decodedLog.eventName !== 'AddrChanged') {
         throw new Error('Unexpected event name');
       }
       return {
-        node: decodedEvent.args.node,
-        address: decodedEvent.args.a.toLowerCase() as Address,
+        node: decodedLog.args.node,
+        address: decodedLog.args.a.toLowerCase() as Address,
       };
     });
-    const addressChanges = addrChangedEvents.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const addressChanges = addrChangedLogs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: ensPublicResolverAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'AddrChanged') {
+      if (decodedLog.eventName !== 'AddrChanged') {
         throw new Error('Unexpected event name');
       }
       return {
-        node: decodedEvent.args.node,
-        address: decodedEvent.args.a.toLowerCase() as Address,
+        node: decodedLog.args.node,
+        address: decodedLog.args.a.toLowerCase() as Address,
       };
     });
     const map: Record<Hex, Address> = Object.fromEntries(
@@ -325,25 +323,25 @@ class Source extends BaseSource {
 
   async #getAvatarMap(chain: ChainId): Promise<Record<Hex, string>> {
     // Process "TextChanged" events to get avatars
-    const textChangedEvents = await getEvents(
+    const textChangedLogs = await getLogs(
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_TEXT_CHANGED,
     );
-    const textChanges = textChangedEvents
-      .map((event) => {
-        const decodedEvent = decodeEventLog({
+    const textChanges = textChangedLogs
+      .map((log) => {
+        const decodedLog = decodeEventLog({
           abi: ensPublicResolverAbi,
-          data: event.data,
-          topics: event.topics as [Hex, ...Hex[]],
+          data: log.data,
+          topics: log.topics as [Hex, ...Hex[]],
         });
-        if (decodedEvent.eventName !== 'TextChanged') {
+        if (decodedLog.eventName !== 'TextChanged') {
           throw new Error('Unexpected event name');
         }
         return {
-          node: decodedEvent.args.node,
-          key: decodedEvent.args.key,
-          value: decodedEvent.args.value,
+          node: decodedLog.args.node,
+          key: decodedLog.args.key,
+          value: decodedLog.args.value,
         };
       })
       .filter((change) => change.key === 'avatar');

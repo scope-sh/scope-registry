@@ -6,7 +6,7 @@ import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3';
 
@@ -24,18 +24,18 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
 
-    const accounts: Address[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const accounts: Address[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: kernelV2FactoryAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'Deployed') {
+      if (decodedLog.eventName !== 'Deployed') {
         throw new Error('Invalid event name');
       }
-      return decodedEvent.args.proxy.toLowerCase() as Address;
+      return decodedLog.args.proxy.toLowerCase() as Address;
     });
 
     return Object.fromEntries(

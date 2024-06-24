@@ -6,7 +6,7 @@ import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 const REGISTRY_ADDRESS = '0x4430a644b215a187a3daa5b114fa3f3d9debc17d';
 
@@ -24,18 +24,18 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, REGISTRY_ADDRESS, topic);
+    const logs = await getLogs(chain, REGISTRY_ADDRESS, topic);
 
-    const accounts: Address[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const accounts: Address[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: daimoV1NameRegistryAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'Registered') {
+      if (decodedLog.eventName !== 'Registered') {
         throw new Error('Invalid event name');
       }
-      return decodedEvent.args.addr.toLowerCase() as Address;
+      return decodedLog.args.addr.toLowerCase() as Address;
     });
 
     return Object.fromEntries(

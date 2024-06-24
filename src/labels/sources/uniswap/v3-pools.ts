@@ -21,7 +21,7 @@ import {
   SEPOLIA,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 interface Pool {
   address: Address;
@@ -51,22 +51,22 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, address, topic);
+    const logs = await getLogs(chain, address, topic);
 
-    const pools: Pool[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const pools: Pool[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: uniswapV3FactoryAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'PoolCreated') {
+      if (decodedLog.eventName !== 'PoolCreated') {
         throw new Error('Invalid event name');
       }
       return {
-        address: decodedEvent.args.pool.toLowerCase() as Address,
-        token0: decodedEvent.args.token0.toLowerCase() as Address,
-        token1: decodedEvent.args.token1.toLowerCase() as Address,
-        fee: decodedEvent.args.fee / 1000000,
+        address: decodedLog.args.pool.toLowerCase() as Address,
+        token0: decodedLog.args.token0.toLowerCase() as Address,
+        token1: decodedLog.args.token1.toLowerCase() as Address,
+        fee: decodedLog.args.fee / 1000000,
       };
     });
 

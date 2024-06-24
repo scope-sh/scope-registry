@@ -6,7 +6,7 @@ import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 interface Module {
   address: Address;
@@ -30,21 +30,21 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, REGISTRY_ADDRESS, topic);
+    const logs = await getLogs(chain, REGISTRY_ADDRESS, topic);
 
-    const modules: Module[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const modules: Module[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: rhinestoneV1RegistryAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'ModuleRegistration') {
+      if (decodedLog.eventName !== 'ModuleRegistration') {
         throw new Error('Invalid event name');
       }
       return {
-        address: decodedEvent.args.implementation.toLowerCase() as Address,
-        sender: decodedEvent.args.sender.toLowerCase() as Address,
-        resolver: decodedEvent.args.resolver as Hex,
+        address: decodedLog.args.implementation.toLowerCase() as Address,
+        sender: decodedLog.args.sender.toLowerCase() as Address,
+        resolver: decodedLog.args.resolver as Hex,
       };
     });
 

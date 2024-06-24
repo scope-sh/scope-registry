@@ -15,7 +15,7 @@ import {
   POLYGON,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 interface Token {
   underlying: Address;
@@ -45,24 +45,24 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, address, topic);
+    const logs = await getLogs(chain, address, topic);
 
-    const tokens: Token[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const tokens: Token[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: aaveV2LendingPoolConfiguratorAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'ReserveInitialized') {
+      if (decodedLog.eventName !== 'ReserveInitialized') {
         throw new Error('Invalid event name');
       }
       return {
-        underlying: decodedEvent.args.asset.toLowerCase() as Address,
-        aToken: decodedEvent.args.aToken.toLowerCase() as Address,
+        underlying: decodedLog.args.asset.toLowerCase() as Address,
+        aToken: decodedLog.args.aToken.toLowerCase() as Address,
         stableDebtToken:
-          decodedEvent.args.stableDebtToken.toLowerCase() as Address,
+          decodedLog.args.stableDebtToken.toLowerCase() as Address,
         variableDebtToken:
-          decodedEvent.args.variableDebtToken.toLowerCase() as Address,
+          decodedLog.args.variableDebtToken.toLowerCase() as Address,
       };
     });
 

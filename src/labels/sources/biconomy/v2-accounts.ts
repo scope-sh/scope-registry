@@ -6,7 +6,7 @@ import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 interface Account {
   address: Address;
@@ -39,21 +39,21 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
 
-    const accounts: Account[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const accounts: Account[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: biconomyV2FactoryAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'AccountCreation') {
+      if (decodedLog.eventName !== 'AccountCreation') {
         throw new Error('Invalid event name');
       }
       return {
-        address: decodedEvent.args.account.toLowerCase() as Address,
+        address: decodedLog.args.account.toLowerCase() as Address,
         initialAuthModule:
-          decodedEvent.args.initialAuthModule.toLowerCase() as Address,
+          decodedLog.args.initialAuthModule.toLowerCase() as Address,
       };
     });
 
@@ -82,21 +82,21 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
 
-    const accounts: Account[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const accounts: Account[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: biconomyV2FactoryAbi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'AccountCreationWithoutIndex') {
+      if (decodedLog.eventName !== 'AccountCreationWithoutIndex') {
         throw new Error('Invalid event name');
       }
       return {
-        address: decodedEvent.args.account.toLowerCase() as Address,
+        address: decodedLog.args.account.toLowerCase() as Address,
         initialAuthModule:
-          decodedEvent.args.initialAuthModule.toLowerCase() as Address,
+          decodedLog.args.initialAuthModule.toLowerCase() as Address,
       };
     });
 

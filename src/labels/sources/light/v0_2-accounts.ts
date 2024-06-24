@@ -10,7 +10,7 @@ import {
   ENTRYPOINT_0_6_0_ADDRESS,
   getEntryPoint0_6_0Predicate,
 } from '@/utils/entryPoint.js';
-import { getEvents } from '@/utils/fetching.js';
+import { getLogs } from '@/utils/fetching.js';
 
 const FACTORY_0_2_ADDRESS = '0x00000000001269b052c004ffb71b47ab22c898b0';
 
@@ -28,23 +28,23 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const events = await getEvents(
+    const logs = await getLogs(
       chain,
       ENTRYPOINT_0_6_0_ADDRESS,
       topic,
       getEntryPoint0_6_0Predicate(FACTORY_0_2_ADDRESS),
     );
 
-    const accounts: Address[] = events.map((event) => {
-      const decodedEvent = decodeEventLog({
+    const accounts: Address[] = logs.map((log) => {
+      const decodedLog = decodeEventLog({
         abi: entryPointV0_6_0Abi,
-        data: event.data,
-        topics: event.topics as [Hex, ...Hex[]],
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedEvent.eventName !== 'AccountDeployed') {
+      if (decodedLog.eventName !== 'AccountDeployed') {
         throw new Error('Invalid event name');
       }
-      return decodedEvent.args.sender.toLowerCase() as Address;
+      return decodedLog.args.sender.toLowerCase() as Address;
     });
 
     return Object.fromEntries(

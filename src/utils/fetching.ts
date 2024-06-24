@@ -14,6 +14,7 @@ import {
 } from './chains.js';
 import type { ChainId } from './chains.js';
 import {
+  type Log,
   getLogMetadata,
   setLogMetadata,
   getLogCache,
@@ -28,13 +29,6 @@ const alchemyKey = process.env.ALCHEMY_KEY as string;
 interface Erc20Metadata {
   name: string | null;
   symbol: string | null;
-}
-
-interface Event {
-  data: Hex;
-  topics: Hex[];
-  blockNumber: number;
-  logIndex: number;
 }
 
 type BlockFieldSelection = 'number' | 'timestamp';
@@ -135,36 +129,35 @@ function getClient(chain: ChainId): PublicClient | null {
   });
 }
 
-async function getEvents(
+async function getLogs(
   chain: ChainId,
   address: Address,
   topic0: Hex,
-  predicate?: (event: Event) => boolean,
-): Promise<Event[]> {
+  predicate?: (log: Log) => boolean,
+): Promise<Log[]> {
   const client = getHyperSyncClient(chain);
   const latestBlock = await getChainHeight(client);
-  let events = await getLogCache(chain, address, topic0);
+  let logs = await getLogCache(chain, address, topic0);
   // // Read cache metadata
   const logMetadata = await getLogMetadata(chain, address, topic0);
   // Fetch new events
   let fromBlock = logMetadata ? logMetadata.latestBlockNumber + 1 : 0;
   while (fromBlock <= latestBlock) {
-    const { events: pageEvents, nextBlock } = await getEventsPaginated(
+    const { logs: pageLogs, nextBlock } = await getLogsPaginated(
       client,
       address,
       topic0,
       fromBlock,
     );
-    events = events.concat(pageEvents);
+    logs = logs.concat(pageLogs);
     fromBlock = nextBlock;
   }
   await setLogMetadata(chain, address, topic0, {
     latestBlockNumber: latestBlock,
   });
-  await setLogCache(chain, address, topic0, events);
+  await setLogCache(chain, address, topic0, logs);
   // Filter events if needed
-  const filteredEvents = predicate ? events.filter(predicate) : events;
-  return filteredEvents;
+  return predicate ? logs.filter(predicate) : logs;
 }
 
 function getHyperSyncClient(chain: ChainId): AxiosInstance {
@@ -186,13 +179,13 @@ async function getChainHeight(client: AxiosInstance): Promise<number> {
   return response.data.height;
 }
 
-async function getEventsPaginated(
+async function getLogsPaginated(
   client: AxiosInstance,
   address: Address,
   topic0: Hex,
   startBlock: number,
 ): Promise<{
-  events: Event[];
+  logs: Log[];
   nextBlock: number;
 }> {
   const query: Query = {
@@ -240,7 +233,7 @@ async function getEventsPaginated(
     throw new Error('Invalid response');
   }
   return {
-    events: logs,
+    logs,
     nextBlock,
   };
 }
@@ -392,5 +385,5 @@ function getErc20Overwrite(chain: ChainId): Record<Address, Erc20Metadata> {
   return chainOverwrite;
 }
 
-export { getEvents, getErc20Metadata, getDeployed };
-export type { Event };
+export { getLogs, getErc20Metadata, getDeployed };
+export type { Log };
