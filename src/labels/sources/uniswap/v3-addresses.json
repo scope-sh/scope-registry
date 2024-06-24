@@ -209,16 +209,16 @@
     "0x4a7b5da61326a6379179b40d00f57e5bbdc962c2": "Universal Router"
   },
   "11155111": {
-    "0x0227628f3F023bb0B980b67D528571c95c6DaC1c": "Factory",
-    "0xD7F33bCdb21b359c8ee6F0251d30E94832baAd07": "Multicall2",
-    "0x0b343475d44EC2b4b8243EBF81dc888BF0A14b36": "Proxy Admin",
-    "0x3B5E3c5E595D85fbFBC2a42ECC091e183E76697C": "NFT Descriptor",
-    "0x5bE4DAa6982C69aD20A57F1e68cBcA3D37de6207": "Nonfungible Token Position Descriptor",
-    "0x1238536071E1c677A632429e3655c799b22cDA52": "Nonfungible Position Manager",
-    "0x729004182cF005CEC8Bd85df140094b6aCbe8b15": "Migrator",
-    "0xEd1f6473345F45b75F8179591dd5bA1888cf2FB3": "Quoter V2",
-    "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E": "Swap Router 2",
-    "0x000000000022D473030F116dDEE9F6B43aC78BA3": "Permit2",
-    "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD": "Universal Router"
+    "0x0227628f3f023bb0b980b67d528571c95c6dac1c": "Factory",
+    "0xd7f33bcdb21b359c8ee6f0251d30e94832baad07": "Multicall2",
+    "0x0b343475d44ec2b4b8243ebf81dc888bf0a14b36": "Proxy Admin",
+    "0x3b5e3c5e595d85fbfbc2a42ecc091e183e76697c": "NFT Descriptor",
+    "0x5be4daa6982c69ad20a57f1e68cbca3d37de6207": "Nonfungible Token Position Descriptor",
+    "0x1238536071e1c677a632429e3655c799b22cda52": "Nonfungible Position Manager",
+    "0x729004182cf005cec8bd85df140094b6acbe8b15": "Migrator",
+    "0xed1f6473345f45b75f8179591dd5ba1888cf2fb3": "Quoter V2",
+    "0x3bfa4769fb09eefc5a80d6e87c3b9c650f7ae48e": "Swap Router 2",
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": "Permit2",
+    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": "Universal Router"
   }
 }
