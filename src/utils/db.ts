@@ -3,7 +3,12 @@ import { and, asc, eq } from 'drizzle-orm';
 import { LibSQLDatabase, drizzle } from 'drizzle-orm/libsql';
 import { Address, Hex } from 'viem';
 
-import { type Label as LabelValues, labels, logs } from '@/db/schema';
+import {
+  type Label as LabelValues,
+  labels,
+  logs,
+  logsMetadata,
+} from '@/db/schema';
 import { Label } from '@/index.js';
 
 import { ChainId } from './chains';
@@ -15,6 +20,66 @@ interface Log {
   topics: Hex[];
   blockNumber: number;
   logIndex: number;
+}
+
+interface LogMetadata {
+  latestBlockNumber: number;
+}
+
+async function getLogMetadata(
+  chain: ChainId,
+  address: Address,
+  topic0: Hex,
+): Promise<LogMetadata | null> {
+  const db = getDb();
+  const rows = await db
+    .select({
+      latestBlockNumber: logsMetadata.latestBlockNumber,
+    })
+    .from(logsMetadata)
+    .where(
+      and(
+        eq(logsMetadata.chain, chain),
+        eq(logsMetadata.address, address),
+        eq(logsMetadata.topic0, topic0),
+      ),
+    )
+    .limit(1);
+  const row = rows[0];
+  if (!row) {
+    return null;
+  }
+  return {
+    latestBlockNumber: row.latestBlockNumber,
+  };
+}
+
+async function setLogMetadata(
+  chain: ChainId,
+  address: Address,
+  topic0: Hex,
+  metadata: LogMetadata,
+): Promise<void> {
+  const db = getDb();
+  await db
+    .delete(logsMetadata)
+    .where(
+      and(
+        eq(logsMetadata.chain, chain),
+        eq(logsMetadata.address, address),
+        eq(logsMetadata.topic0, topic0),
+      ),
+    )
+    .execute();
+  await db
+    .insert(logsMetadata)
+    .values({
+      chain,
+      address,
+      topic0,
+      latestBlockNumber: metadata.latestBlockNumber,
+    })
+    .execute();
 }
 
 async function getLogCache(
@@ -119,4 +184,11 @@ function getDb(): LibSQLDatabase {
   return drizzle(client);
 }
 
-export { getLogCache, setLogCache, removeLabels, setLabel };
+export {
+  getLogMetadata,
+  setLogMetadata,
+  getLogCache,
+  setLogCache,
+  removeLabels,
+  setLabel,
+};
