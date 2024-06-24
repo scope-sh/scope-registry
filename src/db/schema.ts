@@ -26,10 +26,10 @@ const logs = sqliteTable(
     address: text('address').notNull(),
     blockNumber: integer('blockNumber').notNull(),
     logIndex: integer('logIndex').notNull(),
-    topic0: text('topics'),
-    topic1: text('topics'),
-    topic2: text('topics'),
-    topic3: text('topics'),
+    topic0: text('topic0'),
+    topic1: text('topic1'),
+    topic2: text('topic2'),
+    topic3: text('topic3'),
     data: text('data'),
   },
   (table) => {
@@ -45,7 +45,7 @@ const logsMetadata = sqliteTable(
     id: integer('id').primaryKey(),
     chain: integer('chain').notNull(),
     address: text('address').notNull(),
-    topic0: text('topics'),
+    topic0: text('topic0'),
     latestBlockNumber: integer('latestBlockNumber').notNull(),
   },
   (table) => {
