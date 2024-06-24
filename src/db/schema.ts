@@ -23,7 +23,15 @@ const logs = sqliteTable('logs', {
   data: text('data'),
 });
 
+const logsMetadata = sqliteTable('logs_metadata', {
+  id: integer('id').primaryKey(),
+  chain: integer('chain').notNull(),
+  address: text('address').notNull(),
+  topic0: text('topics'),
+  latestBlockNumber: integer('latestBlockNumber').notNull(),
+});
+
 type Label = typeof labels.$inferInsert;
 
-export { labels, logs };
+export { labels, logs, logsMetadata };
 export type { Label };
