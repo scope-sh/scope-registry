@@ -18,6 +18,12 @@ const labels = sqliteTable(
   },
 );
 
+const labelSearch = sqliteTable('label_search', {
+  rowid: integer('rowid').primaryKey(),
+  chain: integer('chain').notNull(),
+  value: text('value').notNull(),
+});
+
 const logs = sqliteTable(
   'logs',
   {
@@ -60,6 +66,7 @@ const logsMetadata = sqliteTable(
 );
 
 type Label = typeof labels.$inferInsert;
+type LabelSearch = typeof labelSearch.$inferInsert;
 
-export { labels, logs, logsMetadata };
-export type { Label };
+export { labels, labelSearch, logs, logsMetadata };
+export type { Label, LabelSearch };
