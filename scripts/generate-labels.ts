@@ -1,8 +1,10 @@
 import 'dotenv/config';
 
+import { Address } from 'viem';
+
 import { fetch as fetchLabels } from '@/labels/sources/index.js';
 import { CHAINS } from '@/utils/chains.js';
-import { putObject } from '@/utils/storage.js';
+import { removeLabels, setLabel } from '@/utils/db.js';
 
 for (const chain of CHAINS) {
   const labels = await fetchLabels(chain);
@@ -20,6 +22,11 @@ for (const chain of CHAINS) {
       ];
     }),
   );
-  const string = JSON.stringify(labelsNoMetadata, null, 2);
-  await putObject(`labels/${chain}.json`, string);
+  await removeLabels(chain);
+  for (const [addressString, labels] of Object.entries(labelsNoMetadata)) {
+    const address = addressString as Address;
+    for (const label of labels) {
+      await setLabel(chain, address, label);
+    }
+  }
 }

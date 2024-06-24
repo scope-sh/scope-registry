@@ -1,8 +1,5 @@
-import {
-  HypersyncClient,
-  Query as HypersyncQuery,
-} from '@envio-dev/hypersync-client';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import axiosRetry, { exponentialDelay } from 'axios-retry';
 import { AlchemyChain, alchemy } from 'evm-providers';
 import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
 
@@ -16,8 +13,12 @@ import {
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
-import { ENTRYPOINT_0_6_0_ADDRESS } from './entryPoint.js';
-import { getObject, putObject } from './storage.js';
+import {
+  getLogMetadata,
+  setLogMetadata,
+  getLogCache,
+  setLogCache,
+} from './db.js';
 
 // Bun doesn't support brotli yet
 axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
@@ -33,11 +34,7 @@ interface Event {
   data: Hex;
   topics: Hex[];
   blockNumber: number;
-}
-
-interface EventCacheMetadata {
-  count: number;
-  lastBlock: number;
+  logIndex: number;
 }
 
 type BlockFieldSelection = 'number' | 'timestamp';
@@ -138,133 +135,59 @@ function getClient(chain: ChainId): PublicClient | null {
   });
 }
 
-function getHypersyncUrl(chain: ChainId): string {
-  return `https://${chain}.hypersync.xyz`;
-}
-
 async function getEvents(
   chain: ChainId,
   address: Address,
   topic0: Hex,
   predicate?: (event: Event) => boolean,
 ): Promise<Event[]> {
-  function shouldUseBinary(): boolean {
-    return true;
-  }
-  // Note: changing this would require cleaning up the cache
-  function getChunkSize(chain: ChainId, address: Address): number {
-    // Polygon EntryPoint event list is too large for a standard chunk size
-    if (chain === POLYGON && address === ENTRYPOINT_0_6_0_ADDRESS) {
-      return 100_000;
-    }
-    // Legacy ENS ETH registrar event list is too large for a standard chunk size
-    if (
-      chain === ETHEREUM &&
-      address === '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5'
-    ) {
-      return 100_000;
-    }
-    return 1_000_000;
-  }
-
-  const chunkSize = getChunkSize(chain, address);
-  const url = getHypersyncUrl(chain);
-  const client = HypersyncClient.new({ url });
-  const useBinary = shouldUseBinary();
-  if (!client) {
-    return [];
-  }
-  const latestBlock = await client.getHeight();
-  // Read cache metadata
-  const cachePrefix = `events/${chain}/${address}/${topic0}`;
-  const cacheMetadata = await getEventCacheMetadata(cachePrefix);
-  // Read cache chunks one-by-one
-  let events: Event[] = [];
-  const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
-  for (let i = 0; i < chunks; i++) {
-    const cacheKey = `${cachePrefix}/${i}.json`;
-    const cacheString = await getObject(cacheKey);
-    const cache =
-      cacheString === null ? null : (JSON.parse(cacheString) as Event[]);
-    if (cache) {
-      events = events.concat(cache);
-    }
-  }
+  const client = getHyperSyncClient(chain);
+  const latestBlock = await getChainHeight(client);
+  let events = await getLogCache(chain, address, topic0);
+  // // Read cache metadata
+  const logMetadata = await getLogMetadata(chain, address, topic0);
   // Fetch new events
-  let fromBlock = cacheMetadata.lastBlock + 1;
+  let fromBlock = logMetadata ? logMetadata.latestBlockNumber + 1 : 0;
   while (fromBlock <= latestBlock) {
-    const { events: pageEvents, nextBlock } = useBinary
-      ? await getBinaryEventsPaginated(client, address, topic0, fromBlock)
-      : await getEventsPaginated(url, address, topic0, fromBlock);
+    const { events: pageEvents, nextBlock } = await getEventsPaginated(
+      client,
+      address,
+      topic0,
+      fromBlock,
+    );
     events = events.concat(pageEvents);
     fromBlock = nextBlock;
   }
-  // Write new events to the cache in chunks
-  const firstChunk = Math.floor(cacheMetadata.lastBlock / chunkSize);
-  const lastChunk = Math.floor(latestBlock / chunkSize);
-  for (let i = firstChunk; i <= lastChunk; i++) {
-    const chunkStart = i * chunkSize;
-    const chunkEnd = chunkStart + chunkSize;
-    const chunkEvents = events.filter(
-      (event) =>
-        event.blockNumber >= chunkStart && event.blockNumber < chunkEnd,
-    );
-    if (chunkEvents.length === 0) {
-      continue;
-    }
-    const cacheKey = `${cachePrefix}/${i}.json`;
-    await putObject(cacheKey, JSON.stringify(chunkEvents));
-  }
-  // Update cache metadata
-  const metadata = `${cachePrefix}/metadata.json`;
-  const newMetadata: EventCacheMetadata = {
-    count: events.length,
-    lastBlock: latestBlock,
-  };
-  await putObject(metadata, JSON.stringify(newMetadata));
+  await setLogMetadata(chain, address, topic0, {
+    latestBlockNumber: latestBlock,
+  });
+  await setLogCache(chain, address, topic0, events);
   // Filter events if needed
   const filteredEvents = predicate ? events.filter(predicate) : events;
   return filteredEvents;
 }
 
-async function getBinaryEventsPaginated(
-  client: HypersyncClient,
-  address: string,
-  topic0: Hex,
-  fromBlock: number,
-): Promise<{
-  events: Event[];
-  nextBlock: number;
-}> {
-  const query: HypersyncQuery = {
-    fromBlock,
-    logs: [
-      {
-        address: [address],
-        topics: [[topic0]],
-      },
-    ],
-    fieldSelection: {
-      log: ['block_number', 'data', 'topic0', 'topic1', 'topic2', 'topic3'],
-    },
-  };
-
-  const response = await client.sendReq(query);
-  const events = response.data.logs.map((log) => {
-    const topics = log.topics as Address[];
-    const data = log.data as Hex;
-    const blockNumber = log.blockNumber;
-    return { topics, data, blockNumber };
+function getHyperSyncClient(chain: ChainId): AxiosInstance {
+  const endpointUrl = `https://${chain}.hypersync.xyz`;
+  const client = axios.create({
+    baseURL: endpointUrl,
   });
-  const nextBlock = response.nextBlock;
-  return {
-    events,
-    nextBlock,
-  };
+  axiosRetry(client, {
+    retries: 20,
+    retryDelay: exponentialDelay,
+  });
+  return client;
+}
+
+async function getChainHeight(client: AxiosInstance): Promise<number> {
+  const response = await client.get<{
+    height: number;
+  }>('height');
+  return response.data.height;
 }
 
 async function getEventsPaginated(
-  endpointUrl: string,
+  client: AxiosInstance,
   address: Address,
   topic0: Hex,
   startBlock: number,
@@ -281,22 +204,29 @@ async function getEventsPaginated(
       },
     ],
     field_selection: {
-      log: ['block_number', 'data', 'topic0', 'topic1', 'topic2', 'topic3'],
+      log: [
+        'block_number',
+        'data',
+        'log_index',
+        'topic0',
+        'topic1',
+        'topic2',
+        'topic3',
+      ],
     },
   };
 
-  const response = await fetch(endpointUrl, {
-    method: 'POST',
+  const response = await client.post<QueryResponse>('query', query, {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(query),
   });
-  const json = (await response.json()) as QueryResponse;
-  console.log(json);
-  const dataItem = json.data[0];
+  const dataItem = response.data.data[0];
   if (!dataItem) {
-    throw new Error('Invalid response');
+    return {
+      events: [],
+      nextBlock: response.data.next_block || startBlock,
+    };
   }
   const logs = dataItem.logs;
   if (!logs) {
@@ -308,9 +238,10 @@ async function getEventsPaginated(
     );
     const data = log.data as Hex;
     const blockNumber = log.block_number;
-    return { topics, data, blockNumber };
+    const logIndex = log.log_index;
+    return { topics, data, blockNumber, logIndex };
   });
-  const nextBlock = json.next_block;
+  const nextBlock = response.data.next_block;
   if (!nextBlock) {
     throw new Error('Invalid response');
   }
@@ -318,21 +249,6 @@ async function getEventsPaginated(
     events,
     nextBlock,
   };
-}
-
-async function getEventCacheMetadata(
-  cachePrefix: string,
-): Promise<EventCacheMetadata> {
-  const cacheKey = `${cachePrefix}/metadata.json`;
-  const metadataString = await getObject(cacheKey);
-  const metadata: EventCacheMetadata =
-    metadataString === null
-      ? {
-          count: 0,
-          lastBlock: -1,
-        }
-      : JSON.parse(metadataString);
-  return metadata;
 }
 
 async function getDeployed(
