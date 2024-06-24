@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@envio-dev/hypersync-client": "^0.1.9",
+    "@libsql/client": "^0.6.2",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",
