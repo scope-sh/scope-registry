@@ -221,32 +221,26 @@ async function getEventsPaginated(
       'Content-Type': 'application/json',
     },
   });
-  const dataItem = response.data.data[0];
-  if (!dataItem) {
-    return {
-      events: [],
-      nextBlock: response.data.next_block || startBlock,
-    };
-  }
-  const logs = dataItem.logs;
-  if (!logs) {
-    throw new Error('Invalid response');
-  }
-  const events = logs.map((log) => {
-    const topics = [log.topic0, log.topic1, log.topic2, log.topic3].filter(
-      (topic) => topic !== null,
-    );
-    const data = log.data as Hex;
-    const blockNumber = log.block_number;
-    const logIndex = log.log_index;
-    return { topics, data, blockNumber, logIndex };
-  });
+  const logs = response.data.data
+    .map((dataPage) => {
+      const pageLogs = dataPage.logs || [];
+      return pageLogs.map((log) => {
+        const topics = [log.topic0, log.topic1, log.topic2, log.topic3].filter(
+          (topic) => topic !== null,
+        );
+        const data = log.data as Hex;
+        const blockNumber = log.block_number;
+        const logIndex = log.log_index;
+        return { topics, data, blockNumber, logIndex };
+      });
+    })
+    .flat();
   const nextBlock = response.data.next_block;
   if (!nextBlock) {
     throw new Error('Invalid response');
   }
   return {
-    events,
+    events: logs,
     nextBlock,
   };
 }
