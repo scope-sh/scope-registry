@@ -112,7 +112,7 @@ class Source extends BaseSource {
       case ARBITRUM_SEPOLIA:
         return '0x248ab79bbb9bc29bb72f7cd42f17e054fc40188e';
       case SEPOLIA:
-        return '0x0227628f3F023bb0B980b67D528571c95c6DaC1c';
+        return '0x0227628f3f023bb0b980b67d528571c95c6dac1c';
       default:
         return null;
     }
