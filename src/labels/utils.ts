@@ -80,21 +80,21 @@ function getNamespaceById(id: NamespaceId): LabelNamespace {
       case 'alchemy':
         return 'Alchemy';
       case 'biconomy':
-        return 'Biconomy ';
+        return 'Biconomy';
       case 'biconomy-v2':
         return 'Biconomy V2';
       case 'blocto':
-        return 'Blocto ';
+        return 'Blocto';
       case 'candide':
         return 'Candide';
       case 'circle':
-        return 'Circle ';
+        return 'Circle';
       case 'coinbase-smart-wallet':
         return 'Coinbase Smart Wallet';
       case 'daimo':
         return 'Daimo';
       case 'ethereum-attestation-service':
-        return 'Ethereum Attestation Service ';
+        return 'Ethereum Attestation Service';
       case 'ens':
         return 'ENS';
       case 'etherspot':
@@ -104,19 +104,19 @@ function getNamespaceById(id: NamespaceId): LabelNamespace {
       case 'fun':
         return 'Fun';
       case 'light-v0.1':
-        return 'Light V0.1 ';
+        return 'Light V0.1';
       case 'light-v0.2':
-        return 'Light V0.2 ';
+        return 'Light V0.2';
       case 'nani':
-        return 'Nani ';
+        return 'Nani';
       case 'opensea-seaport':
         return 'OpenSea Seaport';
       case 'parifi-v1':
         return 'Parifi V1';
       case 'particle':
-        return 'Particle ';
+        return 'Particle';
       case 'patch-wallet':
-        return 'Patch Wallet ';
+        return 'Patch Wallet';
       case 'pimlico':
         return 'Pimlico';
       case 'rhinestone-v1':
@@ -124,15 +124,15 @@ function getNamespaceById(id: NamespaceId): LabelNamespace {
       case 'safe-core':
         return 'Safe Core';
       case 'safe':
-        return 'Safe ';
+        return 'Safe';
       case 'stackup':
         return 'Stackup';
       case 'unipass':
         return 'UniPass';
       case 'uniswap-v2':
-        return 'Uniswap V2 ';
+        return 'Uniswap V2';
       case 'uniswap-v3':
-        return 'Uniswap V3 ';
+        return 'Uniswap V3';
       case 'zerodev':
         return 'ZeroDev';
       case 'zerodev-kernel-v2':
