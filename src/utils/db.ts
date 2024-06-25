@@ -5,7 +5,9 @@ import { Address, Hex } from 'viem';
 
 import {
   type Label as LabelValues,
+  type LabelSearch as LabelSearchValues,
   labels,
+  labelSearch,
   logs,
   logsMetadata,
 } from '@/db/schema';
@@ -175,6 +177,7 @@ async function setLogCache(
 
 async function removeLabels(chain: ChainId): Promise<void> {
   const db = getDb();
+  await db.delete(labelSearch).where(eq(labelSearch.chain, chain)).execute();
   await db.delete(labels).where(eq(labels.chain, chain)).execute();
 }
 
@@ -192,7 +195,16 @@ async function setLabel(
     namespaceId: label.namespace?.id,
     iconUrl: label.iconUrl,
   };
-  await db.insert(labels).values(values);
+  const searchValues: LabelSearchValues = {
+    chain,
+    value: label.namespace
+      ? `${label.namespace.value}: ${label.value}`
+      : label.value,
+  };
+  await db.transaction(async (tx) => {
+    await tx.insert(labels).values(values).execute();
+    await tx.insert(labelSearch).values(searchValues).execute();
+  });
 }
 
 function getDb(): LibSQLDatabase {
