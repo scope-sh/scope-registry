@@ -18,7 +18,7 @@ import {
   getLogMetadata,
   setLogMetadata,
   getLogCache,
-  setLogCache,
+  appendLogCache,
 } from './db.js';
 
 // Bun doesn't support brotli yet
@@ -136,13 +136,14 @@ async function getLogs(
   predicate?: (log: Log) => boolean,
 ): Promise<Log[]> {
   const client = getHyperSyncClient(chain);
-  const latestBlock = await getChainHeight(client);
+  const height = await getChainHeight(client);
   let logs = await getLogCache(chain, address, topic0);
-  // // Read cache metadata
+  // Read cache metadata
   const logMetadata = await getLogMetadata(chain, address, topic0);
   // Fetch new events
-  let fromBlock = logMetadata ? logMetadata.latestBlockNumber + 1 : 0;
-  while (fromBlock <= latestBlock) {
+  const startingBlock = logMetadata ? logMetadata.latestBlockNumber + 1 : 0;
+  let fromBlock = startingBlock;
+  while (fromBlock <= height) {
     const { logs: pageLogs, nextBlock } = await getLogsPaginated(
       client,
       address,
@@ -153,9 +154,10 @@ async function getLogs(
     fromBlock = nextBlock;
   }
   await setLogMetadata(chain, address, topic0, {
-    latestBlockNumber: latestBlock,
+    latestBlockNumber: fromBlock - 1,
   });
-  await setLogCache(chain, address, topic0, logs);
+  const newLogs = logs.filter((log) => log.blockNumber > startingBlock);
+  await appendLogCache(chain, address, topic0, newLogs);
   // Filter events if needed
   return predicate ? logs.filter(predicate) : logs;
 }

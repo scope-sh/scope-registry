@@ -95,13 +95,6 @@ async function getLogCache(
   let page = 0;
   let cache: Log[] = [];
   while (cache.length === page * PER_PAGE) {
-    console.log('getLogCache', {
-      chain,
-      address,
-      topic0,
-      page,
-      cacheSize: cache.length,
-    });
     const rows = await db
       .select({
         data: logs.data,
@@ -140,24 +133,14 @@ async function getLogCache(
   return cache;
 }
 
-async function setLogCache(
+async function appendLogCache(
   chain: ChainId,
   address: Address,
   topic0: Hex,
-  cache: Log[],
+  newLogs: Log[],
 ): Promise<void> {
   const db = getDb();
-  await db
-    .delete(logs)
-    .where(
-      and(
-        eq(logs.chain, chain),
-        eq(logs.address, address),
-        eq(logs.topic0, topic0),
-      ),
-    )
-    .execute();
-  for (const log of cache) {
+  for (const log of newLogs) {
     await db
       .insert(logs)
       .values({
@@ -218,7 +201,7 @@ export {
   getLogMetadata,
   setLogMetadata,
   getLogCache,
-  setLogCache,
+  appendLogCache,
   removeLabels,
   setLabel,
 };
