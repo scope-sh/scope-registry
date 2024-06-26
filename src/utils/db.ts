@@ -40,7 +40,7 @@ async function addLabels(
   labels: LabelWithAddress[],
 ): Promise<void> {
   const db = getDb();
-  const batchSize = 10;
+  const batchSize = 100;
   const batchCount = Math.ceil(labels.length / batchSize);
   for (let i = 0; i < batchCount; i++) {
     const batch = labels.slice(i * batchSize, (i + 1) * batchSize);
