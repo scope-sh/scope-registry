@@ -54,7 +54,7 @@ class Source extends BaseSource {
     const labels: SingleLabelMap = {
       [ETHEREUM]: {
         '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -63,7 +63,7 @@ class Source extends BaseSource {
       },
       [OPTIMISM]: {
         '0x4200000000000000000000000000000000000006': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -72,7 +72,7 @@ class Source extends BaseSource {
       },
       [BNB]: {
         '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c': {
-          value: 'Wrapped BNB',
+          value: 'Wrapped BNB (WBNB)',
           type,
           metadata: {
             symbol: 'WBNB',
@@ -82,7 +82,7 @@ class Source extends BaseSource {
       [BNB_TESTNET]: {},
       [GNOSIS_CHAIN]: {
         '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d': {
-          value: 'Wrapped XDAI',
+          value: 'Wrapped XDAI (WXDAI)',
           type,
           metadata: {
             symbol: 'WXDAI',
@@ -91,16 +91,16 @@ class Source extends BaseSource {
       },
       [POLYGON]: {
         '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270': {
-          value: 'Wrapped Matic',
+          value: 'Wrapped Matic (WMATIC)',
           type,
           metadata: {
-            symbol: 'WETH',
+            symbol: 'WMATIC',
           },
         },
       },
       [FANTOM]: {
         '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83': {
-          value: 'Wrapped Fantom',
+          value: 'Wrapped Fantom (WFTM)',
           type,
           metadata: {
             symbol: 'WFTM',
@@ -109,7 +109,7 @@ class Source extends BaseSource {
       },
       [ZKSYNC]: {
         '0x5aea5775959fbc2557cc8789bc1bf90a239d9a91': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -119,7 +119,7 @@ class Source extends BaseSource {
       [KLAYTN_BAOBAB]: {},
       [METIS]: {
         '0x4200000000000000000000000000000000000006': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -128,7 +128,7 @@ class Source extends BaseSource {
       },
       [POLYGON_ZKEVM]: {
         '0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -137,7 +137,7 @@ class Source extends BaseSource {
       },
       [MOONBEAM]: {
         '0xAcc15dC74880C9944775448304B263D191c6077F': {
-          value: 'Wrapped GLMR',
+          value: 'Wrapped GLMR (WGLMR)',
           type,
           metadata: {
             symbol: 'WGLMR',
@@ -148,7 +148,7 @@ class Source extends BaseSource {
       [FANTOM_TESTNET]: {},
       [CANTO]: {
         '0x826551890dc65655a0aceca109ab11abdbd7a07b': {
-          value: 'Wrapped Canto',
+          value: 'Wrapped Canto (WCANTO)',
           type,
           metadata: {
             symbol: 'WCANTO',
@@ -157,7 +157,7 @@ class Source extends BaseSource {
       },
       [KLAYTN]: {
         '0xfd844c2fca5e595004b17615f891620d1cb9bbb2': {
-          value: 'Wrapped Klay',
+          value: 'Wrapped Klay (WKLAY)',
           type,
           metadata: {
             symbol: 'WKLAY',
@@ -166,7 +166,7 @@ class Source extends BaseSource {
       },
       [BASE]: {
         '0x4200000000000000000000000000000000000006': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -176,7 +176,7 @@ class Source extends BaseSource {
       [GNOSIS_CHIADO]: {},
       [ARBITRUM]: {
         '0x82af49447d8a07e3bd95bd0d56f35241523fbab1': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -185,7 +185,7 @@ class Source extends BaseSource {
       },
       [ARBITRUM_NOVA]: {
         '0x722e8bdd2ce80a4422e880164f2079488e115365': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -204,7 +204,7 @@ class Source extends BaseSource {
       [AVALANCHE_FUJI]: {},
       [AVALANCHE]: {
         '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7': {
-          value: 'Wrapped AVAX',
+          value: 'Wrapped AVAX (WAVAX)',
           type,
           metadata: {
             symbol: 'WAVAX',
@@ -214,7 +214,7 @@ class Source extends BaseSource {
       [LINEA_SEPOLIA]: {},
       [LINEA]: {
         '0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -227,7 +227,7 @@ class Source extends BaseSource {
       [SCROLL_SEPOLIA]: {},
       [SCROLL]: {
         '0x5300000000000000000000000000000000000004': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -236,7 +236,7 @@ class Source extends BaseSource {
       },
       [ZORA]: {
         '0x4200000000000000000000000000000000000006': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -248,7 +248,7 @@ class Source extends BaseSource {
       [ZORA_SEPOLIA]: {},
       [AURORA]: {
         '0xc9bdeed33cd01541e1eed10f90519d2c06fe3feb': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -257,7 +257,7 @@ class Source extends BaseSource {
       },
       [BLAST]: {
         '0x4300000000000000000000000000000000000004': {
-          value: 'Wrapped Ether',
+          value: 'Wrapped Ether (WETH)',
           type,
           metadata: {
             symbol: 'WETH',
@@ -267,7 +267,7 @@ class Source extends BaseSource {
       [BLAST_SEPOLIA]: {},
       [HARMONY_SHARD_0]: {
         '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a': {
-          value: 'Wrapped One',
+          value: 'Wrapped One (WONE)',
           type,
           metadata: {
             symbol: 'WONE',

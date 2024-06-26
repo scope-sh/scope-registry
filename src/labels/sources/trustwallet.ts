@@ -88,7 +88,7 @@ class Source extends BaseSource {
         continue;
       }
       const label: Label = {
-        value: name,
+        value: `${name} (${symbol})`,
         type: getLabelTypeById('erc20'),
         metadata: {
           symbol,
