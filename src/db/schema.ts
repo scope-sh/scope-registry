@@ -7,9 +7,9 @@ const labels = sqliteTable(
     chain: integer('chain').notNull(),
     address: text('address').notNull(),
     value: text('value').notNull(),
-    typeId: text('typeId'),
-    namespaceId: text('namespaceId'),
-    iconUrl: text('iconUrl'),
+    typeId: text('type_id'),
+    namespaceId: text('namespace_id'),
+    iconUrl: text('icon_url'),
   },
   (table) => {
     return {
