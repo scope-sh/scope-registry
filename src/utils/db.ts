@@ -140,10 +140,13 @@ async function appendLogCache(
   newLogs: Log[],
 ): Promise<void> {
   const db = getDb();
-  for (const log of newLogs) {
-    await db
-      .insert(logs)
-      .values({
+  // Insert logs in batches
+  const batchSize = 1000;
+  const batchCount = Math.ceil(newLogs.length / batchSize);
+  for (let i = 0; i < batchCount; i++) {
+    const batch = newLogs.slice(i * batchSize, (i + 1) * batchSize);
+    const batchRows = batch.map((log) => {
+      return {
         chain,
         address,
         topic0,
@@ -153,8 +156,9 @@ async function appendLogCache(
         topic3: log.topics[3],
         blockNumber: log.blockNumber,
         logIndex: log.logIndex,
-      })
-      .execute();
+      };
+    });
+    await db.insert(logs).values(batchRows).execute();
   }
 }
 
