@@ -13,7 +13,7 @@ const labels = sqliteTable(
   },
   (table) => {
     return {
-      idx: index('idx_labels').on(table.chain, table.address, table.typeId),
+      idx: index('idx_labels').on(table.chain, table.address),
     };
   },
 );
