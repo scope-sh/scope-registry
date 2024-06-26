@@ -44,18 +44,16 @@ async function addLabels(
   const batchCount = Math.ceil(labels.length / batchSize);
   for (let i = 0; i < batchCount; i++) {
     const batch = labels.slice(i * batchSize, (i + 1) * batchSize);
-    const labelBatch: LabelValues[] = batch
-      .slice(i * batchSize, (i + 1) * batchSize)
-      .map((label) => {
-        return {
-          chain,
-          address: label.address,
-          value: label.value,
-          typeId: label.type?.id,
-          namespaceId: label.namespace?.id,
-          iconUrl: label.iconUrl,
-        };
-      });
+    const labelBatch: LabelValues[] = batch.map((label) => {
+      return {
+        chain,
+        address: label.address,
+        value: label.value,
+        typeId: label.type?.id,
+        namespaceId: label.namespace?.id,
+        iconUrl: label.iconUrl,
+      };
+    });
     const labelSearchBatch: LabelSearchValues[] = batch.map((label) => {
       return {
         chain,
