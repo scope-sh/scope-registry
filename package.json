@@ -34,6 +34,7 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",
     "evm-providers": "^0.4.3",
+    "minio": "^8.0.1",
     "viem": "^2.9.12"
   },
   "devDependencies": {
