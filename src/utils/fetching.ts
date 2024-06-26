@@ -13,18 +13,19 @@ import {
   getChainData,
 } from './chains.js';
 import type { ChainId } from './chains.js';
-import {
-  type Log,
-  getLogMetadata,
-  setLogMetadata,
-  getLogCache,
-  appendLogCache,
-} from './db.js';
+import { type Log } from './db.js';
+import { ENTRYPOINT_0_6_0_ADDRESS } from './entryPoint.js';
+import { getObject, putObject } from './storage.js';
 
 // Bun doesn't support brotli yet
 axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
 
 const alchemyKey = process.env.ALCHEMY_KEY as string;
+
+interface LogCacheMetadata {
+  count: number;
+  lastBlock: number;
+}
 
 interface Erc20Metadata {
   name: string | null;
@@ -135,13 +136,42 @@ async function getLogs(
   topic0: Hex,
   predicate?: (log: Log) => boolean,
 ): Promise<Log[]> {
+  // Note: changing this would require cleaning up the cache
+  function getChunkSize(chain: ChainId, address: Address): number {
+    // Polygon EntryPoint event list is too large for a standard chunk size
+    if (chain === POLYGON && address === ENTRYPOINT_0_6_0_ADDRESS) {
+      return 100_000;
+    }
+    // Legacy ENS ETH registrar event list is too large for a standard chunk size
+    if (
+      chain === ETHEREUM &&
+      address === '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5'
+    ) {
+      return 100_000;
+    }
+    return 1_000_000;
+  }
+
+  const chunkSize = getChunkSize(chain, address);
   const client = getHyperSyncClient(chain);
   const height = await getChainHeight(client);
-  let logs = await getLogCache(chain, address, topic0);
   // Read cache metadata
-  const logMetadata = await getLogMetadata(chain, address, topic0);
+  const cachePrefix = `events/${chain}/${address}/${topic0}`;
+  const cacheMetadata = await getLogCacheMetadata(cachePrefix);
+  // Read cache chunks one-by-one
+  let logs: Log[] = [];
+  const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
+  for (let i = 0; i < chunks; i++) {
+    const cacheKey = `${cachePrefix}/${i}.json`;
+    const cacheString = await getObject(cacheKey);
+    const cache =
+      cacheString === null ? null : (JSON.parse(cacheString) as Log[]);
+    if (cache) {
+      logs = logs.concat(cache);
+    }
+  }
   // Fetch new events
-  const startingBlock = logMetadata ? logMetadata.latestBlockNumber + 1 : 0;
+  const startingBlock = cacheMetadata ? cacheMetadata.lastBlock + 1 : 0;
   let fromBlock = startingBlock;
   while (fromBlock <= height) {
     const { logs: pageLogs, nextBlock } = await getLogsPaginated(
@@ -153,11 +183,28 @@ async function getLogs(
     logs = logs.concat(pageLogs);
     fromBlock = nextBlock;
   }
-  await setLogMetadata(chain, address, topic0, {
-    latestBlockNumber: fromBlock - 1,
-  });
-  const newLogs = logs.filter((log) => log.blockNumber > startingBlock);
-  await appendLogCache(chain, address, topic0, newLogs);
+  // Write new events to the cache in chunks
+  const firstChunk = Math.floor(cacheMetadata.lastBlock / chunkSize);
+  const lastChunk = Math.floor((fromBlock - 1) / chunkSize);
+  for (let i = firstChunk; i <= lastChunk; i++) {
+    const chunkStart = i * chunkSize;
+    const chunkEnd = chunkStart + chunkSize;
+    const chunkEvents = logs.filter(
+      (log) => log.blockNumber >= chunkStart && log.blockNumber < chunkEnd,
+    );
+    if (chunkEvents.length === 0) {
+      continue;
+    }
+    const cacheKey = `${cachePrefix}/${i}.json`;
+    await putObject(cacheKey, JSON.stringify(chunkEvents));
+  }
+  // Update cache metadata
+  const metadata = `${cachePrefix}/metadata.json`;
+  const newMetadata: LogCacheMetadata = {
+    count: logs.length,
+    lastBlock: fromBlock - 1,
+  };
+  await putObject(metadata, JSON.stringify(newMetadata));
   // Filter events if needed
   return predicate ? logs.filter(predicate) : logs;
 }
@@ -238,6 +285,21 @@ async function getLogsPaginated(
     logs,
     nextBlock,
   };
+}
+
+async function getLogCacheMetadata(
+  cachePrefix: string,
+): Promise<LogCacheMetadata> {
+  const cacheKey = `${cachePrefix}/metadata.json`;
+  const metadataString = await getObject(cacheKey);
+  const metadata: LogCacheMetadata =
+    metadataString === null
+      ? {
+          count: 0,
+          lastBlock: -1,
+        }
+      : JSON.parse(metadataString);
+  return metadata;
 }
 
 async function getDeployed(
