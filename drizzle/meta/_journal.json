@@ -64,6 +64,13 @@
       "when": 1719394752844,
       "tag": "0008_absent_enchantress",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1719394972460,
+      "tag": "0009_chubby_toad_men",
+      "breakpoints": true
     }
   ]
 }
