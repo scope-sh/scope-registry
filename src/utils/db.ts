@@ -6,8 +6,8 @@ import { Address, Hex } from 'viem';
 import {
   type Label as LabelValues,
   type LabelSearch as LabelSearchValues,
-  labels,
-  labelSearch,
+  labels as tableLabels,
+  labelSearch as tableLabelSearch,
 } from '@/db/schema';
 import { Label } from '@/index.js';
 
@@ -22,36 +22,53 @@ interface Log {
   logIndex: number;
 }
 
+type LabelWithAddress = Label & {
+  address: Address;
+};
+
 async function removeLabels(chain: ChainId): Promise<void> {
   const db = getDb();
-  await db.delete(labelSearch).where(eq(labelSearch.chain, chain)).execute();
-  await db.delete(labels).where(eq(labels.chain, chain)).execute();
+  await db
+    .delete(tableLabelSearch)
+    .where(eq(tableLabelSearch.chain, chain))
+    .execute();
+  await db.delete(tableLabels).where(eq(tableLabels.chain, chain)).execute();
 }
 
-async function setLabel(
+async function addLabels(
   chain: ChainId,
-  address: Address,
-  label: Label,
+  labels: LabelWithAddress[],
 ): Promise<void> {
   const db = getDb();
-  const values: LabelValues = {
-    chain,
-    address,
-    value: label.value,
-    typeId: label.type?.id,
-    namespaceId: label.namespace?.id,
-    iconUrl: label.iconUrl,
-  };
-  const searchValues: LabelSearchValues = {
-    chain,
-    value: label.namespace
-      ? `${label.namespace.value}: ${label.value}`
-      : label.value,
-  };
-  await db.transaction(async (tx) => {
-    await tx.insert(labels).values(values).execute();
-    await tx.insert(labelSearch).values(searchValues).execute();
-  });
+  const batchSize = 1_000;
+  const batchCount = Math.ceil(labels.length / batchSize);
+  for (let i = 0; i < batchCount; i++) {
+    const batch = labels.slice(i * batchSize, (i + 1) * batchSize);
+    const labelBatch: LabelValues[] = batch
+      .slice(i * batchSize, (i + 1) * batchSize)
+      .map((label) => {
+        return {
+          chain,
+          address: label.address,
+          value: label.value,
+          typeId: label.type?.id,
+          namespaceId: label.namespace?.id,
+          iconUrl: label.iconUrl,
+        };
+      });
+    const labelSearchBatch: LabelSearchValues[] = batch.map((label) => {
+      return {
+        chain,
+        value: label.namespace
+          ? `${label.namespace.value}: ${label.value}`
+          : label.value,
+      };
+    });
+    await db.transaction(async (tx) => {
+      await tx.insert(tableLabels).values(labelBatch).execute();
+      await tx.insert(tableLabelSearch).values(labelSearchBatch).execute();
+    });
+  }
 }
 
 function getDb(): LibSQLDatabase {
@@ -61,5 +78,5 @@ function getDb(): LibSQLDatabase {
   return drizzle(client);
 }
 
-export { removeLabels, setLabel };
-export type { Log };
+export { removeLabels, addLabels };
+export type { LabelWithAddress, Log };
