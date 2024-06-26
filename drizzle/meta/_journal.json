@@ -57,6 +57,13 @@
       "when": 1719378455781,
       "tag": "0007_bizarre_human_torch",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1719394752844,
+      "tag": "0008_absent_enchantress",
+      "breakpoints": true
     }
   ]
 }
