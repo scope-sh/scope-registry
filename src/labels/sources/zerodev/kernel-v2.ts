@@ -22,7 +22,7 @@ class Source extends BaseSource {
       '0x738e3257ee928637fe62c37f91d3e722c45dcc7c': 'P256 Verifier Wrapper',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'zerodev-kernel-v2');
+    return toChainLabelMap(chainAddresses, true, 'zerodev-kernel-v2');
   }
 }
 

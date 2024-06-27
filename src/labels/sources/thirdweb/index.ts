@@ -17,7 +17,7 @@ class Source extends BaseSource {
       '0x463effb51873c7720c810ac7fb2e145ec2f8cc60': 'Managed Account Factory',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'thirdweb');
+    return toChainLabelMap(chainAddresses, true, 'thirdweb');
   }
 }
 

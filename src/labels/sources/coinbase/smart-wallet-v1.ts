@@ -20,7 +20,7 @@ class Source extends BaseSource {
       '0xa270ef92c1e11f1c1f95753c2e56801e8125fa83': 'Limiting Paymaster',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'coinbase-smart-wallet');
+    return toChainLabelMap(chainAddresses, true, 'coinbase-smart-wallet');
   }
 }
 

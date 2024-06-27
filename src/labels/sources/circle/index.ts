@@ -17,7 +17,7 @@ class Source extends BaseSource {
       '0x7cea357b5ac0639f89f9e378a1f03aa5005c0a25': 'Paymaster',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'circle');
+    return toChainLabelMap(chainAddresses, true, 'circle');
   }
 }
 

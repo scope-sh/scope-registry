@@ -62,6 +62,7 @@ class Source extends BaseSource {
           account.address,
           {
             value: 'Account',
+            indexed: false,
             type: 'biconomy-v2-account',
             namespace: 'biconomy-v2',
           },
@@ -105,6 +106,7 @@ class Source extends BaseSource {
           account.address,
           {
             value: 'Account',
+            indexed: false,
             type: 'biconomy-v2-account',
             namespace: 'biconomy-v2',
           },

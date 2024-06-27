@@ -52,6 +52,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            indexed: false,
             type: 'coinbase-smart-wallet-v1-account',
             namespace: 'coinbase-smart-wallet',
           },

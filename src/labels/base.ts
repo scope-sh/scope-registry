@@ -81,6 +81,7 @@ type LabelMap = Record<ChainId, ChainLabelMap>;
 
 interface Label {
   value: string;
+  indexed: boolean;
   namespace?: LabelNamespaceId;
   type?: LabelTypeId;
   iconUrl?: string;

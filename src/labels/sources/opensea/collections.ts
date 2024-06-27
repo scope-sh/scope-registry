@@ -31,6 +31,7 @@ class Source extends BaseSource {
           address,
           {
             value: collection.value,
+            indexed: true,
             type: collection.type,
             iconUrl: collection.iconUrl,
           },

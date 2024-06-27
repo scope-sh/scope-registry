@@ -84,6 +84,7 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
+                indexed: true,
                 type: 'aave-v3-atoken',
                 namespace: 'aave-v3',
               },
@@ -92,6 +93,7 @@ class Source extends BaseSource {
               token.sToken,
               {
                 value: getTokenLabel(token, 's-token', previousLabels),
+                indexed: true,
                 type: 'aave-v3-stoken',
                 namespace: 'aave-v3',
               },
@@ -100,6 +102,7 @@ class Source extends BaseSource {
               token.vToken,
               {
                 value: getTokenLabel(token, 'v-token', previousLabels),
+                indexed: true,
                 type: 'aave-v3-vtoken',
                 namespace: 'aave-v3',
               },

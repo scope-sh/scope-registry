@@ -75,7 +75,7 @@ class Source extends BaseSource {
     for (const bundler of bundlers) {
       chainAddresses[bundler] = 'Bundler';
     }
-    return toChainLabelMap(chainAddresses, 'particle');
+    return toChainLabelMap(chainAddresses, true, 'particle');
   }
 }
 

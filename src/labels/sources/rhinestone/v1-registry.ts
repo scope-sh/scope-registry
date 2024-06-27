@@ -53,6 +53,7 @@ class Source extends BaseSource {
           module.address,
           {
             value: 'Module',
+            indexed: false,
             type: 'rhinestone-v1-module',
             namespace: 'rhinestone-v1',
           },

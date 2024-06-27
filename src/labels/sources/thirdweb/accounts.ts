@@ -43,6 +43,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Managed Account',
+            indexed: false,
             type: 'thirdweb-v1-managed-account',
             namespace: 'thirdweb',
           },

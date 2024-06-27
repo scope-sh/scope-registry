@@ -59,7 +59,7 @@ class Source extends BaseSource {
         'Multi Owner Light Account v2.0.0',
     };
     const chainContracts = await getDeployed(chain, contracts);
-    const contractLabels = toChainLabelMap(chainContracts, 'alchemy');
+    const contractLabels = toChainLabelMap(chainContracts, true, 'alchemy');
 
     const topics = encodeEventTopics({
       abi: entryPoint0_6_0Abi,
@@ -156,6 +156,7 @@ class Source extends BaseSource {
           deployment.account,
           {
             value: labelName,
+            indexed: false,
             type: labelType,
             namespace: 'alchemy',
           },

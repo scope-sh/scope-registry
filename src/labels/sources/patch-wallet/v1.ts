@@ -18,7 +18,7 @@ class Source extends BaseSource {
       '0xde81a259910d029d159c6cfa12a998eb10f2d175': 'Kernel',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'patch-wallet');
+    return toChainLabelMap(chainAddresses, true, 'patch-wallet');
   }
 }
 

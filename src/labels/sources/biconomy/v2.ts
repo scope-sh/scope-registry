@@ -29,7 +29,7 @@ class Source extends BaseSource {
       '0x00000f7365ca6c59a2c93719ad53d567ed49c14c': 'Token Paymaster',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'biconomy-v2');
+    return toChainLabelMap(chainAddresses, true, 'biconomy-v2');
   }
 }
 

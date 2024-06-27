@@ -16,7 +16,11 @@ class Source extends BaseSource {
     const chainAddresses = (
       addresses as Partial<Record<ChainId, Record<string, string>>>
     )[chain];
-    return toChainLabelMap(chainAddresses, 'ethereum-attestation-service');
+    return toChainLabelMap(
+      chainAddresses,
+      true,
+      'ethereum-attestation-service',
+    );
   }
 }
 

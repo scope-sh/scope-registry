@@ -31,7 +31,12 @@ class Source extends BaseSource {
       '0x6d561a8aee519807b7bf1313d59fd6d41372ed7f': 'Hook Multiplexer',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'rhinestone-v1', 'erc7579-module');
+    return toChainLabelMap(
+      chainAddresses,
+      true,
+      'rhinestone-v1',
+      'erc7579-module',
+    );
   }
 }
 

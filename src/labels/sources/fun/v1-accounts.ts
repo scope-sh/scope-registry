@@ -43,6 +43,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            indexed: false,
             type: 'fun-v1-account',
             namespace: 'fun',
           },

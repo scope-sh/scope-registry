@@ -43,6 +43,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            indexed: false,
             type: 'kernel-v2-account',
             namespace: 'zerodev-kernel-v2',
           },

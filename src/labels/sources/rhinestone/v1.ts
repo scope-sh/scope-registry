@@ -23,7 +23,7 @@ class Source extends BaseSource {
         'ERC-7579 Reference Bootstrap',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'rhinestone-v1');
+    return toChainLabelMap(chainAddresses, true, 'rhinestone-v1');
   }
 }
 

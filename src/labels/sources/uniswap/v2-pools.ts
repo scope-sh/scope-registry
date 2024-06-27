@@ -60,6 +60,7 @@ class Source extends BaseSource {
           pool.address,
           {
             value,
+            indexed: true,
             type: 'uniswap-v2-pool',
             namespace: 'uniswap-v2',
           },

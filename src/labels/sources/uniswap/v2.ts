@@ -17,7 +17,7 @@ class Source extends BaseSource {
     const chainAddresses = (
       addresses as Partial<Record<ChainId, Record<Address, string>>>
     )[chain];
-    return toChainLabelMap(chainAddresses, 'uniswap-v2');
+    return toChainLabelMap(chainAddresses, true, 'uniswap-v2');
   }
 }
 

@@ -61,6 +61,7 @@ class Source extends BaseSource {
       const avatar = avatarMap[nameHash];
       const label: Label = {
         value: name,
+        indexed: false,
         iconUrl: avatar,
       };
       labels[address] = label;
@@ -82,6 +83,7 @@ class Source extends BaseSource {
       const avatar = avatarMap[node];
       const label: Label = {
         value: name,
+        indexed: false,
         iconUrl: avatar,
       };
       labels[address] = label;

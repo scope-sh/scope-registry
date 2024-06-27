@@ -8,6 +8,7 @@ import type {
 
 function toChainLabelMap(
   addresses?: Record<Address, string>,
+  indexed = true,
   namespaceId?: LabelNamespaceId,
   typeId?: LabelTypeId,
 ): ChainSingleLabelMap {
@@ -23,6 +24,7 @@ function toChainLabelMap(
     }
     map[address] = {
       value,
+      indexed,
       type: typeId,
       namespace: namespaceId,
     };

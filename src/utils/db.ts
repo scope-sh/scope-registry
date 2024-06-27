@@ -55,18 +55,35 @@ async function addLabels(
         iconUrl: label.iconUrl,
       };
     });
-    const labelSearchBatch: LabelSearchValues[] = batch.map((label) => {
-      return {
-        chain,
-        value: label.namespace
-          ? `${getNamespaceValue(label.namespace)}: ${label.value}`
-          : label.value,
-      };
-    });
-    await db.transaction(async (tx) => {
-      await tx.insert(tableLabels).values(labelBatch).execute();
-      await tx.insert(tableLabelSearch).values(labelSearchBatch).execute();
-    });
+    const rows = await db
+      .insert(tableLabels)
+      .values(labelBatch)
+      .returning({ id: tableLabels.id });
+    const rowIds = rows.map((row) => row.id as number);
+    // Add indexed labels to the search index table
+    const labelSearchBatch: LabelSearchValues[] = batch
+      .map((label, index) => {
+        return {
+          rowid: rowIds[index],
+          chain,
+          value: label.namespace
+            ? `${getNamespaceValue(label.namespace)}: ${label.value}`
+            : label.value,
+          indexed: label.indexed,
+        };
+      })
+      .filter((label) => label.indexed)
+      .map((label) => {
+        const { rowid, chain, value } = label;
+        return {
+          rowid,
+          chain,
+          value,
+        };
+      });
+    if (labelSearchBatch.length > 0) {
+      await db.insert(tableLabelSearch).values(labelSearchBatch).execute();
+    }
   }
 }
 

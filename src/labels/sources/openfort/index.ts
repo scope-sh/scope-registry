@@ -17,7 +17,7 @@ class Source extends BaseSource {
       '0xd71e61dde321dcde58886479a47f1142bbf0c6d6': 'Paymaster V2',
     };
     const chainAddresses = await getDeployed(chain, paymasters);
-    return toChainLabelMap(chainAddresses, 'openfort');
+    return toChainLabelMap(chainAddresses, true, 'openfort');
   }
 }
 

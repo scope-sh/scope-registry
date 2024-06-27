@@ -43,6 +43,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            indexed: false,
             type: 'patch-wallet-v1-account',
             namespace: 'patch-wallet',
           },

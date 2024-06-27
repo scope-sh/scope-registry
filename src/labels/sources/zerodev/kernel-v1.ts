@@ -17,7 +17,7 @@ class Source extends BaseSource {
       '0x4e4946298614fc299b50c947289f4ad0572cb9ce': 'Factory',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'zerodev-kernel-v1');
+    return toChainLabelMap(chainAddresses, true, 'zerodev-kernel-v1');
   }
 }
 

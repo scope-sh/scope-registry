@@ -17,7 +17,7 @@ class Source extends BaseSource {
       '0xe9976ab03ae60d092ca18009991231fa6b4d68f9': 'Order Manager',
     };
     const chainAddresses = await getDeployed(chain, contracts);
-    return toChainLabelMap(chainAddresses, 'parifi-v1');
+    return toChainLabelMap(chainAddresses, true, 'parifi-v1');
   }
 }
 

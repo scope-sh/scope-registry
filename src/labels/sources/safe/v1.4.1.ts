@@ -28,7 +28,7 @@ class Source extends BaseSource {
         'V1.4.1 Simulate Tx Accessor',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, 'safe');
+    return toChainLabelMap(chainAddresses, true, 'safe');
   }
 }
 

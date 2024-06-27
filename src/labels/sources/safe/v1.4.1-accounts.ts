@@ -53,6 +53,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'V1.4.1 Account',
+            indexed: false,
             type: 'safe-v1.4.1-account',
             namespace: 'safe',
           },

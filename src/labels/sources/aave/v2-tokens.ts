@@ -73,6 +73,7 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
+                indexed: true,
                 type: 'aave-v2-atoken',
                 namespace: 'aave-v2',
               },
@@ -85,6 +86,7 @@ class Source extends BaseSource {
                   'stable-debt-token',
                   previousLabels,
                 ),
+                indexed: true,
                 type: 'aave-v2-stable-debt-token',
                 namespace: 'aave-v2',
               },
@@ -97,6 +99,7 @@ class Source extends BaseSource {
                   'variable-debt-token',
                   previousLabels,
                 ),
+                indexed: true,
                 type: 'aave-v2-variable-debt-token',
                 namespace: 'aave-v2',
               },
