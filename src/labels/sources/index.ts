@@ -50,6 +50,8 @@ import SafeV1_4_1AccountSource from './safe/v1.4.1-accounts.js';
 import SafeV1_4_1Source from './safe/v1.4.1.js';
 import StackupSource from './stackup/index.js';
 import StaticSource from './static.js';
+import ThirdwebAccountSource from './thirdweb/accounts.js';
+import ThirdwebSource from './thirdweb/index.js';
 import TokenlistSource from './tokenlists.js';
 import TrustwalletSource from './trustwallet.js';
 import UniPassSource from './unipass/index.js';
@@ -154,6 +156,8 @@ const sources: Source[] = [
   new SafeV1_4_1AccountSource(),
   new SafeV1_4_1Source(),
   new StackupSource(),
+  new ThirdwebSource(),
+  new ThirdwebAccountSource(),
   new UniPassSource(),
   new ZeroDevInfraSource(),
   new ZeroDevKernelV1AccountSource(),

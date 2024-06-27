@@ -29,6 +29,16 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Aave V3 vToken';
       case 'aave-v3-stoken':
         return 'Aave V3 sToken';
+      case 'alchemy-v1-multi-owner-modular-account':
+        return 'Alchemy V1 Multi Owner Modular Account';
+      case 'alchemy-v1.0-light-account':
+        return 'Alchemy V1.0 Light Account';
+      case 'alchemy-v1.1-light-account':
+        return 'Alchemy V1.1 Light Account';
+      case 'alchemy-v2-light-account':
+        return 'Alchemy V2 Light Account';
+      case 'alchemy-v2-multi-owner-light-account':
+        return 'Alchemy V2 Multi Owner Light Account';
       case 'biconomy-v2-account':
         return 'Biconomy V2 Account';
       case 'coinbase-smart-wallet-v1-account':
@@ -57,6 +67,8 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Safe V1.3.0 Account';
       case 'safe-v1.4.1-account':
         return 'Safe V1.4.1 Account';
+      case 'thirdweb-v1-managed-account':
+        return 'Thirdweb V1 Managed Account';
       case 'uniswap-v2-pool':
         return 'Uniswap V2 Pool';
       case 'uniswap-v3-pool':
@@ -127,6 +139,8 @@ function getNamespaceById(id: NamespaceId): LabelNamespace {
         return 'Safe';
       case 'stackup':
         return 'Stackup';
+      case 'thirdweb':
+        return 'Thirdweb';
       case 'unipass':
         return 'UniPass';
       case 'uniswap-v2':

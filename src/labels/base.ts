@@ -32,6 +32,7 @@ type LabelId =
   | 'rhinestone-v1-module'
   | 'safe-v1.3.0-account'
   | 'safe-v1.4.1-account'
+  | 'thirdweb-v1-managed-account'
   | 'uniswap-v2-pool'
   | 'uniswap-v3-pool';
 
@@ -63,6 +64,7 @@ type NamespaceId =
   | 'safe-core'
   | 'safe'
   | 'stackup'
+  | 'thirdweb'
   | 'unipass'
   | 'uniswap-v2'
   | 'uniswap-v3'
