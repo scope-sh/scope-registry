@@ -35,6 +35,8 @@ function getLabelTypeById(value: LabelId): LabelType {
         return 'Coinbase Smart Wallet V1 Account';
       case 'daimo-v1-account':
         return 'Daimo V1 Account';
+      case 'kernel-v1-account':
+        return 'Kernel V1 Account';
       case 'kernel-v2-account':
         return 'Kernel V2 Account';
       case 'kernel-v3-account':
@@ -133,6 +135,8 @@ function getNamespaceById(id: NamespaceId): LabelNamespace {
         return 'Uniswap V3';
       case 'zerodev':
         return 'ZeroDev';
+      case 'zerodev-kernel-v1':
+        return 'ZeroDev Kernel V1';
       case 'zerodev-kernel-v2':
         return 'ZeroDev Kernel V2';
       case 'zerodev-kernel-v3':

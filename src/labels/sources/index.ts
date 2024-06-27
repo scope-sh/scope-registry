@@ -58,6 +58,8 @@ import UniswapV3PoolSource from './uniswap/v3-pools.js';
 import UniswapV3Source from './uniswap/v3.js';
 import WrappedSource from './wrapped.js';
 import ZeroDevInfraSource from './zerodev/infra.js';
+import ZeroDevKernelV1AccountSource from './zerodev/kernel-v1-accounts.js';
+import ZeroDevKernelV1Source from './zerodev/kernel-v1.js';
 import ZeroDevKernelV2AccountSource from './zerodev/kernel-v2-accounts.js';
 import ZeroDevKernelV2Source from './zerodev/kernel-v2.js';
 import ZeroDevKernelV3AccountSource from './zerodev/kernel-v3-accounts.js';
@@ -152,6 +154,8 @@ const sources: Source[] = [
   new StackupSource(),
   new UniPassSource(),
   new ZeroDevInfraSource(),
+  new ZeroDevKernelV1AccountSource(),
+  new ZeroDevKernelV1Source(),
   new ZeroDevKernelV2AccountSource(),
   new ZeroDevKernelV2Source(),
   new ZeroDevKernelV3AccountSource(),

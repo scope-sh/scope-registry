@@ -15,6 +15,7 @@ type LabelId =
   | 'biconomy-v2-account'
   | 'coinbase-smart-wallet-v1-account'
   | 'daimo-v1-account'
+  | 'kernel-v1-account'
   | 'kernel-v2-account'
   | 'kernel-v3-account'
   | 'erc7579-module'
@@ -60,6 +61,7 @@ type NamespaceId =
   | 'uniswap-v2'
   | 'uniswap-v3'
   | 'zerodev'
+  | 'zerodev-kernel-v1'
   | 'zerodev-kernel-v2'
   | 'zerodev-kernel-v3';
 
