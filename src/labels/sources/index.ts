@@ -9,7 +9,8 @@ import AaveV2TokenSource from './aave/v2-tokens.js';
 import AaveV2Source from './aave/v2.js';
 import AaveV3TokenSource from './aave/v3-tokens.js';
 import AaveV3Source from './aave/v3.js';
-import AlchemySource from './alchemy/index.js';
+import AlchemyAccountSource from './alchemy/accounts.js';
+import AlchemyInfraSource from './alchemy/infra.js';
 import BiconomyInfraSource from './biconomy/infra.js';
 import BiconomyV2AccountSource from './biconomy/v2-accounts.js';
 import BiconomyV2Source from './biconomy/v2.js';
@@ -121,7 +122,8 @@ const sources: Source[] = [
   new EnsNamesSource(),
   new FarcasterSource(),
   // Account Abstraction
-  new AlchemySource(),
+  new AlchemyInfraSource(),
+  new AlchemyAccountSource(),
   new BiconomyInfraSource(),
   new BiconomyV2AccountSource(),
   new BiconomyV2Source(),
