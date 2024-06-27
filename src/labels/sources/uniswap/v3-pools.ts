@@ -126,10 +126,10 @@ function getPoolLabel(pool: Pool, previousLabels: ChainLabelMap): string {
     return 'Pool';
   }
   const token0Label = token0Labels.find(
-    (label) => label.type && ['wrapped', 'erc20'].includes(label.type.id),
+    (label) => label.type && label.type.id === 'erc20',
   );
   const token1Label = token1Labels.find(
-    (label) => label.type && ['wrapped', 'erc20'].includes(label.type.id),
+    (label) => label.type && label.type.id === 'erc20',
   );
 
   if (

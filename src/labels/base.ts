@@ -3,7 +3,6 @@ import { Address } from 'viem';
 import type { ChainId } from '../utils/chains.js';
 
 type LabelId =
-  | 'wrapped'
   | 'erc20'
   | 'erc721'
   | 'erc1155'

@@ -11,8 +11,6 @@ import type {
 function getLabelTypeById(value: LabelId): LabelType {
   function getLabelTypeValue(value: LabelId): string {
     switch (value) {
-      case 'wrapped':
-        return 'Wrapped';
       case 'erc20':
         return 'ERC20';
       case 'erc721':

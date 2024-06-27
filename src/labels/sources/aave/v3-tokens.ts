@@ -178,7 +178,7 @@ function getTokenLabel(
     return kindName;
   }
   const label = underlyingLabel.find(
-    (label) => label.type && ['erc20', 'wrapped'].includes(label.type.id),
+    (label) => label.type && label.type.id === 'erc20',
   );
   if (!label) {
     return kindName;

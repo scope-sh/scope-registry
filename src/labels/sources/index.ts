@@ -96,9 +96,9 @@ const sources: Source[] = [
   // Default
   new StaticSource(),
   // ERC20
+  new WrappedSource(),
   new TokenlistSource(),
   new TrustwalletSource(),
-  new WrappedSource(),
   new DefillamaTokensSource(),
   // DeFi
   new AaveV2Source(),
