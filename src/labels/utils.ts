@@ -121,6 +121,8 @@ function getNamespaceById(id: NamespaceId): LabelNamespace {
         return 'Light V0.2';
       case 'nani':
         return 'Nani';
+      case 'openfort':
+        return 'Openfort';
       case 'opensea-seaport':
         return 'OpenSea Seaport';
       case 'parifi-v1':

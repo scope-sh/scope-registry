@@ -55,6 +55,7 @@ type NamespaceId =
   | 'light-v0.1'
   | 'light-v0.2'
   | 'nani'
+  | 'openfort'
   | 'opensea-seaport'
   | 'parifi-v1'
   | 'particle'
