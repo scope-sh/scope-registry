@@ -7,7 +7,6 @@ import type {
   ChainSingleLabelMap,
   Label,
 } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import {
   AVALANCHE,
   AVALANCHE_FUJI,
@@ -74,8 +73,8 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
-                type: getLabelTypeById('aave-v2-atoken'),
-                namespace: getNamespaceById('aave-v2'),
+                type: 'aave-v2-atoken',
+                namespace: 'aave-v2',
               },
             ],
             [
@@ -86,8 +85,8 @@ class Source extends BaseSource {
                   'stable-debt-token',
                   previousLabels,
                 ),
-                type: getLabelTypeById('aave-v2-stable-debt-token'),
-                namespace: getNamespaceById('aave-v2'),
+                type: 'aave-v2-stable-debt-token',
+                namespace: 'aave-v2',
               },
             ],
             [
@@ -98,8 +97,8 @@ class Source extends BaseSource {
                   'variable-debt-token',
                   previousLabels,
                 ),
-                type: getLabelTypeById('aave-v2-variable-debt-token'),
-                namespace: getNamespaceById('aave-v2'),
+                type: 'aave-v2-variable-debt-token',
+                namespace: 'aave-v2',
               },
             ],
           ];
@@ -149,7 +148,7 @@ function getTokenLabel(
     return kindName;
   }
   const label = underlyingLabel.find(
-    (label) => label.type && label.type.id === 'erc20',
+    (label) => label.type && label.type === 'erc20',
   );
   if (!label) {
     return kindName;

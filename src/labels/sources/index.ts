@@ -3,7 +3,7 @@ import { Address } from 'viem';
 import type { ChainId } from '@/utils/chains.js';
 
 import { Source } from '../base.js';
-import type { Label, LabelType, LabelMap, ChainLabelMap } from '../base.js';
+import type { Label, LabelMap, ChainLabelMap } from '../base.js';
 
 import AaveV2TokenSource from './aave/v2-tokens.js';
 import AaveV2Source from './aave/v2.js';
@@ -85,9 +85,7 @@ async function fetch(chain: ChainId): Promise<ChainLabelMap> {
       // Append a label if there is no label with the same type
       const hasSameType = addressLabels.some(
         (label) =>
-          label.type &&
-          sourceLabel.type &&
-          label.type.id === sourceLabel.type.id,
+          label.type && sourceLabel.type && label.type === sourceLabel.type,
       );
       if (!hasSameType) {
         addressLabels.push(sourceLabel);
@@ -172,4 +170,4 @@ const sources: Source[] = [
 ];
 
 export { fetch };
-export type { ChainId, Label, LabelType, LabelMap };
+export type { ChainId, Label, LabelMap };

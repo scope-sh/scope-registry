@@ -7,7 +7,6 @@ import type {
   ChainSingleLabelMap,
   Label,
 } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import {
   ARBITRUM,
   AVALANCHE_FUJI,
@@ -85,24 +84,24 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
-                type: getLabelTypeById('aave-v3-atoken'),
-                namespace: getNamespaceById('aave-v3'),
+                type: 'aave-v3-atoken',
+                namespace: 'aave-v3',
               },
             ],
             [
               token.sToken,
               {
                 value: getTokenLabel(token, 's-token', previousLabels),
-                type: getLabelTypeById('aave-v3-stoken'),
-                namespace: getNamespaceById('aave-v3'),
+                type: 'aave-v3-stoken',
+                namespace: 'aave-v3',
               },
             ],
             [
               token.vToken,
               {
                 value: getTokenLabel(token, 'v-token', previousLabels),
-                type: getLabelTypeById('aave-v3-vtoken'),
-                namespace: getNamespaceById('aave-v3'),
+                type: 'aave-v3-vtoken',
+                namespace: 'aave-v3',
               },
             ],
           ];
@@ -178,7 +177,7 @@ function getTokenLabel(
     return kindName;
   }
   const label = underlyingLabel.find(
-    (label) => label.type && label.type.id === 'erc20',
+    (label) => label.type && label.type === 'erc20',
   );
   if (!label) {
     return kindName;

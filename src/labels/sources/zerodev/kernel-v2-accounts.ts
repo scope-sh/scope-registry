@@ -4,7 +4,6 @@ import type { Address, Hex } from 'viem';
 import kernelV2FactoryAbi from '@/abi/kernelV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -44,8 +43,8 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
-            type: getLabelTypeById('kernel-v2-account'),
-            namespace: getNamespaceById('zerodev-kernel-v2'),
+            type: 'kernel-v2-account',
+            namespace: 'zerodev-kernel-v2',
           },
         ];
       }),

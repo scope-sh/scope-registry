@@ -4,7 +4,6 @@ import type { Address, Hex } from 'viem';
 import safeV141FactoryAbi from '@/abi/safeV141Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -54,8 +53,8 @@ class Source extends BaseSource {
           account,
           {
             value: 'V1.4.1 Account',
-            type: getLabelTypeById('safe-v1.4.1-account'),
-            namespace: getNamespaceById('safe'),
+            type: 'safe-v1.4.1-account',
+            namespace: 'safe',
           },
         ];
       }),

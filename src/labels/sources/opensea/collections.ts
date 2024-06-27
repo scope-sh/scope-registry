@@ -4,8 +4,6 @@ import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 
-import { getLabelTypeById } from '../../utils.js';
-
 import collections from './collections.json';
 
 interface Collection {
@@ -33,7 +31,7 @@ class Source extends BaseSource {
           address,
           {
             value: collection.value,
-            type: getLabelTypeById(collection.type),
+            type: collection.type,
             iconUrl: collection.iconUrl,
           },
         ];

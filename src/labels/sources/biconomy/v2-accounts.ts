@@ -4,7 +4,6 @@ import type { Address, Hex } from 'viem';
 import biconomyV2FactoryAbi from '@/abi/biconomyV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -63,8 +62,8 @@ class Source extends BaseSource {
           account.address,
           {
             value: 'Account',
-            type: getLabelTypeById('biconomy-v2-account'),
-            namespace: getNamespaceById('biconomy-v2'),
+            type: 'biconomy-v2-account',
+            namespace: 'biconomy-v2',
           },
         ];
       }),
@@ -106,8 +105,8 @@ class Source extends BaseSource {
           account.address,
           {
             value: 'Account',
-            type: getLabelTypeById('biconomy-v2-account'),
-            namespace: getNamespaceById('biconomy-v2'),
+            type: 'biconomy-v2-account',
+            namespace: 'biconomy-v2',
           },
         ];
       }),

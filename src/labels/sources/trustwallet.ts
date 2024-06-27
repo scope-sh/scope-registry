@@ -46,8 +46,6 @@ import {
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
-import { getLabelTypeById } from '../utils.js';
-
 const githubToken = process.env.GITHUB_TOKEN as string;
 
 interface TreeResponse {
@@ -89,7 +87,7 @@ class Source extends BaseSource {
       }
       const label: Label = {
         value: `${name} (${symbol})`,
-        type: getLabelTypeById('erc20'),
+        type: 'erc20',
         metadata: {
           symbol,
         },

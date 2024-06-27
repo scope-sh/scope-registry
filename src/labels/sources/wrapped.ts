@@ -44,7 +44,6 @@ import {
 
 import { Source as BaseSource } from '../base.js';
 import type { ChainSingleLabelMap } from '../base.js';
-import { getLabelTypeById } from '../utils.js';
 
 interface WrappedAsset {
   address: Address;
@@ -58,7 +57,7 @@ class Source extends BaseSource {
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
-    const type = getLabelTypeById('erc20');
+    const type = 'erc20';
     const assets: Record<ChainId, WrappedAsset | null> = {
       [ETHEREUM]: {
         address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',

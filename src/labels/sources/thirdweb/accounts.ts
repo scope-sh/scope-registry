@@ -4,7 +4,6 @@ import type { Address, Hex } from 'viem';
 import thirdwebV1ManagedAccountFactoryAbi from '@/abi/thirdwebV1ManagedAccountFactory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -44,8 +43,8 @@ class Source extends BaseSource {
           account,
           {
             value: 'Managed Account',
-            type: getLabelTypeById('thirdweb-v1-managed-account'),
-            namespace: getNamespaceById('thirdweb'),
+            type: 'thirdweb-v1-managed-account',
+            namespace: 'thirdweb',
           },
         ];
       }),

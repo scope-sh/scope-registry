@@ -10,6 +10,7 @@ import {
   labelSearch as tableLabelSearch,
 } from '@/db/schema';
 import { Label } from '@/index.js';
+import { getNamespaceValue } from '@/labels/base';
 
 import { ChainId } from './chains';
 
@@ -49,8 +50,8 @@ async function addLabels(
         chain,
         address: label.address,
         value: label.value,
-        typeId: label.type?.id,
-        namespaceId: label.namespace?.id,
+        typeId: label.type,
+        namespaceId: label.namespace,
         iconUrl: label.iconUrl,
       };
     });
@@ -58,7 +59,7 @@ async function addLabels(
       return {
         chain,
         value: label.namespace
-          ? `${label.namespace.value}: ${label.value}`
+          ? `${getNamespaceValue(label.namespace)}: ${label.value}`
           : label.value,
       };
     });

@@ -4,7 +4,6 @@ import type { Address, Hex } from 'viem';
 import rhinestoneV1RegistryAbi from '@/abi/rhinestoneV1Registry.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -54,8 +53,8 @@ class Source extends BaseSource {
           module.address,
           {
             value: 'Module',
-            type: getLabelTypeById('rhinestone-v1-module'),
-            namespace: getNamespaceById('rhinestone-v1'),
+            type: 'rhinestone-v1-module',
+            namespace: 'rhinestone-v1',
           },
         ];
       }),

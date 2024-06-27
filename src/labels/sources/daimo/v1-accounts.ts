@@ -4,7 +4,6 @@ import type { Address, Hex } from 'viem';
 import daimoV1NameRegistryAbi from '@/abi/daimoV1NameRegistry.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -44,8 +43,8 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
-            type: getLabelTypeById('daimo-v1-account'),
-            namespace: getNamespaceById('daimo'),
+            type: 'daimo-v1-account',
+            namespace: 'daimo',
           },
         ];
       }),

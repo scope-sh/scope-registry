@@ -4,7 +4,6 @@ import type { Address, Hex } from 'viem';
 import entryPointV0_7_0Abi from '@/abi/entryPointV0_7_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap } from '@/labels/base.js';
-import { getLabelTypeById, getNamespaceById } from '@/labels/utils.js';
 import type { ChainId } from '@/utils/chains.js';
 import {
   ENTRYPOINT_0_7_0_ADDRESS,
@@ -54,8 +53,8 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
-            type: getLabelTypeById('kernel-v3-account'),
-            namespace: getNamespaceById('zerodev-kernel-v3'),
+            type: 'kernel-v3-account',
+            namespace: 'zerodev-kernel-v3',
           },
         ];
       }),

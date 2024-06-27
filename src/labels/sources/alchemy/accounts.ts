@@ -7,11 +7,7 @@ import { ChainId } from '@/utils/chains.js';
 import { ENTRYPOINT_0_6_0_ADDRESS } from '@/utils/entryPoint.js';
 import { getDeployed, getLogs } from '@/utils/fetching.js';
 
-import {
-  getLabelTypeById,
-  getNamespaceById,
-  toChainLabelMap,
-} from '../../utils.js';
+import { toChainLabelMap } from '../../utils.js';
 
 interface Deployment {
   factory: Address;
@@ -160,8 +156,8 @@ class Source extends BaseSource {
           deployment.account,
           {
             value: labelName,
-            type: getLabelTypeById(labelType),
-            namespace: getNamespaceById('alchemy'),
+            type: labelType,
+            namespace: 'alchemy',
           },
         ];
       }),
