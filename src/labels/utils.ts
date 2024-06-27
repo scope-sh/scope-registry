@@ -2,14 +2,14 @@ import { Address } from 'viem';
 
 import type {
   ChainSingleLabelMap,
-  LabelId,
+  LabelTypeId,
+  LabelNamespaceId,
   LabelNamespace,
   LabelType,
-  NamespaceId,
 } from './base.js';
 
-function getLabelTypeById(value: LabelId): LabelType {
-  function getLabelTypeValue(value: LabelId): string {
+function getLabelTypeById(value: LabelTypeId): LabelType {
+  function getLabelTypeValue(value: LabelTypeId): string {
     switch (value) {
       case 'erc20':
         return 'ERC20';
@@ -82,8 +82,8 @@ function getLabelTypeById(value: LabelId): LabelType {
   };
 }
 
-function getNamespaceById(id: NamespaceId): LabelNamespace {
-  function getNamespaceValue(id: NamespaceId): string {
+function getNamespaceById(id: LabelNamespaceId): LabelNamespace {
+  function getNamespaceValue(id: LabelNamespaceId): string {
     switch (id) {
       case 'aave-v2':
         return 'Aave V2';
@@ -168,8 +168,8 @@ function getNamespaceById(id: NamespaceId): LabelNamespace {
 
 function toChainLabelMap(
   addresses?: Record<Address, string>,
-  namespaceId?: NamespaceId,
-  id?: LabelId,
+  namespaceId?: LabelNamespaceId,
+  typeId?: LabelTypeId,
 ): ChainSingleLabelMap {
   const map: ChainSingleLabelMap = {};
   if (!addresses) {
@@ -183,7 +183,7 @@ function toChainLabelMap(
     }
     map[address] = {
       value,
-      type: id ? getLabelTypeById(id) : undefined,
+      type: typeId ? getLabelTypeById(typeId) : undefined,
       namespace: namespaceId ? getNamespaceById(namespaceId) : undefined,
     };
   }

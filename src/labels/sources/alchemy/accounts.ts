@@ -2,7 +2,7 @@ import { Address, Hex, decodeEventLog, encodeEventTopics } from 'viem';
 
 import entryPoint0_6_0Abi from '@/abi/entryPointV0_6_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap, LabelId } from '@/labels/base.js';
+import type { ChainSingleLabelMap, LabelTypeId } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 import { ENTRYPOINT_0_6_0_ADDRESS } from '@/utils/entryPoint.js';
 import { getDeployed, getLogs } from '@/utils/fetching.js';
@@ -147,7 +147,7 @@ class Source extends BaseSource {
   async #getAccountLabels(
     deployments: Deployment[],
     factory: Address,
-    labelType: LabelId,
+    labelType: LabelTypeId,
     labelName: string,
   ): Promise<ChainSingleLabelMap> {
     const factoryDeployments = deployments.filter(

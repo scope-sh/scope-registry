@@ -2,7 +2,7 @@ import { Address } from 'viem';
 
 import type { ChainId } from '../utils/chains.js';
 
-type LabelId =
+type LabelTypeId =
   | 'erc20'
   | 'erc721'
   | 'erc1155'
@@ -36,7 +36,7 @@ type LabelId =
   | 'uniswap-v2-pool'
   | 'uniswap-v3-pool';
 
-type NamespaceId =
+type LabelNamespaceId =
   | 'aave-v2'
   | 'aave-v3'
   | 'alchemy'
@@ -80,12 +80,12 @@ type SingleLabelMap = Record<ChainId, ChainSingleLabelMap>;
 type LabelMap = Record<ChainId, ChainLabelMap>;
 
 interface LabelType {
-  id: LabelId;
+  id: LabelTypeId;
   value: string;
 }
 
 interface LabelNamespace {
-  id: string;
+  id: LabelNamespaceId;
   value: string;
 }
 
@@ -110,10 +110,10 @@ export type {
   ChainSingleLabelMap,
   ChainLabelMap,
   Label,
-  LabelId,
+  LabelTypeId,
   LabelMap,
   LabelNamespace,
   LabelType,
   SingleLabelMap,
-  NamespaceId,
+  LabelNamespaceId,
 };
