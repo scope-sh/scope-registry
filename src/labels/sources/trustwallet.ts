@@ -86,7 +86,7 @@ class Source extends BaseSource {
         continue;
       }
       const label: Label = {
-        value: `${name} (${symbol})`,
+        value: `${symbol}: ${name}`,
         indexed: true,
         type: 'erc20',
         metadata: {

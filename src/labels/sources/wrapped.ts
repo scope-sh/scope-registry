@@ -197,7 +197,7 @@ class Source extends BaseSource {
     }
     return {
       [chainAsset.address]: {
-        value: `${chainAsset.name} (${chainAsset.symbol})`,
+        value: `${chainAsset.symbol}: ${chainAsset.name}`,
         indexed: true,
         type,
         metadata: {

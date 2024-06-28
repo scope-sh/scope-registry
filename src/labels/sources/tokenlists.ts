@@ -101,7 +101,7 @@ class Source extends BaseSource {
     });
     for (const asset of labelAssets) {
       const label: Label = {
-        value: `${asset.name} (${asset.symbol})`,
+        value: `${asset.symbol}: ${asset.name}`,
         indexed: true,
         type: 'erc20',
         metadata: {
