@@ -21,6 +21,8 @@ type LabelTypeId =
   | 'biconomy-v2-account'
   | 'coinbase-smart-wallet-v1-account'
   | 'daimo-v1-account'
+  | 'entry-point-v0.6.0-account'
+  | 'entry-point-v0.7.0-account'
   | 'kernel-v1-account'
   | 'kernel-v2-account'
   | 'kernel-v3-account'

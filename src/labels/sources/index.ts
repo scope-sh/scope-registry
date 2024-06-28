@@ -25,6 +25,8 @@ import DefillamaTokensSource from './defillama/tokens.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 import EnsNamesSource from './ens/names.js';
+import EntryPointV0_6_0Source from './entry-point/v0.6.0-accounts.js';
+import EntryPointV0_7_0Source from './entry-point/v0.7.0-accounts.js';
 import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
@@ -123,6 +125,8 @@ const sources: Source[] = [
   new EnsNamesSource(),
   new FarcasterSource(),
   // Account Abstraction
+  new EntryPointV0_6_0Source(),
+  new EntryPointV0_7_0Source(),
   new AlchemyInfraSource(),
   new AlchemyAccountSource(),
   new BiconomyInfraSource(),
