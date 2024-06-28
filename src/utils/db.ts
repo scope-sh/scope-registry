@@ -3,14 +3,8 @@ import { eq } from 'drizzle-orm';
 import { LibSQLDatabase, drizzle } from 'drizzle-orm/libsql';
 import { Address, Hex } from 'viem';
 
-import {
-  type Label as LabelValues,
-  type LabelSearch as LabelSearchValues,
-  labels as tableLabels,
-  labelSearch as tableLabelSearch,
-} from '@/db/schema';
+import { type Label as LabelValues, labels as tableLabels } from '@/db/schema';
 import { Label } from '@/index.js';
-import { getNamespaceValue } from '@/labels/base';
 
 import { ChainId } from './chains';
 
@@ -29,10 +23,6 @@ type LabelWithAddress = Label & {
 
 async function removeLabels(chain: ChainId): Promise<void> {
   const db = getDb();
-  await db
-    .delete(tableLabelSearch)
-    .where(eq(tableLabelSearch.chain, chain))
-    .execute();
   await db.delete(tableLabels).where(eq(tableLabels.chain, chain)).execute();
 }
 
@@ -56,35 +46,7 @@ async function addLabels(
         iconUrl: label.iconUrl,
       };
     });
-    const rows = await db
-      .insert(tableLabels)
-      .values(labelBatch)
-      .returning({ id: tableLabels.id });
-    const rowIds = rows.map((row) => row.id as number);
-    // Add indexed labels to the search index table
-    const labelSearchBatch: LabelSearchValues[] = batch
-      .map((label, index) => {
-        return {
-          rowid: rowIds[index],
-          chain,
-          value: label.namespace
-            ? `${getNamespaceValue(label.namespace)}: ${label.value}`
-            : label.value,
-          indexed: label.indexed,
-        };
-      })
-      .filter((label) => label.indexed)
-      .map((label) => {
-        const { rowid, chain, value } = label;
-        return {
-          rowid,
-          chain,
-          value,
-        };
-      });
-    if (labelSearchBatch.length > 0) {
-      await db.insert(tableLabelSearch).values(labelSearchBatch).execute();
-    }
+    await db.insert(tableLabels).values(labelBatch).execute();
   }
 }
 
