@@ -71,6 +71,13 @@
       "when": 1719394972460,
       "tag": "0009_chubby_toad_men",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1719574988646,
+      "tag": "0010_sad_caretaker",
+      "breakpoints": true
     }
   ]
 }

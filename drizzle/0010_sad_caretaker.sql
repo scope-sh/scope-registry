@@ -1,0 +1,1 @@
+ALTER TABLE `labels` ADD `indexed` integer NOT NULL DEFAULT 1;
