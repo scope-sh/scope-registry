@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import axiosRetry, { exponentialDelay } from 'axios-retry';
+import axiosRetry from 'axios-retry';
 import { AlchemyChain, alchemy } from 'evm-providers';
 import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
 
@@ -215,8 +215,8 @@ function getHyperSyncClient(chain: ChainId): AxiosInstance {
     baseURL: endpointUrl,
   });
   axiosRetry(client, {
-    retries: 20,
-    retryDelay: exponentialDelay,
+    retries: 100,
+    retryDelay: () => 10_000,
   });
   return client;
 }
