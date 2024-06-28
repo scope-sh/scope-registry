@@ -50,6 +50,7 @@ async function addLabels(
         chain,
         address: label.address,
         value: label.value,
+        indexed: label.indexed,
         typeId: label.type,
         namespaceId: label.namespace,
         iconUrl: label.iconUrl,
