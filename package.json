@@ -19,7 +19,7 @@
     "cache:sources": "tsx scripts/cache-sources.ts",
     "generate": "bun run generate:labels",
     "generate:labels": "tsx scripts/generate-labels.ts",
-    "db:migration:generate": "bunx drizzle-kit generate --dialect=sqlite --schema=./src/db/schema.ts --out=./drizzle",
+    "db:migration:generate": "bunx drizzle-kit generate --dialect=postgresql --schema=./src/db/schema.ts --out=./drizzle",
     "db:migration:apply": "bunx --bun drizzle-kit migrate",
     "lint": "bun run lint:prettier && bun run lint:eslint",
     "lint:prettier": "prettier -c \"src/**/*.{json,js,ts}\"",
@@ -35,10 +35,12 @@
     "drizzle-orm": "^0.31.2",
     "evm-providers": "^0.4.3",
     "minio": "^8.0.1",
+    "pg": "^8.12.0",
     "viem": "^2.9.12"
   },
   "devDependencies": {
     "@types/bun": "^1.0.12",
+    "@types/pg": "^8.11.6",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "drizzle-kit": "^0.22.7",
     "eslint": "^8.57.0",
