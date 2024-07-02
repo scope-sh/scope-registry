@@ -1,1 +1,0 @@
-DROP TABLE `label_search`;
