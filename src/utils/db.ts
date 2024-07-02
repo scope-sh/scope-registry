@@ -21,9 +21,14 @@ type LabelWithAddress = Label & {
   address: Address;
 };
 
+const client = new Client({
+  connectionString: databaseUrl,
+});
+await client.connect();
+
 async function removeLabels(chain: ChainId): Promise<void> {
   const db = getDb();
-  await db.delete(tableLabels).where(eq(tableLabels.chain, chain)).execute();
+  await db.delete(tableLabels).where(eq(tableLabels.chain, chain));
 }
 
 async function addLabels(
@@ -50,12 +55,13 @@ async function addLabels(
   }
 }
 
+async function disconnect(): Promise<void> {
+  await client.end();
+}
+
 function getDb(): NodePgDatabase {
-  const client = new Client({
-    connectionString: databaseUrl,
-  });
   return drizzle(client);
 }
 
-export { removeLabels, addLabels };
+export { removeLabels, addLabels, disconnect };
 export type { LabelWithAddress, Log };
