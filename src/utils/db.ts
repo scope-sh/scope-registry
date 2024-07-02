@@ -1,6 +1,6 @@
-import { createClient } from '@libsql/client';
 import { eq } from 'drizzle-orm';
-import { LibSQLDatabase, drizzle } from 'drizzle-orm/libsql';
+import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
+import { Client } from 'pg';
 import { Address, Hex } from 'viem';
 
 import { type Label as LabelValues, labels as tableLabels } from '@/db/schema';
@@ -50,9 +50,9 @@ async function addLabels(
   }
 }
 
-function getDb(): LibSQLDatabase {
-  const client = createClient({
-    url: databaseUrl,
+function getDb(): NodePgDatabase {
+  const client = new Client({
+    connectionString: databaseUrl,
   });
   return drizzle(client);
 }

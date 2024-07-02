@@ -4,7 +4,7 @@ import { defineConfig } from 'drizzle-kit';
 const databaseUrl = process.env.DATABASE_URL as string;
 
 export default defineConfig({
-  dialect: 'sqlite',
+  dialect: 'postgresql',
   dbCredentials: {
     url: databaseUrl,
   },
