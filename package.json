@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@envio-dev/hypersync-client": "^0.1.9",
-    "@libsql/client": "^0.7.0",
     "axios": "^1.7.2",
     "axios-retry": "^4.4.1",
     "dotenv": "^16.4.5",
