@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
+import pg from 'pg';
 import { Address, Hex } from 'viem';
 
 import { type Label as LabelValues, labels as tableLabels } from '@/db/schema';
@@ -21,7 +21,8 @@ type LabelWithAddress = Label & {
   address: Address;
 };
 
-const client = new Client({
+// eslint-disable-next-line import/no-named-as-default-member
+const client = new pg.Client({
   connectionString: databaseUrl,
 });
 await client.connect();
