@@ -8,6 +8,13 @@
       "when": 1719939759330,
       "tag": "0000_harsh_venus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1720000404993,
+      "tag": "0001_equal_genesis",
+      "breakpoints": true
     }
   ]
 }
