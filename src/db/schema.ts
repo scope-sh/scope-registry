@@ -199,14 +199,14 @@ const verifiedContracts = pgTable(
 
 type Label = typeof labels.$inferInsert;
 type ContractCode = typeof contractCode.$inferInsert;
-type Contracts = typeof contracts.$inferInsert;
-type ContractDeployments = typeof contractDeployments.$inferInsert;
-type CompiledContracts = typeof compiledContracts.$inferInsert;
-type VerifiedContracts = typeof verifiedContracts.$inferInsert;
+type Contract = typeof contracts.$inferInsert;
+type ContractDeployment = typeof contractDeployments.$inferInsert;
+type CompiledContract = typeof compiledContracts.$inferInsert;
+type VerifiedContract = typeof verifiedContracts.$inferInsert;
 
 export {
   labels,
-  contractCode as code,
+  contractCode,
   contracts,
   contractDeployments,
   compiledContracts,
@@ -215,8 +215,8 @@ export {
 export type {
   Label,
   ContractCode,
-  Contracts,
-  ContractDeployments,
-  CompiledContracts,
-  VerifiedContracts,
+  Contract,
+  ContractDeployment,
+  CompiledContract,
+  VerifiedContract,
 };
