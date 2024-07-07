@@ -197,12 +197,38 @@ const verifiedContracts = pgTable(
   }),
 );
 
+const proxies = pgTable(
+  'proxies',
+  {
+    id: uuid('id').primaryKey().notNull(),
+    chainId: numeric('chain_id').notNull(),
+    address: bytea('address').notNull(),
+  },
+  (table) => ({
+    uniqueChainAddress: uniqueIndex('proxies_pseudo_pkey').on(
+      table.chainId,
+      table.address,
+    ),
+  }),
+);
+
+const proxyTargets = pgTable('proxy_targets', {
+  proxyId: uuid('proxy_id')
+    .references(() => proxies.id)
+    .notNull(),
+  address: bytea('address').notNull(),
+  blockNumber: numeric('block_number'),
+  transactionHash: bytea('transaction_hash'),
+});
+
 type Label = typeof labels.$inferInsert;
 type ContractCode = typeof contractCode.$inferInsert;
 type Contract = typeof contracts.$inferInsert;
 type ContractDeployment = typeof contractDeployments.$inferInsert;
 type CompiledContract = typeof compiledContracts.$inferInsert;
 type VerifiedContract = typeof verifiedContracts.$inferInsert;
+type Proxy = typeof proxies.$inferInsert;
+type ProxyTarget = typeof proxyTargets.$inferInsert;
 
 export {
   labels,
@@ -211,6 +237,8 @@ export {
   contractDeployments,
   compiledContracts,
   verifiedContracts,
+  proxies,
+  proxyTargets,
 };
 export type {
   Label,
@@ -219,4 +247,6 @@ export type {
   ContractDeployment,
   CompiledContract,
   VerifiedContract,
+  Proxy,
+  ProxyTarget,
 };
