@@ -65,13 +65,13 @@ const contracts = pgTable(
       table.creationCodeHash,
       table.runtimeCodeHash,
     ),
-    creationCodeHashIndex: uniqueIndex('contracts_creation_code_hash').on(
+    creationCodeHashIndex: index('contracts_creation_code_hash').on(
       table.creationCodeHash,
     ),
-    runtimeCodeHashIndex: uniqueIndex('contracts_runtime_code_hash').on(
+    runtimeCodeHashIndex: index('contracts_runtime_code_hash').on(
       table.runtimeCodeHash,
     ),
-    creationRuntimeCodeHashIndex: uniqueIndex(
+    creationRuntimeCodeHashIndex: index(
       'contracts_creation_code_hash_runtime_code_hash',
     ).on(table.creationCodeHash, table.runtimeCodeHash),
   }),
@@ -95,7 +95,7 @@ const contractDeployments = pgTable(
     uniqueChainAddressTransaction: uniqueIndex(
       'contract_deployments_pseudo_pkey',
     ).on(table.chainId, table.address, table.transactionHash),
-    contractIdIndex: uniqueIndex('contract_deployments_contract_id').on(
+    contractIdIndex: index('contract_deployments_contract_id').on(
       table.contractId,
     ),
     chainIdAddressIndex: index('contract_deployments_chain_id_address').on(
@@ -145,12 +145,12 @@ const compiledContracts = pgTable(
       table.creationCodeHash,
       table.runtimeCodeHash,
     ),
-    creationCodeHashIndex: uniqueIndex(
-      'compiled_contracts_creation_code_hash',
-    ).on(table.creationCodeHash),
-    runtimeCodeHashIndex: uniqueIndex(
-      'compiled_contracts_runtime_code_hash',
-    ).on(table.runtimeCodeHash),
+    creationCodeHashIndex: index('compiled_contracts_creation_code_hash').on(
+      table.creationCodeHash,
+    ),
+    runtimeCodeHashIndex: index('compiled_contracts_runtime_code_hash').on(
+      table.runtimeCodeHash,
+    ),
   }),
 );
 
@@ -188,10 +188,10 @@ const verifiedContracts = pgTable(
       table.compilationId,
       table.deploymentId,
     ),
-    deploymentIdIndex: uniqueIndex('verified_contracts_deployment_id').on(
+    deploymentIdIndex: index('verified_contracts_deployment_id').on(
       table.deploymentId,
     ),
-    compilationIdIndex: uniqueIndex('verified_contracts_compilation_id').on(
+    compilationIdIndex: index('verified_contracts_compilation_id').on(
       table.compilationId,
     ),
   }),
