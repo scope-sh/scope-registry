@@ -144,7 +144,7 @@ async function addCompiledContracts(
         .onConflictDoNothing()
         .execute();
     } catch (e) {
-      console.log('Error adding compiled contracts');
+      console.log('Error adding compiled contracts', e);
     }
   }
 }
@@ -169,7 +169,7 @@ async function addVerifiedContracts(
         .onConflictDoNothing()
         .execute();
     } catch (e) {
-      console.log('Error adding verified contracts');
+      console.log('Error adding verified contracts', e);
     }
   }
 }
