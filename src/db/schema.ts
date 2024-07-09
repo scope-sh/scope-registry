@@ -2,11 +2,12 @@ import { sql } from 'drizzle-orm';
 import {
   bigserial,
   boolean,
+  ConvertCustomConfig,
   customType,
   index,
   integer,
-  jsonb,
   numeric,
+  PgCustomColumnBuilder,
   pgTable,
   serial,
   text,
@@ -24,6 +25,30 @@ const bytea = customType<{
     return 'bytea';
   },
 });
+
+// Patched type to fix insertions
+const jsonb = <TData>(
+  name: string,
+): PgCustomColumnBuilder<
+  ConvertCustomConfig<
+    string,
+    {
+      data: TData;
+      driverData: TData;
+    }
+  >
+> =>
+  customType<{ data: TData; driverData: TData }>({
+    dataType() {
+      return 'jsonb';
+    },
+    toDriver(val: TData) {
+      return sql`(((${JSON.stringify(val)})::jsonb)#>> '{}')::jsonb`;
+    },
+    fromDriver(value): TData {
+      return value as TData;
+    },
+  })(name);
 
 const labels = pgTable(
   'labels',
