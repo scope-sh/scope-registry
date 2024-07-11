@@ -5,7 +5,7 @@ import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
 import { Source as BaseSource } from '../base.js';
-import type { ChainSingleLabelMap, Label } from '../base.js';
+import type { ChainLabelMap, ChainSingleLabelMap, Label } from '../base.js';
 
 interface TokenList {
   name: string;
@@ -50,7 +50,10 @@ class Source extends BaseSource {
     return 'Tokenlists';
   }
 
-  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+  async fetch(
+    chain: ChainId,
+    previousLabels: ChainLabelMap,
+  ): Promise<ChainSingleLabelMap> {
     const labels = {} as ChainSingleLabelMap;
     const lists: TokenList[] = [];
     for (const listUrl of listUrls) {
@@ -99,9 +102,20 @@ class Source extends BaseSource {
         symbol: chainMetadata[address]?.symbol || symbol,
       };
     });
+    const tokenSymbols = new Set<string>();
+    for (const addressLabels of Object.values(previousLabels)) {
+      const erc20Labels = addressLabels.filter(
+        (label) => label.type === 'erc20',
+      );
+      for (const label of erc20Labels) {
+        tokenSymbols.add(label.value);
+      }
+    }
     for (const asset of labelAssets) {
+      // Prevent using token symbol as a label value for multiple tokens
+      const value = tokenSymbols.has(asset.symbol) ? asset.name : asset.symbol;
       const label: Label = {
-        value: asset.symbol,
+        value,
         indexed: true,
         type: 'erc20',
         metadata: {

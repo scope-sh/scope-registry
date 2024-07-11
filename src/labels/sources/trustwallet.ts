@@ -2,7 +2,11 @@ import axios from 'axios';
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap, Label } from '@/labels/base.js';
+import type {
+  ChainLabelMap,
+  ChainSingleLabelMap,
+  Label,
+} from '@/labels/base.js';
 import {
   ETHEREUM,
   OPTIMISM,
@@ -71,10 +75,22 @@ class Source extends BaseSource {
     return 'Trustwallet';
   }
 
-  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+  async fetch(
+    chain: ChainId,
+    previousLabels: ChainLabelMap,
+  ): Promise<ChainSingleLabelMap> {
     const labels = {} as ChainSingleLabelMap;
     const assets = await this.#getAssets(chain);
     const chainMetadata = await getErc20Metadata(chain, assets);
+    const tokenSymbols = new Set<string>();
+    for (const addressLabels of Object.values(previousLabels)) {
+      const erc20Labels = addressLabels.filter(
+        (label) => label.type === 'erc20',
+      );
+      for (const label of erc20Labels) {
+        tokenSymbols.add(label.value);
+      }
+    }
     for (const addressString in chainMetadata) {
       const address = addressString as Address;
       const addressMetadata = chainMetadata[address];
@@ -85,8 +101,10 @@ class Source extends BaseSource {
       if (!name || !symbol) {
         continue;
       }
+      // Prevent using token symbol as a label value for multiple tokens
+      const value = tokenSymbols.has(symbol) ? name : symbol;
       const label: Label = {
-        value: symbol,
+        value,
         indexed: true,
         type: 'erc20',
         metadata: {
