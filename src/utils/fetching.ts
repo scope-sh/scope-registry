@@ -406,10 +406,6 @@ async function getErc20Metadata(
 function getErc20Overwrite(chain: ChainId): Record<Address, Erc20Metadata> {
   const overwrites: Partial<Record<ChainId, Record<Address, Erc20Metadata>>> = {
     [ETHEREUM]: {
-      '0x2956356cd2a2bf3202f771f50d3d14a367b48070': {
-        name: 'Wrapped Ether (0x)',
-        symbol: 'WETH-0X',
-      },
       '0xde60adfddaabaaac3dafa57b26acc91cb63728c4': {
         name: 'Wormhole Tether USD',
         symbol: 'wormholeUSDT',
@@ -417,10 +413,6 @@ function getErc20Overwrite(chain: ChainId): Record<Address, Erc20Metadata> {
       '0xdfe66b14d37c77f4e9b180ceb433d1b164f0281d': {
         name: 'StakeHound Ether',
         symbol: 'stakehoundETH',
-      },
-      '0x566957ef80f9fd5526cd2bef8be67035c0b81130': {
-        name: 'USD Coin (PoS)',
-        symbol: 'USDC-POS',
       },
       '0x41f7b8b9b897276b7aae926a9016935280b44e97': {
         name: 'Wormhole USD Coin',
@@ -433,14 +425,6 @@ function getErc20Overwrite(chain: ChainId): Record<Address, Erc20Metadata> {
       '0x1cdd2eab61112697626f7b4bb0e23da4febf7b7c': {
         name: 'Wormhole Tether',
         symbol: 'wormholeUSDT',
-      },
-      '0xafbec4d65bc7b116d85107fd05d912491029bf46': {
-        name: 'ARBITRAGE',
-        symbol: 'ARBITRAGE',
-      },
-      '0x620fa2993046a53df1f365fa3fdc9e6c7763af96': {
-        name: 'Global Rental Token',
-        symbol: 'GLOBAL-RENTAL',
       },
     },
     [OPTIMISM]: {
