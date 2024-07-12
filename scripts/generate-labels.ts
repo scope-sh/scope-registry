@@ -19,8 +19,10 @@ for (const chain of CHAINS) {
         return {
           address: address as Address,
           ...label,
-          // Metadata is only used to generate the labels, remove it
+          // Metadata is used to generate the labels, remove it
           metadata: undefined,
+          // Priority is used to sort the list, remove it
+          priority: undefined,
         };
       });
     })

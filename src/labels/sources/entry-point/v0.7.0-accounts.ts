@@ -55,6 +55,7 @@ class Source extends BaseSource {
             metadata: {
               factory: account.factory,
             },
+            priority: 10,
           },
         ];
       }),
