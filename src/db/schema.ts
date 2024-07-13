@@ -70,7 +70,10 @@ const labels = pgTable(
         table.address,
         table.sourceId,
       ),
-      idx: index('idx_labels').on(table.chain, table.address),
+      chainAddressIndex: index('labels_chain_address').on(
+        table.chain,
+        table.address,
+      ),
       chainAddressIndexedIndex: index('labels_chain_address_indexed').on(
         table.chain,
         table.address,
