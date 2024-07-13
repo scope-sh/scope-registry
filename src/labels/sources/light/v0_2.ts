@@ -14,11 +14,11 @@ class Source extends BaseSource {
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
-      '0x00000000001269b052c004ffb71b47ab22c898b0': 'Factory',
-      '0x040d53c5dde1762f7cac48d5467e88236d4873d7': 'Implementation',
+      '0x00000000001269b052c004ffb71b47ab22c898b0': 'Factory V0.2',
+      '0x040d53c5dde1762f7cac48d5467e88236d4873d7': 'Implementation V0.2',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, true, 'light-v0.2');
+    return toChainLabelMap(chainAddresses, true, 'light');
   }
 }
 

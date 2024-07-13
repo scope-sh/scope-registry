@@ -26,8 +26,8 @@ class Source extends BaseSource {
           {
             value: 'Account',
             indexed: false,
-            type: 'light-v0.1-account',
-            namespace: 'light-v0.1',
+            type: 'light-account',
+            namespace: 'light',
           },
         ];
       }),
