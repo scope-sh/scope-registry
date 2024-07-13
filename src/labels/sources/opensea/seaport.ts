@@ -1,15 +1,25 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'OpenSea Seaport';
+  getInfo(): SourceInfo {
+    return {
+      name: 'OpenSea Seaport',
+      id: 'opensea-seaport',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -25,7 +35,12 @@ class Source extends BaseSource {
       '0x0000f00000627d293ab4dfb40082001724db006f': 'Navigator',
     };
     const chainAddresses = await getDeployed(chain, contracts);
-    return toChainLabelMap(chainAddresses, true, 'opensea-seaport');
+    return toChainLabelMap(
+      this.getInfo().id,
+      chainAddresses,
+      true,
+      'opensea-seaport',
+    );
   }
 }
 

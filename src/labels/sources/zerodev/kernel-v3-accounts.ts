@@ -1,5 +1,9 @@
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainLabelMap, ChainSingleLabelMap } from '@/labels/base.js';
+import type {
+  ChainLabelMap,
+  ChainSingleLabelMap,
+  SourceInfo,
+} from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEntryPoint0_7_0Accounts } from '@/utils/entryPoint.js';
 
@@ -7,8 +11,18 @@ const KERNEL_V3_FACTORY_STAKER_ADDRESS =
   '0xd703aae79538628d27099b8c4f621be4ccd142d5';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'ZeroDev Kernel V3 Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'ZeroDev Kernel V3 Accounts',
+      id: 'zerodev-kernel-v3-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(
@@ -26,6 +40,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'kernel-v3-account',
             namespace: 'zerodev-kernel-v3',

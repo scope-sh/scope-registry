@@ -1,15 +1,25 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'Biconomy V2';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Biconomy V2',
+      id: 'biconomy-v2',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -29,7 +39,12 @@ class Source extends BaseSource {
       '0x00000f7365ca6c59a2c93719ad53d567ed49c14c': 'Token Paymaster',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, true, 'biconomy-v2');
+    return toChainLabelMap(
+      this.getInfo().id,
+      chainAddresses,
+      true,
+      'biconomy-v2',
+    );
   }
 }
 

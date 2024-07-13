@@ -1,6 +1,12 @@
 import { Address } from 'viem';
 
 import type { ChainId } from '@/utils/chains.js';
+import {
+  getMetadata,
+  validate as validateSources,
+  isTimeToFetch as isTimeToFetchSource,
+  updateFetchTimestamp as updateSourceFetchTimestamp,
+} from '@/utils/source.js';
 
 import { Source } from '../base.js';
 import type { Label, LabelMap, ChainLabelMap } from '../base.js';
@@ -74,8 +80,23 @@ import ZeroDevKernelV3Source from './zerodev/kernel-v3.js';
 
 async function fetch(chain: ChainId): Promise<ChainLabelMap> {
   const labels: ChainLabelMap = {};
+  const isValid = validateSources(sources);
+  if (!isValid) {
+    throw new Error('Invalid sources');
+  }
   for (const source of sources) {
-    console.info(`Fetching from the "${source.getName()}" source…`);
+    const info = source.getInfo();
+    console.info(`Fetching from the "${info.name}" source…`);
+    const metadata = await getMetadata(chain, info);
+    const isTimeToFetch = isTimeToFetchSource(
+      metadata,
+      info.interval,
+      Date.now(),
+    );
+    if (!isTimeToFetch) {
+      console.info('Skipping fetching: too early');
+      continue;
+    }
     const sourceLabels = await source.fetch(chain, labels);
     for (const addressString in sourceLabels) {
       const address = addressString as Address;
@@ -95,6 +116,7 @@ async function fetch(chain: ChainId): Promise<ChainLabelMap> {
       }
       labels[address] = addressLabels;
     }
+    await updateSourceFetchTimestamp(chain, info, metadata);
   }
   return labels;
 }

@@ -60,11 +60,22 @@ const labels = pgTable(
     indexed: boolean('indexed').notNull(),
     typeId: text('type_id'),
     namespaceId: text('namespace_id'),
+    sourceId: text('source_id'),
     iconUrl: text('icon_url'),
   },
   (table) => {
     return {
+      uniqueChainAddressSourceId: uniqueIndex('labels_pseudo_pkey').on(
+        table.chain,
+        table.address,
+        table.sourceId,
+      ),
       idx: index('idx_labels').on(table.chain, table.address),
+      chainAddressIndexedIndex: index('labels_chain_address_indexed').on(
+        table.chain,
+        table.address,
+        table.indexed,
+      ),
     };
   },
 );

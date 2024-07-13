@@ -1,14 +1,24 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { toChainLabelMap } from '@/labels/utils';
 import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'Etherspot';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Etherspot',
+      id: 'etherspot',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -34,7 +44,12 @@ class Source extends BaseSource {
     for (const bundler of bundlers) {
       chainAddresses[bundler] = 'Bundler';
     }
-    return toChainLabelMap(chainAddresses, true, 'etherspot');
+    return toChainLabelMap(
+      this.getInfo().id,
+      chainAddresses,
+      true,
+      'etherspot',
+    );
   }
 }
 

@@ -6,6 +6,7 @@ import type {
   ChainLabelMap,
   ChainSingleLabelMap,
   Label,
+  SourceInfo,
 } from '@/labels/base.js';
 import {
   ARBITRUM,
@@ -37,8 +38,18 @@ interface Token {
 }
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Aave V3 Tokens';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Aave V3 Tokens',
+      id: 'aave-v3-tokens',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(
@@ -57,7 +68,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, address, topic);
+    const logs = await getLogs(this.getInfo(), chain, address, topic);
 
     const tokens: Token[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -84,6 +95,7 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
+                sourceId: this.getInfo().id,
                 indexed: true,
                 type: 'aave-v3-atoken',
                 namespace: 'aave-v3',
@@ -93,6 +105,7 @@ class Source extends BaseSource {
               token.sToken,
               {
                 value: getTokenLabel(token, 's-token', previousLabels),
+                sourceId: this.getInfo().id,
                 indexed: true,
                 type: 'aave-v3-stoken',
                 namespace: 'aave-v3',
@@ -102,6 +115,7 @@ class Source extends BaseSource {
               token.vToken,
               {
                 value: getTokenLabel(token, 'v-token', previousLabels),
+                sourceId: this.getInfo().id,
                 indexed: true,
                 type: 'aave-v3-vtoken',
                 namespace: 'aave-v3',

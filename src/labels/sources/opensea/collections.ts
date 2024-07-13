@@ -1,7 +1,7 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 
 import collections from './collections.json';
@@ -14,8 +14,18 @@ interface Collection {
 
 // Source: OpenSea API (get collections)
 class Source extends BaseSource {
-  getName(): string {
-    return 'OpenSea Collection';
+  getInfo(): SourceInfo {
+    return {
+      name: 'OpenSea Collection',
+      id: 'opensea-collections',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -31,6 +41,7 @@ class Source extends BaseSource {
           address,
           {
             value: collection.value,
+            sourceId: this.getInfo().id,
             indexed: true,
             type: collection.type,
             iconUrl: collection.iconUrl,

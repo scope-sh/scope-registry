@@ -9,6 +9,7 @@ import {
   Source as BaseSource,
   ChainSingleLabelMap,
   Label,
+  SourceInfo,
 } from '@/labels/base.js';
 import { ChainId, ETHEREUM, SEPOLIA } from '@/utils/chains';
 import { getLogs } from '@/utils/fetching';
@@ -37,8 +38,18 @@ const TOPIC_REVERSE_CLAIMED =
   '0x6ada868dd3058cf77a48a74489fd7963688e5464b2b0fa957ace976243270e92';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'ENS Names';
+  getInfo(): SourceInfo {
+    return {
+      name: 'ENS Names',
+      id: 'ens-names',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -61,6 +72,7 @@ class Source extends BaseSource {
       const avatar = avatarMap[nameHash];
       const label: Label = {
         value: name,
+        sourceId: this.getInfo().id,
         indexed: false,
         iconUrl: avatar,
       };
@@ -83,6 +95,7 @@ class Source extends BaseSource {
       const avatar = avatarMap[node];
       const label: Label = {
         value: name,
+        sourceId: this.getInfo().id,
         indexed: false,
         iconUrl: avatar,
       };
@@ -93,21 +106,25 @@ class Source extends BaseSource {
 
   async #getLabelHashMap(chain: ChainId): Promise<Record<Hex, string>> {
     const legacyNameRegistrationLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED_LEGACY,
     );
     const legacyNameRenewalLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
     );
     const nameRegistrationLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED,
     );
     const nameRenewalLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
@@ -204,6 +221,7 @@ class Source extends BaseSource {
 
   async #getReverseClaimMap(chain: ChainId): Promise<Record<Address, string>> {
     const reverseClaimedLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_REVERSE_REGISTRAR,
       TOPIC_REVERSE_CLAIMED,
@@ -224,11 +242,13 @@ class Source extends BaseSource {
     });
 
     const legacyNameChangedLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
     );
     const nameChangedLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
@@ -278,11 +298,13 @@ class Source extends BaseSource {
   async #getAddressMap(chain: ChainId): Promise<Record<Hex, Address>> {
     // Process "AddrChanged" events to get actively set addresses
     const legacyAddrChangedLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_ADDR_CHANGED,
     );
     const addrChangedLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_ADDR_CHANGED,
@@ -326,6 +348,7 @@ class Source extends BaseSource {
   async #getAvatarMap(chain: ChainId): Promise<Record<Hex, string>> {
     // Process "TextChanged" events to get avatars
     const textChangedLogs = await getLogs(
+      this.getInfo(),
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_TEXT_CHANGED,

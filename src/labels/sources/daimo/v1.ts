@@ -1,15 +1,25 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
 import { ChainId } from '../index.js';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'Daimo V1';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Daimo V1',
+      id: 'daimo-v1',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -28,7 +38,7 @@ class Source extends BaseSource {
       '0x8abd51a785160481db9e638ee71a3f4ec4b996d8': 'Daimo Op Inflator',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, true, 'daimo');
+    return toChainLabelMap(this.getInfo().id, chainAddresses, true, 'daimo');
   }
 }
 

@@ -4,7 +4,12 @@ import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata } from '@/utils/fetching.js';
 
 import { Source as BaseSource } from '../../base.js';
-import type { ChainLabelMap, ChainSingleLabelMap, Label } from '../../base.js';
+import type {
+  ChainLabelMap,
+  ChainSingleLabelMap,
+  Label,
+  SourceInfo,
+} from '../../base.js';
 
 import tokenMap from './tokens.json';
 
@@ -20,8 +25,18 @@ type TokenMap = Partial<Record<ChainId, TokenMapValue[]>>;
 
 // Source: DefiLlama Swap page
 class Source extends BaseSource {
-  getName(): string {
-    return 'DefiLlama tokens';
+  getInfo(): SourceInfo {
+    return {
+      name: 'DefiLlama Tokens',
+      id: 'defillama-tokens',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(
@@ -57,6 +72,7 @@ class Source extends BaseSource {
       const value = tokenSymbols.has(asset.symbol) ? asset.name : asset.symbol;
       const label: Label = {
         value,
+        sourceId: this.getInfo().id,
         indexed: true,
         type: 'erc20',
         metadata: {

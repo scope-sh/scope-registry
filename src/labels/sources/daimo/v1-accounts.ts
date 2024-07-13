@@ -3,15 +3,25 @@ import type { Address, Hex } from 'viem';
 
 import daimoV1NameRegistryAbi from '@/abi/daimoV1NameRegistry.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
 const REGISTRY_ADDRESS = '0x4430a644b215a187a3daa5b114fa3f3d9debc17d';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Daimo V1 Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Daimo V1 Accounts',
+      id: 'daimo-v1-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -23,7 +33,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, REGISTRY_ADDRESS, topic);
+    const logs = await getLogs(this.getInfo(), chain, REGISTRY_ADDRESS, topic);
 
     const accounts: Address[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -43,6 +53,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'daimo-v1-account',
             namespace: 'daimo',

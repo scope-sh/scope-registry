@@ -3,7 +3,7 @@ import type { Address, Hex } from 'viem';
 
 import entryPointV0_6_0Abi from '@/abi/entryPointV0_6_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { ENTRYPOINT_0_6_0_ADDRESS } from '@/utils/entryPoint.js';
 import { getLogs } from '@/utils/fetching.js';
@@ -14,8 +14,18 @@ interface Account {
 }
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Entry Point V0.6.0 Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Entry Point V0.6.0 Accounts',
+      id: 'entry-point-v0.6.0-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -27,7 +37,12 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, ENTRYPOINT_0_6_0_ADDRESS, topic);
+    const logs = await getLogs(
+      this.getInfo(),
+      chain,
+      ENTRYPOINT_0_6_0_ADDRESS,
+      topic,
+    );
 
     const accounts: Account[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -50,6 +65,7 @@ class Source extends BaseSource {
           account.sender,
           {
             value: 'Entry Point V0.6.0 Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'entry-point-v0.6.0-account',
             metadata: {

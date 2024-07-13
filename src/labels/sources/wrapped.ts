@@ -43,7 +43,7 @@ import {
 } from '@/utils/chains.js';
 
 import { Source as BaseSource } from '../base.js';
-import type { ChainSingleLabelMap } from '../base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '../base.js';
 
 interface WrappedAsset {
   address: Address;
@@ -52,8 +52,18 @@ interface WrappedAsset {
 }
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Wrapped Native Assets';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Wrapped Native Assets',
+      id: 'wrapped-native-assets',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -198,6 +208,7 @@ class Source extends BaseSource {
     return {
       [chainAsset.address]: {
         value: chainAsset.symbol,
+        sourceId: this.getInfo().id,
         indexed: true,
         type,
         metadata: {

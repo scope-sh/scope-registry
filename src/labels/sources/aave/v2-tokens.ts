@@ -6,6 +6,7 @@ import type {
   ChainLabelMap,
   ChainSingleLabelMap,
   Label,
+  SourceInfo,
 } from '@/labels/base.js';
 import {
   AVALANCHE,
@@ -24,8 +25,18 @@ interface Token {
 }
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Aave V2 Tokens';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Aave V2 Tokens',
+      id: 'aave-v2-tokens',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(
@@ -44,7 +55,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, address, topic);
+    const logs = await getLogs(this.getInfo(), chain, address, topic);
 
     const tokens: Token[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -73,6 +84,7 @@ class Source extends BaseSource {
               token.aToken,
               {
                 value: getTokenLabel(token, 'a-token', previousLabels),
+                sourceId: this.getInfo().id,
                 indexed: true,
                 type: 'aave-v2-atoken',
                 namespace: 'aave-v2',
@@ -86,6 +98,7 @@ class Source extends BaseSource {
                   'stable-debt-token',
                   previousLabels,
                 ),
+                sourceId: this.getInfo().id,
                 indexed: true,
                 type: 'aave-v2-stable-debt-token',
                 namespace: 'aave-v2',
@@ -99,6 +112,7 @@ class Source extends BaseSource {
                   'variable-debt-token',
                   previousLabels,
                 ),
+                sourceId: this.getInfo().id,
                 indexed: true,
                 type: 'aave-v2-variable-debt-token',
                 namespace: 'aave-v2',

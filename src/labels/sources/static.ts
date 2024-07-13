@@ -1,15 +1,25 @@
 import { Address, zeroAddress } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../utils.js';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'Static';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Static',
+      id: 'static',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -24,7 +34,7 @@ class Source extends BaseSource {
       '0xba5ed099633d3b313e4d5f7bdc1305d3c28ba5ed': 'CreateX',
     };
     const chainAddresses = await getDeployed(chain, contracts);
-    return toChainLabelMap({
+    return toChainLabelMap(this.getInfo().id, {
       ...addresses,
       ...chainAddresses,
     });

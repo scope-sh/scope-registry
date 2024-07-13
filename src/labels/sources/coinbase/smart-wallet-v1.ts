@@ -1,15 +1,25 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'Coinbase Smart Wallet V1';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Coinbase Smart Wallet V1',
+      id: 'coinbase-smart-wallet-v1',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -20,7 +30,12 @@ class Source extends BaseSource {
       '0xa270ef92c1e11f1c1f95753c2e56801e8125fa83': 'Limiting Paymaster',
     };
     const chainAddresses = await getDeployed(chain, labels);
-    return toChainLabelMap(chainAddresses, true, 'coinbase-smart-wallet');
+    return toChainLabelMap(
+      this.getInfo().id,
+      chainAddresses,
+      true,
+      'coinbase-smart-wallet',
+    );
   }
 }
 

@@ -4,12 +4,7 @@ import { Address } from 'viem';
 
 import { fetch as fetchLabels } from '@/labels/sources/index.js';
 import { CHAINS } from '@/utils/chains.js';
-import {
-  type LabelWithAddress,
-  removeLabels,
-  addLabels,
-  disconnect,
-} from '@/utils/db.js';
+import { type LabelWithAddress, addLabels, disconnect } from '@/utils/db.js';
 
 for (const chain of CHAINS) {
   const labels = await fetchLabels(chain);
@@ -27,7 +22,6 @@ for (const chain of CHAINS) {
       });
     })
     .flat();
-  await removeLabels(chain);
   await addLabels(chain, labelsWithAddress);
 }
 await disconnect();

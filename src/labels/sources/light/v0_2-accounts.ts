@@ -1,13 +1,27 @@
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainLabelMap, ChainSingleLabelMap } from '@/labels/base.js';
+import type {
+  ChainLabelMap,
+  ChainSingleLabelMap,
+  SourceInfo,
+} from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEntryPoint0_7_0Accounts } from '@/utils/entryPoint.js';
 
 const FACTORY_0_2_ADDRESS = '0x00000000001269b052c004ffb71b47ab22c898b0';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Light V0.2 Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Light V0.2 Accounts',
+      id: 'light-v0_2-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(
@@ -25,6 +39,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'light-account',
             namespace: 'light',

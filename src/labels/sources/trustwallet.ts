@@ -6,6 +6,7 @@ import type {
   ChainLabelMap,
   ChainSingleLabelMap,
   Label,
+  SourceInfo,
 } from '@/labels/base.js';
 import {
   ETHEREUM,
@@ -71,8 +72,18 @@ const githubClient = axios.create({
 });
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Trustwallet';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Trustwallet',
+      id: 'trustwallet',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(
@@ -105,6 +116,7 @@ class Source extends BaseSource {
       const value = tokenSymbols.has(symbol) ? name : symbol;
       const label: Label = {
         value,
+        sourceId: this.getInfo().id,
         indexed: true,
         type: 'erc20',
         metadata: {

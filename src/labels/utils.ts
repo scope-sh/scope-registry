@@ -7,6 +7,7 @@ import type {
 } from './base.js';
 
 function toChainLabelMap(
+  sourceId: string,
   addresses?: Record<Address, string>,
   indexed = true,
   namespaceId?: LabelNamespaceId,
@@ -24,6 +25,7 @@ function toChainLabelMap(
     }
     map[address] = {
       value,
+      sourceId,
       indexed,
       type: typeId,
       namespace: namespaceId,

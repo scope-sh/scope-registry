@@ -3,7 +3,7 @@ import type { Address, Hex } from 'viem';
 
 import safeV141FactoryAbi from '@/abi/safeV141Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -14,8 +14,18 @@ const VALID_SINGLETONS = [
 const FACTORY_ADDRESS = '0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Safe V1.4.1 Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Safe V1.4.1 Accounts',
+      id: 'safe-v1.4.1-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -27,7 +37,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(this.getInfo(), chain, FACTORY_ADDRESS, topic);
 
     const factoryDeployments = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -53,6 +63,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'V1.4.1 Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'safe-v1.4.1-account',
             namespace: 'safe',

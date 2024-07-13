@@ -3,7 +3,7 @@ import type { Address, Hex } from 'viem';
 
 import rhinestoneV1RegistryAbi from '@/abi/rhinestoneV1Registry.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -16,8 +16,18 @@ interface Module {
 const REGISTRY_ADDRESS = '0xe0cde9239d16bef05e62bbf7aa93e420f464c826';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Rhinestone V1 Registry';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Rhinestone V1 Registry',
+      id: 'rhinestone-v1-registry',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -29,7 +39,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, REGISTRY_ADDRESS, topic);
+    const logs = await getLogs(this.getInfo(), chain, REGISTRY_ADDRESS, topic);
 
     const modules: Module[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -53,6 +63,7 @@ class Source extends BaseSource {
           module.address,
           {
             value: 'Module',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'rhinestone-v1-module',
             namespace: 'rhinestone-v1',

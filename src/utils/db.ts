@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
 import { Address, Hex } from 'viem';
@@ -40,11 +40,6 @@ const client = new pg.Client({
 });
 await client.connect();
 
-async function removeLabels(chain: ChainId): Promise<void> {
-  const db = getDb();
-  await db.delete(tableLabels).where(eq(tableLabels.chain, chain));
-}
-
 async function addLabels(
   chain: ChainId,
   labels: LabelWithAddress[],
@@ -58,6 +53,7 @@ async function addLabels(
       return {
         chain,
         address: label.address,
+        sourceId: label.sourceId,
         value: label.value,
         indexed: label.indexed,
         typeId: label.type,
@@ -65,7 +61,20 @@ async function addLabels(
         iconUrl: label.iconUrl,
       };
     });
-    await db.insert(tableLabels).values(labelBatch).execute();
+    await db
+      .insert(tableLabels)
+      .values(labelBatch)
+      .onConflictDoUpdate({
+        target: [tableLabels.chain, tableLabels.address, tableLabels.sourceId],
+        set: {
+          value: sql`excluded.value`,
+          indexed: sql`excluded.indexed`,
+          typeId: sql`excluded.type_id`,
+          namespaceId: sql`excluded.namespace_id`,
+          iconUrl: sql`excluded.icon_url`,
+        },
+      })
+      .execute();
   }
 }
 
@@ -183,7 +192,6 @@ function getDb(): NodePgDatabase {
 }
 
 export {
-  removeLabels,
   addLabels,
   addContractCodes,
   addContracts,

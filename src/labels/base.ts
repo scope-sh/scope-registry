@@ -82,6 +82,7 @@ type LabelMap = Record<ChainId, ChainLabelMap>;
 interface Label {
   value: string;
   indexed: boolean;
+  sourceId: string;
   namespace?: LabelNamespaceId;
   type?: LabelTypeId;
   iconUrl?: string;
@@ -89,8 +90,22 @@ interface Label {
   priority?: number;
 }
 
+interface SourceInterval {
+  seconds: number;
+  minutes: number;
+  hours: number;
+  days: number;
+}
+
+interface SourceInfo {
+  name: string;
+  id: string;
+  interval: SourceInterval;
+  fetchType: 'incremental' | 'full';
+}
+
 abstract class Source {
-  abstract getName(): string;
+  abstract getInfo(): SourceInfo;
   abstract fetch(
     chain: ChainId,
     previousLabels: ChainLabelMap,
@@ -105,5 +120,7 @@ export type {
   LabelTypeId,
   LabelMap,
   SingleLabelMap,
+  SourceInfo,
+  SourceInterval,
   LabelNamespaceId,
 };

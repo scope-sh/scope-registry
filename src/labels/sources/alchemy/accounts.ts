@@ -2,7 +2,11 @@ import { Address, Hex, decodeEventLog, encodeEventTopics } from 'viem';
 
 import entryPoint0_6_0Abi from '@/abi/entryPointV0_6_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap, LabelTypeId } from '@/labels/base.js';
+import type {
+  ChainSingleLabelMap,
+  LabelTypeId,
+  SourceInfo,
+} from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
 import { ENTRYPOINT_0_6_0_ADDRESS } from '@/utils/entryPoint.js';
 import { getDeployed, getLogs } from '@/utils/fetching.js';
@@ -28,8 +32,18 @@ const MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS =
   '0x000000000019d2ee9f2729a65afe20bb0020aefc';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'Alchemy Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Alchemy Accounts',
+      id: 'alchemy-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -59,7 +73,12 @@ class Source extends BaseSource {
         'Multi Owner Light Account v2.0.0',
     };
     const chainContracts = await getDeployed(chain, contracts);
-    const contractLabels = toChainLabelMap(chainContracts, true, 'alchemy');
+    const contractLabels = toChainLabelMap(
+      this.getInfo().id,
+      chainContracts,
+      true,
+      'alchemy',
+    );
 
     const topics = encodeEventTopics({
       abi: entryPoint0_6_0Abi,
@@ -70,6 +89,7 @@ class Source extends BaseSource {
       return {};
     }
     const entryPointLogs = await getLogs(
+      this.getInfo(),
       chain,
       ENTRYPOINT_0_6_0_ADDRESS,
       topic,
@@ -156,6 +176,7 @@ class Source extends BaseSource {
           deployment.account,
           {
             value: labelName,
+            sourceId: this.getInfo().id,
             indexed: false,
             type: labelType,
             namespace: 'alchemy',

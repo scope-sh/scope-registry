@@ -4,6 +4,7 @@ import { AlchemyChain, alchemy } from 'evm-providers';
 import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
 
 import erc20Abi from '@/abi/erc20.js';
+import { SourceInfo } from '@/labels/base.js';
 
 import {
   ETHEREUM,
@@ -15,6 +16,10 @@ import {
 import type { ChainId } from './chains.js';
 import { type Log } from './db.js';
 import { ENTRYPOINT_0_6_0_ADDRESS } from './entryPoint.js';
+import {
+  getMetadata as getSourceMetadata,
+  updateLogBlock as updateSourceMetadataBlock,
+} from './source.js';
 import { getObject, putObject } from './storage.js';
 
 // Bun doesn't support brotli yet
@@ -131,10 +136,10 @@ function getClient(chain: ChainId): PublicClient | null {
 }
 
 async function getLogs(
+  sourceInfo: SourceInfo,
   chain: ChainId,
   address: Address,
   topic0: Hex,
-  predicate?: (log: Log) => boolean,
 ): Promise<Log[]> {
   // Note: changing this would require cleaning up the cache
   function getChunkSize(chain: ChainId, address: Address): number {
@@ -161,7 +166,14 @@ async function getLogs(
   // Read cache chunks one-by-one
   let logs: Log[] = [];
   const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
-  for (let i = 0; i < chunks; i++) {
+  // Get the start block from the source metadata
+  const sourceMetadata = await getSourceMetadata(chain, sourceInfo);
+  const sourceAddressMetadata = sourceMetadata.latestLogBlock[address] || {};
+  const sourceLatestBlock = sourceAddressMetadata[topic0] || -1;
+  const startBlock =
+    sourceInfo.fetchType === 'incremental' ? sourceLatestBlock + 1 : 0;
+  const startChunk = Math.floor(startBlock / chunkSize);
+  for (let i = startChunk; i < chunks; i++) {
     const cacheKey = `${cachePrefix}/${i}.json`;
     const cacheString = await getObject(cacheKey);
     const cache =
@@ -173,6 +185,7 @@ async function getLogs(
   // Fetch new events
   const startingBlock = cacheMetadata ? cacheMetadata.lastBlock + 1 : 0;
   let fromBlock = startingBlock;
+  let newBlocks = 0;
   while (fromBlock <= height) {
     const { logs: pageLogs, nextBlock } = await getLogsPaginated(
       client,
@@ -181,6 +194,7 @@ async function getLogs(
       fromBlock,
     );
     logs = logs.concat(pageLogs);
+    newBlocks += pageLogs.length;
     fromBlock = nextBlock;
   }
   // Write new events to the cache in chunks
@@ -201,12 +215,24 @@ async function getLogs(
   // Update cache metadata
   const metadata = `${cachePrefix}/metadata.json`;
   const newMetadata: LogCacheMetadata = {
-    count: logs.length,
+    count: cacheMetadata.count + newBlocks,
     lastBlock: fromBlock - 1,
   };
   await putObject(metadata, JSON.stringify(newMetadata));
-  // Filter events if needed
-  return predicate ? logs.filter(predicate) : logs;
+  // Update the source metadata
+  if (sourceInfo.fetchType === 'incremental') {
+    await updateSourceMetadataBlock(
+      chain,
+      sourceInfo,
+      sourceMetadata,
+      address,
+      topic0,
+      fromBlock - 1,
+    );
+  }
+  return startBlock === 0
+    ? logs
+    : logs.filter((log) => log.blockNumber >= startBlock);
 }
 
 function getHyperSyncClient(chain: ChainId): AxiosInstance {

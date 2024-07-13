@@ -1,7 +1,7 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 
 import { toChainLabelMap } from '../../utils.js';
 import { ChainId } from '../index.js';
@@ -10,15 +10,25 @@ import addresses from './v1.3.0-addresses.json';
 
 // https://docs.safe.global/advanced/smart-account-supported-networks/v1.3.0
 class Source extends BaseSource {
-  override getName(): string {
-    return 'Safe V1.3.0';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Safe V1.3.0',
+      id: 'safe-v1.3.0',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const chainAddresses = (
       addresses as Partial<Record<ChainId, Record<Address, string>>>
     )[chain];
-    return toChainLabelMap(chainAddresses, true, 'safe');
+    return toChainLabelMap(this.getInfo().id, chainAddresses, true, 'safe');
   }
 }
 

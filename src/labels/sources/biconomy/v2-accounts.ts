@@ -3,7 +3,7 @@ import type { Address, Hex } from 'viem';
 
 import biconomyV2FactoryAbi from '@/abi/biconomyV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
@@ -15,8 +15,18 @@ interface Account {
 const FACTORY_ADDRESS = '0x000000a56aaca3e9a4c479ea6b6cd0dbcb6634f5';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Biconomy V2 Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Biconomy V2 Accounts',
+      id: 'biconomy-v2-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -38,7 +48,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(this.getInfo(), chain, FACTORY_ADDRESS, topic);
 
     const accounts: Account[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -62,6 +72,7 @@ class Source extends BaseSource {
           account.address,
           {
             value: 'Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'biconomy-v2-account',
             namespace: 'biconomy-v2',
@@ -82,7 +93,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(this.getInfo(), chain, FACTORY_ADDRESS, topic);
 
     const accounts: Account[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -106,6 +117,7 @@ class Source extends BaseSource {
           account.address,
           {
             value: 'Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'biconomy-v2-account',
             namespace: 'biconomy-v2',

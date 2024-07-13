@@ -3,15 +3,25 @@ import type { Address, Hex } from 'viem';
 
 import kernelV2FactoryAbi from '@/abi/kernelV2Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
 const FACTORY_ADDRESS = '0x5de4839a76cf55d0c90e2061ef4386d962e15ae3';
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'ZeroDev Kernel V2 Accounts';
+  getInfo(): SourceInfo {
+    return {
+      name: 'ZeroDev Kernel V2 Accounts',
+      id: 'zerodev-kernel-v2-accounts',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -23,7 +33,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, FACTORY_ADDRESS, topic);
+    const logs = await getLogs(this.getInfo(), chain, FACTORY_ADDRESS, topic);
 
     const accounts: Address[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -43,6 +53,7 @@ class Source extends BaseSource {
           account,
           {
             value: 'Account',
+            sourceId: this.getInfo().id,
             indexed: false,
             type: 'kernel-v2-account',
             namespace: 'zerodev-kernel-v2',

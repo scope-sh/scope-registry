@@ -3,7 +3,11 @@ import type { Address, Hex } from 'viem';
 
 import uniswapV3FactoryAbi from '@/abi/uniswapV3Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainLabelMap, ChainSingleLabelMap } from '@/labels/base.js';
+import type {
+  ChainLabelMap,
+  ChainSingleLabelMap,
+  SourceInfo,
+} from '@/labels/base.js';
 import {
   ETHEREUM,
   OPTIMISM,
@@ -30,8 +34,18 @@ interface Pool {
 }
 
 class Source extends BaseSource {
-  getName(): string {
-    return 'Uniswap V3 Pools';
+  getInfo(): SourceInfo {
+    return {
+      name: 'Uniswap V3 Pools',
+      id: 'uniswap-v3-pools',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(
@@ -50,7 +64,7 @@ class Source extends BaseSource {
     if (!topic) {
       return {};
     }
-    const logs = await getLogs(chain, address, topic);
+    const logs = await getLogs(this.getInfo(), chain, address, topic);
 
     const pools: Pool[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -76,6 +90,7 @@ class Source extends BaseSource {
           pool.address,
           {
             value,
+            sourceId: this.getInfo().id,
             indexed: true,
             type: 'uniswap-v3-pool',
             namespace: 'uniswap-v3',

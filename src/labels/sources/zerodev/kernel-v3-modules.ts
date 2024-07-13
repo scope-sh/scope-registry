@@ -1,15 +1,25 @@
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
-import type { ChainSingleLabelMap } from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
 import { ChainId } from '../index.js';
 
 class Source extends BaseSource {
-  override getName(): string {
-    return 'ZeroDev Kernel V3 Modules';
+  getInfo(): SourceInfo {
+    return {
+      name: 'ZeroDev Kernel V3 Modules',
+      id: 'zerodev-kernel-v3-modules',
+      interval: {
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 1,
+      },
+      fetchType: 'full',
+    };
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
@@ -29,6 +39,7 @@ class Source extends BaseSource {
     };
     const chainAddresses = await getDeployed(chain, labels);
     return toChainLabelMap(
+      this.getInfo().id,
       chainAddresses,
       true,
       'zerodev-kernel-v3',
