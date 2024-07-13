@@ -56,11 +56,11 @@ const labels = pgTable(
     id: serial('id').primaryKey(),
     chain: integer('chain').notNull(),
     address: text('address').notNull(),
+    sourceId: text('source_id').notNull(),
     value: text('value').notNull(),
     indexed: boolean('indexed').notNull(),
     typeId: text('type_id'),
     namespaceId: text('namespace_id'),
-    sourceId: text('source_id'),
     iconUrl: text('icon_url'),
   },
   (table) => {
