@@ -43,6 +43,13 @@
       "when": 1720899997549,
       "tag": "0005_brown_proudstar",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1720900671612,
+      "tag": "0006_yellow_terrax",
+      "breakpoints": true
     }
   ]
 }
