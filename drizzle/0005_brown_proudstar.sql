@@ -1,0 +1,1 @@
+ALTER TABLE "labels" ALTER COLUMN "source_id" SET NOT NULL;

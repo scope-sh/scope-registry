@@ -36,6 +36,13 @@
       "when": 1720899260885,
       "tag": "0004_steep_psylocke",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1720899997549,
+      "tag": "0005_brown_proudstar",
+      "breakpoints": true
     }
   ]
 }
