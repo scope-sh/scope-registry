@@ -157,6 +157,7 @@ async function getLogs(
     return 1_000_000;
   }
 
+  const maxLogsPerIncrementalFetch = 1_000_000;
   const chunkSize = getChunkSize(chain, address);
   const client = getHyperSyncClient(chain);
   const height = await getChainHeight(client);
@@ -230,9 +231,11 @@ async function getLogs(
       fromBlock - 1,
     );
   }
-  return startBlock === 0
+  return sourceInfo.fetchType === 'incremental'
     ? logs
-    : logs.filter((log) => log.blockNumber >= startBlock);
+    : logs
+        .filter((log) => log.blockNumber >= startBlock)
+        .slice(maxLogsPerIncrementalFetch);
 }
 
 function getHyperSyncClient(chain: ChainId): AxiosInstance {
