@@ -42,7 +42,7 @@
     "viem": "^2.9.12"
   },
   "devDependencies": {
-    "@types/bun": "^1.0.12",
+    "@types/bun": "^1.1.6",
     "@types/pg": "^8.11.6",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "drizzle-kit": "^0.22.7",
