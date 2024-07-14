@@ -76,7 +76,7 @@ function isTimeToFetch(
     60 * interval.minutes +
     3600 * interval.hours +
     86400 * interval.days;
-  return now - metadata.latestFetch >= intervalSeconds;
+  return now - metadata.latestFetch >= 1000 * intervalSeconds;
 }
 
 export {
