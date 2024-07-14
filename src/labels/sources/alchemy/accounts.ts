@@ -1,22 +1,17 @@
-import { Address, Hex, decodeEventLog, encodeEventTopics } from 'viem';
+import { Address } from 'viem';
 
-import entryPoint0_6_0Abi from '@/abi/entryPointV0_6_0.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type {
+  ChainLabelMap,
   ChainSingleLabelMap,
   LabelTypeId,
   SourceInfo,
 } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
-import { ENTRYPOINT_0_6_0_ADDRESS } from '@/utils/entryPoint.js';
-import { getDeployed, getLogs } from '@/utils/fetching.js';
+import { getEntryPoint0_6_0Accounts } from '@/utils/entryPoint.js';
+import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
-
-interface Deployment {
-  factory: Address;
-  account: Address;
-}
 
 const MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS =
   '0x000000e92d78d90000007f0082006fda09bd5f11';
@@ -42,11 +37,14 @@ class Source extends BaseSource {
         hours: 0,
         days: 1,
       },
-      fetchType: 'full',
+      fetchType: 'incremental',
     };
   }
 
-  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+  async fetch(
+    chain: ChainId,
+    previousLabels: ChainLabelMap,
+  ): Promise<ChainSingleLabelMap> {
     const contracts: Record<Address, string> = {
       '0x000000e92d78d90000007f0082006fda09bd5f11':
         'Multi Owner Modular Account Factory V1.0.0',
@@ -80,73 +78,42 @@ class Source extends BaseSource {
       'alchemy',
     );
 
-    const topics = encodeEventTopics({
-      abi: entryPoint0_6_0Abi,
-      eventName: 'AccountDeployed',
-    });
-    const topic = topics[0];
-    if (!topic) {
-      return {};
-    }
-    const entryPointLogs = await getLogs(
-      this.getInfo(),
-      chain,
-      ENTRYPOINT_0_6_0_ADDRESS,
-      topic,
+    const multiOwnerModularAccountFactoryV1_0_0Labels = this.#getAccountLabels(
+      previousLabels,
+      MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
+      'alchemy-v1-multi-owner-modular-account',
+      'Multi Owner Modular Account V1',
     );
-    const deployments = entryPointLogs.map((log) => {
-      const decodedLog = decodeEventLog({
-        abi: entryPoint0_6_0Abi,
-        data: log.data,
-        topics: log.topics as [Hex, ...Hex[]],
-      });
-      if (decodedLog.eventName !== 'AccountDeployed') {
-        throw new Error('Invalid event name');
-      }
-      return {
-        factory: decodedLog.args.factory.toLowerCase() as Address,
-        account: decodedLog.args.sender.toLowerCase() as Address,
-      };
-    });
-
-    const multiOwnerModularAccountFactoryV1_0_0Labels =
-      await this.#getAccountLabels(
-        deployments,
-        MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
-        'alchemy-v1-multi-owner-modular-account',
-        'Multi Owner Modular Account V1',
-      );
-    const lightAccountFactoryV1_0_1Labels = await this.#getAccountLabels(
-      deployments,
+    const lightAccountFactoryV1_0_1Labels = this.#getAccountLabels(
+      previousLabels,
       LIGHT_ACCOUNT_FACTORY_V1_0_1_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.1',
     );
-    const lightAccountFactoryV1_0_2Labels = await this.#getAccountLabels(
-      deployments,
+    const lightAccountFactoryV1_0_2Labels = this.#getAccountLabels(
+      previousLabels,
       LIGHT_ACCOUNT_FACTORY_V1_0_2_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.2',
     );
-    const lightAccountFactoryV1_1_0Labels = await this.#getAccountLabels(
-      deployments,
+    const lightAccountFactoryV1_1_0Labels = this.#getAccountLabels(
+      previousLabels,
       LIGHT_ACCOUNT_FACTORY_V1_1_0_ADDRESS,
       'alchemy-v1.1-light-account',
       'Light Account V1.1',
     );
-    const lightAccountFactoryV2_0_0Labels = await this.#getAccountLabels(
-      deployments,
+    const lightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
+      previousLabels,
       LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
       'alchemy-v2-light-account',
       'Light Account V2',
     );
-    const multiOwnerLightAccountFactoryV2_0_0Labels =
-      await this.#getAccountLabels(
-        deployments,
-        MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
-        'alchemy-v2-multi-owner-light-account',
-        'Multi Owner Light Account V2',
-      );
+    const multiOwnerLightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
+      previousLabels,
+      MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
+      'alchemy-v2-multi-owner-light-account',
+      'Multi Owner Light Account V2',
+    );
 
     // Join all the labels
     return {
@@ -160,20 +127,18 @@ class Source extends BaseSource {
     };
   }
 
-  async #getAccountLabels(
-    deployments: Deployment[],
+  #getAccountLabels(
+    previousLabels: ChainLabelMap,
     factory: Address,
     labelType: LabelTypeId,
     labelName: string,
-  ): Promise<ChainSingleLabelMap> {
-    const factoryDeployments = deployments.filter(
-      (deployment) => deployment.factory === factory,
-    );
+  ): ChainSingleLabelMap {
+    const factoryAccounts = getEntryPoint0_6_0Accounts(previousLabels, factory);
 
     return Object.fromEntries(
-      factoryDeployments.map((deployment) => {
+      factoryAccounts.map((account) => {
         return [
-          deployment.account,
+          account,
           {
             value: labelName,
             sourceId: this.getInfo().id,
