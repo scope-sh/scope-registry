@@ -231,6 +231,7 @@ async function getLogs(
       fromBlock - 1,
     );
   }
+  console.log('getLogs', chain, address, topic0, logs.length);
   return sourceInfo.fetchType === 'incremental'
     ? logs
     : logs
