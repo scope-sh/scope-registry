@@ -45,6 +45,7 @@ class Source extends BaseSource {
       topic,
     );
     console.log('Fetching Entry Point V0.6.0 Accounts: 2', logs.length);
+
     const accounts: Account[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
         abi: entryPointV0_6_0Abi,
