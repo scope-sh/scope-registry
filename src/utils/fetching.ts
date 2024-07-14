@@ -220,6 +220,13 @@ async function getLogs(
     lastBlock: fromBlock - 1,
   };
   await putObject(metadata, JSON.stringify(newMetadata));
+  const sourceLastLog =
+    sourceInfo.fetchType === 'incremental'
+      ? logs[maxLogsPerIncrementalFetch]
+      : undefined;
+  const sourceLastBlock = sourceLastLog
+    ? sourceLastLog.blockNumber
+    : fromBlock - 1;
   // Update the source metadata
   if (sourceInfo.fetchType === 'incremental') {
     await updateSourceMetadataBlock(
@@ -228,15 +235,16 @@ async function getLogs(
       sourceMetadata,
       address,
       topic0,
-      fromBlock - 1,
+      sourceLastBlock,
     );
   }
   console.log('getLogs', chain, address, topic0, logs.length);
-  return sourceInfo.fetchType === 'incremental'
+  return sourceInfo.fetchType !== 'incremental'
     ? logs
-    : logs
-        .filter((log) => log.blockNumber >= startBlock)
-        .slice(0, maxLogsPerIncrementalFetch);
+    : logs.filter(
+        (log) =>
+          log.blockNumber >= startBlock && log.blockNumber <= sourceLastBlock,
+      );
 }
 
 function getHyperSyncClient(chain: ChainId): AxiosInstance {
