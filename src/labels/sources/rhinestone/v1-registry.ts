@@ -26,7 +26,7 @@ class Source extends BaseSource {
         hours: 0,
         days: 1,
       },
-      fetchType: 'full',
+      fetchType: 'incremental',
     };
   }
 
