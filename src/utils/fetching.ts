@@ -232,7 +232,6 @@ async function getLogs(
     await updateSourceMetadataBlock(
       chain,
       sourceInfo,
-      sourceMetadata,
       address,
       topic0,
       sourceLastBlock,

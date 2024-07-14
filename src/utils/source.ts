@@ -43,10 +43,10 @@ async function getMetadata(
 async function updateFetchTimestamp(
   chain: ChainId,
   sourceInfo: SourceInfo,
-  metadata: SourceMetadata,
 ): Promise<void> {
   const id = sourceInfo.id;
   const metadataKey = `sources/${chain}/${id}.json`;
+  const metadata = await getMetadata(chain, sourceInfo);
   metadata.latestFetch = Date.now();
   await putObject(metadataKey, JSON.stringify(metadata));
 }
@@ -54,13 +54,13 @@ async function updateFetchTimestamp(
 async function updateLogBlock(
   chain: ChainId,
   sourceInfo: SourceInfo,
-  metadata: SourceMetadata,
   address: Address,
   topic0: Hex,
   startBlock: number,
 ): Promise<void> {
   const id = sourceInfo.id;
   const metadataKey = `sources/${chain}/${id}.json`;
+  const metadata = await getMetadata(chain, sourceInfo);
   metadata.latestLogBlock[address] = metadata.latestLogBlock[address] || {};
   metadata.latestLogBlock[address][topic0] = startBlock;
   await putObject(metadataKey, JSON.stringify(metadata));

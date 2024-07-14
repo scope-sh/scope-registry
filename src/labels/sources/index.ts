@@ -116,7 +116,7 @@ async function fetch(chain: ChainId): Promise<ChainLabelMap> {
       }
       labels[address] = addressLabels;
     }
-    await updateSourceFetchTimestamp(chain, info, metadata);
+    await updateSourceFetchTimestamp(chain, info);
   }
   return labels;
 }
