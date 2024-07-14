@@ -27,7 +27,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@envio-dev/hypersync-client": "^0.1.9",
     "@ethereum-sourcify/lib-sourcify": "^1.8.0",
     "@oneidentity/zstd-js": "^1.0.3",
     "axios": "^1.7.2",
