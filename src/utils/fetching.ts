@@ -236,7 +236,7 @@ async function getLogs(
     ? logs
     : logs
         .filter((log) => log.blockNumber >= startBlock)
-        .slice(maxLogsPerIncrementalFetch);
+        .slice(0, maxLogsPerIncrementalFetch);
 }
 
 function getHyperSyncClient(chain: ChainId): AxiosInstance {
