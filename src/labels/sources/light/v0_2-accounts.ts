@@ -16,9 +16,9 @@ class Source extends BaseSource {
       id: 'light-v0_2-accounts',
       interval: {
         seconds: 0,
-        minutes: 0,
+        minutes: 1,
         hours: 0,
-        days: 1,
+        days: 0,
       },
       fetchType: 'incremental',
     };

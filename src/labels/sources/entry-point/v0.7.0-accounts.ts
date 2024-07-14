@@ -20,9 +20,9 @@ class Source extends BaseSource {
       id: 'entry-point-v0.7.0-accounts',
       interval: {
         seconds: 0,
-        minutes: 0,
+        minutes: 1,
         hours: 0,
-        days: 1,
+        days: 0,
       },
       fetchType: 'incremental',
     };

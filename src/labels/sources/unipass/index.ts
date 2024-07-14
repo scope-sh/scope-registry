@@ -12,9 +12,9 @@ class Source extends BaseSource {
       id: 'unipass',
       interval: {
         seconds: 0,
-        minutes: 0,
+        minutes: 1,
         hours: 0,
-        days: 1,
+        days: 0,
       },
       fetchType: 'incremental',
     };

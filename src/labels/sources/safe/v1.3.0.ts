@@ -16,9 +16,9 @@ class Source extends BaseSource {
       id: 'safe-v1.3.0',
       interval: {
         seconds: 0,
-        minutes: 0,
+        minutes: 1,
         hours: 0,
-        days: 1,
+        days: 0,
       },
       fetchType: 'incremental',
     };
