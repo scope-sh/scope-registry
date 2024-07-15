@@ -56,13 +56,13 @@ async function updateLogBlock(
   sourceInfo: SourceInfo,
   address: Address,
   topic0: Hex,
-  startBlock: number,
+  latestBlock: number,
 ): Promise<void> {
   const id = sourceInfo.id;
   const metadataKey = `sources/${chain}/${id}.json`;
   const metadata = await getMetadata(chain, sourceInfo);
   metadata.latestLogBlock[address] = metadata.latestLogBlock[address] || {};
-  metadata.latestLogBlock[address][topic0] = startBlock;
+  metadata.latestLogBlock[address][topic0] = latestBlock;
   await putObject(metadataKey, JSON.stringify(metadata));
 }
 

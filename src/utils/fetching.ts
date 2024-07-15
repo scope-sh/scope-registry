@@ -141,6 +141,56 @@ async function getLogs(
   address: Address,
   topic0: Hex,
 ): Promise<Log[]> {
+  // Read cache metadata
+  const cachePrefix = `events/${chain}/${address}/${topic0}`;
+  const cacheMetadata = await getLogCacheMetadata(cachePrefix);
+  const { logs, newBlocks, startBlock, nextBlock } = await fetchLogs(
+    sourceInfo,
+    chain,
+    address,
+    topic0,
+    cachePrefix,
+    cacheMetadata,
+  );
+  // Update cache metadata
+  const metadata = `${cachePrefix}/metadata.json`;
+  const newMetadata: LogCacheMetadata = {
+    count: cacheMetadata.count + newBlocks,
+    lastBlock: nextBlock - 1,
+  };
+  await putObject(metadata, JSON.stringify(newMetadata));
+  // Update the source metadata
+  if (sourceInfo.fetchType === 'incremental') {
+    await updateSourceMetadataBlock(
+      chain,
+      sourceInfo,
+      address,
+      topic0,
+      nextBlock - 1,
+    );
+  }
+  console.log('getLogs', chain, address, topic0, logs.length);
+  return sourceInfo.fetchType !== 'incremental'
+    ? logs
+    : logs.filter(
+        (log) =>
+          log.blockNumber >= startBlock && log.blockNumber <= nextBlock - 1,
+      );
+}
+
+async function fetchLogs(
+  sourceInfo: SourceInfo,
+  chain: ChainId,
+  address: Address,
+  topic0: Hex,
+  cachePrefix: string,
+  cacheMetadata: LogCacheMetadata,
+): Promise<{
+  logs: Log[];
+  newBlocks: number;
+  startBlock: number;
+  nextBlock: number;
+}> {
   // Note: changing this would require cleaning up the cache
   function getChunkSize(chain: ChainId, address: Address): number {
     // Polygon EntryPoint event list is too large for a standard chunk size
@@ -161,9 +211,6 @@ async function getLogs(
   const chunkSize = getChunkSize(chain, address);
   const client = getHyperSyncClient(chain);
   const height = await getChainHeight(client);
-  // Read cache metadata
-  const cachePrefix = `events/${chain}/${address}/${topic0}`;
-  const cacheMetadata = await getLogCacheMetadata(cachePrefix);
   // Read cache chunks one-by-one
   let logs: Log[] = [];
   const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
@@ -181,6 +228,21 @@ async function getLogs(
       cacheString === null ? null : (JSON.parse(cacheString) as Log[]);
     if (cache) {
       logs = logs.concat(cache);
+    }
+    if (
+      sourceInfo.fetchType === 'incremental' &&
+      logs.length >= maxLogsPerIncrementalFetch
+    ) {
+      const lastLog = logs.at(-1);
+      if (!lastLog) {
+        throw new Error('Unable to get the last log');
+      }
+      return {
+        logs,
+        newBlocks: 0,
+        startBlock,
+        nextBlock: lastLog.blockNumber + 1,
+      };
     }
   }
   // Fetch new events
@@ -213,37 +275,13 @@ async function getLogs(
     const cacheKey = `${cachePrefix}/${i}.json`;
     await putObject(cacheKey, JSON.stringify(chunkEvents));
   }
-  // Update cache metadata
-  const metadata = `${cachePrefix}/metadata.json`;
-  const newMetadata: LogCacheMetadata = {
-    count: cacheMetadata.count + newBlocks,
-    lastBlock: fromBlock - 1,
+
+  return {
+    logs,
+    newBlocks,
+    startBlock,
+    nextBlock: fromBlock,
   };
-  await putObject(metadata, JSON.stringify(newMetadata));
-  const sourceLastLog =
-    sourceInfo.fetchType === 'incremental'
-      ? logs[maxLogsPerIncrementalFetch]
-      : undefined;
-  const sourceLastBlock = sourceLastLog
-    ? sourceLastLog.blockNumber
-    : fromBlock - 1;
-  // Update the source metadata
-  if (sourceInfo.fetchType === 'incremental') {
-    await updateSourceMetadataBlock(
-      chain,
-      sourceInfo,
-      address,
-      topic0,
-      sourceLastBlock,
-    );
-  }
-  console.log('getLogs', chain, address, topic0, logs.length);
-  return sourceInfo.fetchType !== 'incremental'
-    ? logs
-    : logs.filter(
-        (log) =>
-          log.blockNumber >= startBlock && log.blockNumber <= sourceLastBlock,
-      );
 }
 
 function getHyperSyncClient(chain: ChainId): AxiosInstance {
