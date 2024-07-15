@@ -20,12 +20,10 @@ async function getEntryPoint0_6_0Accounts(
   chain: ChainId,
   factory?: Address,
 ): Promise<Address[]> {
-  console.log('getEntryPoint0_6_0Accounts 1');
   const topics = encodeEventTopics({
     abi: entryPointV0_6_0Abi,
     eventName: 'AccountDeployed',
   });
-  console.log('getEntryPoint0_6_0Accounts 2');
   const topic = topics[0];
   if (!topic) {
     return [];
@@ -36,7 +34,6 @@ async function getEntryPoint0_6_0Accounts(
     ENTRYPOINT_0_6_0_ADDRESS,
     topic,
   );
-  console.log('getEntryPoint0_6_0Accounts 3', logs.length);
 
   const accounts: Account[] = logs.map((log) => {
     const decodedLog = decodeEventLog({
@@ -52,7 +49,6 @@ async function getEntryPoint0_6_0Accounts(
       factory: decodedLog.args.factory.toLowerCase() as Address,
     };
   });
-  console.log('getEntryPoint0_6_0Accounts 4', accounts.length);
 
   return accounts
     .filter((account) => !factory || account.factory === factory)
