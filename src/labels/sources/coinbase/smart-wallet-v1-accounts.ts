@@ -21,11 +21,13 @@ class Source extends BaseSource {
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+    console.log('fetch 1');
     const accounts = await getEntryPoint0_6_0Accounts(
       this.getInfo(),
       chain,
       FACTORY_ADDRESS,
     );
+    console.log('fetch 2', accounts.length);
 
     return Object.fromEntries(
       accounts.map((account) => {
