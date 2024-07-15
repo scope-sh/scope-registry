@@ -87,7 +87,6 @@ interface Label {
   type?: LabelTypeId;
   iconUrl?: string;
   metadata?: Record<string, unknown>;
-  priority?: number;
 }
 
 interface SourceInterval {

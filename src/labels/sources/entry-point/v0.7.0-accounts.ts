@@ -30,7 +30,6 @@ class Source extends BaseSource {
             sourceId: this.getInfo().id,
             indexed: false,
             type: 'entry-point-v0.7.0-account',
-            priority: 10,
           },
         ];
       }),

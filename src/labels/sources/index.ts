@@ -105,7 +105,6 @@ async function fetch(chain: ChainId): Promise<ChainLabelMap> {
         continue;
       }
       const addressLabels = labels[address] || [];
-      addressLabels.sort((a, b) => (a.priority || 0) - (b.priority || 0));
       // Append a label if there is no label with the same type
       const hasSameType = addressLabels.some(
         (label) =>
