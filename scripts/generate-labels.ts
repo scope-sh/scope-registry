@@ -16,8 +16,6 @@ for (const chain of CHAINS) {
           ...label,
           // Metadata is used to generate the labels, remove it
           metadata: undefined,
-          // Priority is used to sort the list, remove it
-          priority: undefined,
         };
       });
     })
