@@ -74,42 +74,44 @@ class Source extends BaseSource {
       'alchemy',
     );
 
-    const multiOwnerModularAccountFactoryV1_0_0Labels = this.#getAccountLabels(
-      chain,
-      MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
-      'alchemy-v1-multi-owner-modular-account',
-      'Multi Owner Modular Account V1',
-    );
-    const lightAccountFactoryV1_0_1Labels = this.#getAccountLabels(
+    const multiOwnerModularAccountFactoryV1_0_0Labels =
+      await this.#getAccountLabels(
+        chain,
+        MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
+        'alchemy-v1-multi-owner-modular-account',
+        'Multi Owner Modular Account V1',
+      );
+    const lightAccountFactoryV1_0_1Labels = await this.#getAccountLabels(
       chain,
       LIGHT_ACCOUNT_FACTORY_V1_0_1_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.1',
     );
-    const lightAccountFactoryV1_0_2Labels = this.#getAccountLabels(
+    const lightAccountFactoryV1_0_2Labels = await this.#getAccountLabels(
       chain,
       LIGHT_ACCOUNT_FACTORY_V1_0_2_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.2',
     );
-    const lightAccountFactoryV1_1_0Labels = this.#getAccountLabels(
+    const lightAccountFactoryV1_1_0Labels = await this.#getAccountLabels(
       chain,
       LIGHT_ACCOUNT_FACTORY_V1_1_0_ADDRESS,
       'alchemy-v1.1-light-account',
       'Light Account V1.1',
     );
-    const lightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
+    const lightAccountFactoryV2_0_0Labels = await this.#getAccountLabels(
       chain,
       LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
       'alchemy-v2-light-account',
       'Light Account V2',
     );
-    const multiOwnerLightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
-      chain,
-      MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
-      'alchemy-v2-multi-owner-light-account',
-      'Multi Owner Light Account V2',
-    );
+    const multiOwnerLightAccountFactoryV2_0_0Labels =
+      await this.#getAccountLabels(
+        chain,
+        MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
+        'alchemy-v2-multi-owner-light-account',
+        'Multi Owner Light Account V2',
+      );
 
     // Join all the labels
     return {
