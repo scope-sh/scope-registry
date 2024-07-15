@@ -148,8 +148,6 @@ const sources: Source[] = [
   new EnsNamesSource(),
   new FarcasterSource(),
   // Account Abstraction
-  new EntryPointV0_6_0Source(),
-  new EntryPointV0_7_0Source(),
   new AlchemyInfraSource(),
   new AlchemyAccountSource(),
   new BiconomyInfraSource(),
@@ -194,6 +192,8 @@ const sources: Source[] = [
   new ZeroDevKernelV3AccountSource(),
   new ZeroDevKernelV3ModuleSource(),
   new ZeroDevKernelV3Source(),
+  new EntryPointV0_6_0Source(),
+  new EntryPointV0_7_0Source(),
 ];
 
 export { fetch };
