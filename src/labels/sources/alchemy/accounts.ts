@@ -7,7 +7,10 @@ import type {
   SourceInfo,
 } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
-import { getEntryPoint0_6_0Accounts } from '@/utils/entryPoint.js';
+import {
+  type Account,
+  getEntryPoint0_6_0Accounts,
+} from '@/utils/entryPoint.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
@@ -74,44 +77,43 @@ class Source extends BaseSource {
       'alchemy',
     );
 
-    const multiOwnerModularAccountFactoryV1_0_0Labels =
-      await this.#getAccountLabels(
-        chain,
-        MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
-        'alchemy-v1-multi-owner-modular-account',
-        'Multi Owner Modular Account V1',
-      );
-    const lightAccountFactoryV1_0_1Labels = await this.#getAccountLabels(
-      chain,
+    const accounts = await getEntryPoint0_6_0Accounts(this.getInfo(), chain);
+    const multiOwnerModularAccountFactoryV1_0_0Labels = this.#getAccountLabels(
+      accounts,
+      MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
+      'alchemy-v1-multi-owner-modular-account',
+      'Multi Owner Modular Account V1',
+    );
+    const lightAccountFactoryV1_0_1Labels = this.#getAccountLabels(
+      accounts,
       LIGHT_ACCOUNT_FACTORY_V1_0_1_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.1',
     );
-    const lightAccountFactoryV1_0_2Labels = await this.#getAccountLabels(
-      chain,
+    const lightAccountFactoryV1_0_2Labels = this.#getAccountLabels(
+      accounts,
       LIGHT_ACCOUNT_FACTORY_V1_0_2_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.2',
     );
-    const lightAccountFactoryV1_1_0Labels = await this.#getAccountLabels(
-      chain,
+    const lightAccountFactoryV1_1_0Labels = this.#getAccountLabels(
+      accounts,
       LIGHT_ACCOUNT_FACTORY_V1_1_0_ADDRESS,
       'alchemy-v1.1-light-account',
       'Light Account V1.1',
     );
-    const lightAccountFactoryV2_0_0Labels = await this.#getAccountLabels(
-      chain,
+    const lightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
+      accounts,
       LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
       'alchemy-v2-light-account',
       'Light Account V2',
     );
-    const multiOwnerLightAccountFactoryV2_0_0Labels =
-      await this.#getAccountLabels(
-        chain,
-        MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
-        'alchemy-v2-multi-owner-light-account',
-        'Multi Owner Light Account V2',
-      );
+    const multiOwnerLightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
+      accounts,
+      MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
+      'alchemy-v2-multi-owner-light-account',
+      'Multi Owner Light Account V2',
+    );
 
     // Join all the labels
     return {
@@ -126,21 +128,19 @@ class Source extends BaseSource {
   }
 
   async #getAccountLabels(
-    chain: ChainId,
+    accounts: Account[],
     factory: Address,
     labelType: LabelTypeId,
     labelName: string,
   ): Promise<ChainSingleLabelMap> {
-    const factoryAccounts = await getEntryPoint0_6_0Accounts(
-      this.getInfo(),
-      chain,
-      factory,
+    const factoryAccounts = accounts.filter(
+      (account) => account.factory === factory,
     );
 
     return Object.fromEntries(
       factoryAccounts.map((account) => {
         return [
-          account,
+          account.sender,
           {
             value: labelName,
             sourceId: this.getInfo().id,

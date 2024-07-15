@@ -18,8 +18,7 @@ interface Account {
 async function getEntryPoint0_6_0Accounts(
   sourceInfo: SourceInfo,
   chain: ChainId,
-  factory?: Address,
-): Promise<Address[]> {
+): Promise<Account[]> {
   const topics = encodeEventTopics({
     abi: entryPointV0_6_0Abi,
     eventName: 'AccountDeployed',
@@ -50,16 +49,13 @@ async function getEntryPoint0_6_0Accounts(
     };
   });
 
-  return accounts
-    .filter((account) => !factory || account.factory === factory)
-    .map((account) => account.sender);
+  return accounts;
 }
 
 async function getEntryPoint0_7_0Accounts(
   sourceInfo: SourceInfo,
   chain: ChainId,
-  factory?: Address,
-): Promise<Address[]> {
+): Promise<Account[]> {
   const topics = encodeEventTopics({
     abi: entryPointV0_7_0Abi,
     eventName: 'AccountDeployed',
@@ -90,9 +86,7 @@ async function getEntryPoint0_7_0Accounts(
     };
   });
 
-  return accounts
-    .filter((account) => !factory || account.factory === factory)
-    .map((account) => account.sender);
+  return accounts;
 }
 
 export {
@@ -101,3 +95,4 @@ export {
   getEntryPoint0_6_0Accounts,
   getEntryPoint0_7_0Accounts,
 };
+export type { Account };
