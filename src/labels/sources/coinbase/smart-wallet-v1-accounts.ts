@@ -1,9 +1,5 @@
 import { Source as BaseSource } from '@/labels/base.js';
-import type {
-  ChainLabelMap,
-  ChainSingleLabelMap,
-  SourceInfo,
-} from '@/labels/base.js';
+import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getEntryPoint0_6_0Accounts } from '@/utils/entryPoint.js';
 
@@ -24,12 +20,10 @@ class Source extends BaseSource {
     };
   }
 
-  async fetch(
-    chain: ChainId,
-    previousLabels: ChainLabelMap,
-  ): Promise<ChainSingleLabelMap> {
-    const accounts = getEntryPoint0_6_0Accounts(
-      previousLabels,
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+    const accounts = await getEntryPoint0_6_0Accounts(
+      this.getInfo(),
+      chain,
       FACTORY_ADDRESS,
     );
 

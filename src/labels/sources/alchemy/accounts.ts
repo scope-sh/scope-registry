@@ -2,7 +2,6 @@ import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
 import type {
-  ChainLabelMap,
   ChainSingleLabelMap,
   LabelTypeId,
   SourceInfo,
@@ -41,10 +40,7 @@ class Source extends BaseSource {
     };
   }
 
-  async fetch(
-    chain: ChainId,
-    previousLabels: ChainLabelMap,
-  ): Promise<ChainSingleLabelMap> {
+  async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const contracts: Record<Address, string> = {
       '0x000000e92d78d90000007f0082006fda09bd5f11':
         'Multi Owner Modular Account Factory V1.0.0',
@@ -79,37 +75,37 @@ class Source extends BaseSource {
     );
 
     const multiOwnerModularAccountFactoryV1_0_0Labels = this.#getAccountLabels(
-      previousLabels,
+      chain,
       MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
       'alchemy-v1-multi-owner-modular-account',
       'Multi Owner Modular Account V1',
     );
     const lightAccountFactoryV1_0_1Labels = this.#getAccountLabels(
-      previousLabels,
+      chain,
       LIGHT_ACCOUNT_FACTORY_V1_0_1_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.1',
     );
     const lightAccountFactoryV1_0_2Labels = this.#getAccountLabels(
-      previousLabels,
+      chain,
       LIGHT_ACCOUNT_FACTORY_V1_0_2_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.2',
     );
     const lightAccountFactoryV1_1_0Labels = this.#getAccountLabels(
-      previousLabels,
+      chain,
       LIGHT_ACCOUNT_FACTORY_V1_1_0_ADDRESS,
       'alchemy-v1.1-light-account',
       'Light Account V1.1',
     );
     const lightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
-      previousLabels,
+      chain,
       LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
       'alchemy-v2-light-account',
       'Light Account V2',
     );
     const multiOwnerLightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
-      previousLabels,
+      chain,
       MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
       'alchemy-v2-multi-owner-light-account',
       'Multi Owner Light Account V2',
@@ -127,13 +123,17 @@ class Source extends BaseSource {
     };
   }
 
-  #getAccountLabels(
-    previousLabels: ChainLabelMap,
+  async #getAccountLabels(
+    chain: ChainId,
     factory: Address,
     labelType: LabelTypeId,
     labelName: string,
-  ): ChainSingleLabelMap {
-    const factoryAccounts = getEntryPoint0_6_0Accounts(previousLabels, factory);
+  ): Promise<ChainSingleLabelMap> {
+    const factoryAccounts = await getEntryPoint0_6_0Accounts(
+      this.getInfo(),
+      chain,
+      factory,
+    );
 
     return Object.fromEntries(
       factoryAccounts.map((account) => {
