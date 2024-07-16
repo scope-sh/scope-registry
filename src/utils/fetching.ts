@@ -170,7 +170,6 @@ async function getLogs(
       nextBlock - 1,
     );
   }
-  console.log('getLogs', chain, address, topic0, logs.length);
   return sourceInfo.fetchType !== 'incremental'
     ? logs
     : logs.filter(
@@ -192,7 +191,6 @@ async function fetchLogs(
   startBlock: number;
   nextBlock: number;
 }> {
-  console.log('fetchLogs 1', chain, address, topic0);
   const maxLogsPerIncrementalFetch = 1_000_000;
   const chunkSize = 100_000;
   const client = getHyperSyncClient(chain);
@@ -207,9 +205,7 @@ async function fetchLogs(
   const startBlock =
     sourceInfo.fetchType === 'incremental' ? sourceLatestBlock + 1 : 0;
   const startChunk = Math.floor(startBlock / chunkSize);
-  console.log('fetchLogs 2', startBlock, chunkSize, startChunk, chunks);
   for (let i = startChunk; i < chunks; i++) {
-    console.log('fetchLogs 3', i, chunks, logs.length);
     const cacheKey = `${cachePrefix}/${i}.json`;
     const cacheString = await getObject(cacheKey);
     const cache =
