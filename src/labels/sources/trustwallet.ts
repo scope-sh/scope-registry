@@ -93,13 +93,13 @@ class Source extends BaseSource {
     const labels = {} as ChainSingleLabelMap;
     const assets = await this.#getAssets(chain);
     const chainMetadata = await getErc20Metadata(chain, assets);
-    const tokenSymbols = new Set<string>();
+    const tokenValues = new Set<string>();
     for (const addressLabels of Object.values(previousLabels)) {
       const erc20Labels = addressLabels.filter(
         (label) => label.type === 'erc20',
       );
       for (const label of erc20Labels) {
-        tokenSymbols.add(label.value);
+        tokenValues.add(label.value);
       }
     }
     for (const addressString in chainMetadata) {
@@ -113,7 +113,8 @@ class Source extends BaseSource {
         continue;
       }
       // Prevent using token symbol as a label value for multiple tokens
-      const value = tokenSymbols.has(symbol) ? name : symbol;
+      const value = tokenValues.has(symbol) ? name : symbol;
+      tokenValues.add(value);
       const label: Label = {
         value,
         sourceId: this.getInfo().id,

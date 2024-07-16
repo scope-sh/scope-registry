@@ -117,18 +117,19 @@ class Source extends BaseSource {
         symbol: chainMetadata[address]?.symbol || symbol,
       };
     });
-    const tokenSymbols = new Set<string>();
+    const tokenValues = new Set<string>();
     for (const addressLabels of Object.values(previousLabels)) {
       const erc20Labels = addressLabels.filter(
         (label) => label.type === 'erc20',
       );
       for (const label of erc20Labels) {
-        tokenSymbols.add(label.value);
+        tokenValues.add(label.value);
       }
     }
     for (const asset of labelAssets) {
       // Prevent using token symbol as a label value for multiple tokens
-      const value = tokenSymbols.has(asset.symbol) ? asset.name : asset.symbol;
+      const value = tokenValues.has(asset.symbol) ? asset.name : asset.symbol;
+      tokenValues.add(value);
       const label: Label = {
         value,
         sourceId: this.getInfo().id,
