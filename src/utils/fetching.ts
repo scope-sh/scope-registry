@@ -15,7 +15,6 @@ import {
 } from './chains.js';
 import type { ChainId } from './chains.js';
 import { type Log } from './db.js';
-import { ENTRYPOINT_0_6_0_ADDRESS } from './entryPoint.js';
 import {
   getMetadata as getSourceMetadata,
   updateLogBlock as updateSourceMetadataBlock,
@@ -193,25 +192,9 @@ async function fetchLogs(
   startBlock: number;
   nextBlock: number;
 }> {
-  // Note: changing this would require cleaning up the cache
-  function getChunkSize(chain: ChainId, address: Address): number {
-    // Polygon EntryPoint event list is too large for a standard chunk size
-    if (chain === POLYGON && address === ENTRYPOINT_0_6_0_ADDRESS) {
-      return 100_000;
-    }
-    // Legacy ENS ETH registrar event list is too large for a standard chunk size
-    if (
-      chain === ETHEREUM &&
-      address === '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5'
-    ) {
-      return 100_000;
-    }
-    return 1_000_000;
-  }
-
   console.log('fetchLogs 1', chain, address, topic0);
   const maxLogsPerIncrementalFetch = 1_000_000;
-  const chunkSize = getChunkSize(chain, address);
+  const chunkSize = 100_000;
   const client = getHyperSyncClient(chain);
   const height = await getChainHeight(client);
   // Read cache chunks one-by-one
