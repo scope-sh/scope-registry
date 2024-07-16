@@ -29,6 +29,8 @@ type LabelTypeId =
   | 'erc7579-module'
   | 'fun-v1-account'
   | 'light-account'
+  | 'nani-v0-account'
+  | 'nani-v1-account'
   | 'patch-wallet-v1-account'
   | 'rhinestone-v1-module'
   | 'safe-v1.3.0-account'

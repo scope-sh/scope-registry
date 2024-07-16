@@ -42,6 +42,8 @@ import LightV0_1Source from './light/v0_1.js';
 import LightV0_2AccountSource from './light/v0_2-accounts.js';
 import LightV0_2Source from './light/v0_2.js';
 import NaniSource from './nani/index.js';
+import NaniV0AccountSource from './nani/v0-accounts.js';
+import NaniV1AccountSource from './nani/v1-accounts.js';
 import OpenfortSource from './openfort/index.js';
 import OpenseaCollectionSource from './opensea/collections.js';
 import OpenseaSeaportSource from './opensea/seaport.js';
@@ -167,6 +169,8 @@ const sources: Source[] = [
   new LightV0_2AccountSource(),
   new LightV0_2Source(),
   new NaniSource(),
+  new NaniV0AccountSource(),
+  new NaniV1AccountSource(),
   new OpenfortSource(),
   new ParticleSource(),
   new PatchWalletV1AccountSource(),
