@@ -207,15 +207,18 @@ async function fetchLogs(
     return 1_000_000;
   }
 
+  console.log('fetchLogs 1');
   const maxLogsPerIncrementalFetch = 1_000_000;
   const chunkSize = getChunkSize(chain, address);
   const client = getHyperSyncClient(chain);
   const height = await getChainHeight(client);
+  console.log('fetchLogs 2');
   // Read cache chunks one-by-one
   let logs: Log[] = [];
   const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
   // Get the start block from the source metadata
   const sourceMetadata = await getSourceMetadata(chain, sourceInfo);
+  console.log('fetchLogs 3');
   const sourceAddressMetadata = sourceMetadata.latestLogBlock[address] || {};
   const sourceLatestBlock = sourceAddressMetadata[topic0] || -1;
   const startBlock =
@@ -223,7 +226,7 @@ async function fetchLogs(
   const startChunk = Math.floor(startBlock / chunkSize);
   for (let i = startChunk; i < chunks; i++) {
     if (address === ENTRYPOINT_0_6_0_ADDRESS) {
-      console.log('fetchLogs', i, chunks, logs.length);
+      console.log('fetchLogs 4', i, chunks, logs.length);
     }
     const cacheKey = `${cachePrefix}/${i}.json`;
     const cacheString = await getObject(cacheKey);
