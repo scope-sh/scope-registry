@@ -152,13 +152,15 @@ async function getLogs(
     cachePrefix,
     cacheMetadata,
   );
-  // Update cache metadata
-  const metadata = `${cachePrefix}/metadata.json`;
-  const newMetadata: LogCacheMetadata = {
-    count: cacheMetadata.count + newBlocks,
-    lastBlock: nextBlock - 1,
-  };
-  await putObject(metadata, JSON.stringify(newMetadata));
+  if (nextBlock > cacheMetadata.lastBlock) {
+    // Update cache metadata
+    const metadata = `${cachePrefix}/metadata.json`;
+    const newMetadata: LogCacheMetadata = {
+      count: cacheMetadata.count + newBlocks,
+      lastBlock: nextBlock - 1,
+    };
+    await putObject(metadata, JSON.stringify(newMetadata));
+  }
   // Update the source metadata
   if (sourceInfo.fetchType === 'incremental') {
     await updateSourceMetadataBlock(
