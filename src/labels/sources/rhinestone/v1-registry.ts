@@ -22,9 +22,9 @@ class Source extends BaseSource {
       id: 'rhinestone-v1-registry',
       interval: {
         seconds: 0,
-        minutes: 1,
+        minutes: 0,
         hours: 0,
-        days: 0,
+        days: 1,
       },
       fetchType: 'incremental',
     };

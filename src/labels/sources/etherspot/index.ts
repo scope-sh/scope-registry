@@ -13,11 +13,11 @@ class Source extends BaseSource {
       id: 'etherspot',
       interval: {
         seconds: 0,
-        minutes: 1,
+        minutes: 0,
         hours: 0,
-        days: 0,
+        days: 7,
       },
-      fetchType: 'incremental',
+      fetchType: 'full',
     };
   }
 
