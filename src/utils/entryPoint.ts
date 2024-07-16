@@ -27,12 +27,14 @@ async function getEntryPoint0_6_0Accounts(
   if (!topic) {
     return [];
   }
+  console.log('getEntryPoint0_6_0Accounts 1');
   const logs = await getLogs(
     sourceInfo,
     chain,
     ENTRYPOINT_0_6_0_ADDRESS,
     topic,
   );
+  console.log('getEntryPoint0_6_0Accounts 2', logs.length);
 
   const accounts: Account[] = logs.map((log) => {
     const decodedLog = decodeEventLog({
@@ -48,6 +50,7 @@ async function getEntryPoint0_6_0Accounts(
       factory: decodedLog.args.factory.toLowerCase() as Address,
     };
   });
+  console.log('getEntryPoint0_6_0Accounts 3');
 
   return accounts;
 }

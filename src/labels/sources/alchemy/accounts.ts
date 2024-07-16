@@ -76,8 +76,10 @@ class Source extends BaseSource {
       true,
       'alchemy',
     );
+    console.log('fetch 1');
 
     const accounts = await getEntryPoint0_6_0Accounts(this.getInfo(), chain);
+    console.log('fetch 2', accounts.length);
     const multiOwnerModularAccountFactoryV1_0_0Labels = this.#getAccountLabels(
       accounts,
       MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,

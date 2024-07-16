@@ -169,6 +169,7 @@ async function getLogs(
       nextBlock - 1,
     );
   }
+  console.log('getLogs', chain, address, topic0, logs.length);
   return sourceInfo.fetchType !== 'incremental'
     ? logs
     : logs.filter(
@@ -221,6 +222,9 @@ async function fetchLogs(
     sourceInfo.fetchType === 'incremental' ? sourceLatestBlock + 1 : 0;
   const startChunk = Math.floor(startBlock / chunkSize);
   for (let i = startChunk; i < chunks; i++) {
+    if (address === ENTRYPOINT_0_6_0_ADDRESS) {
+      console.log('fetchLogs', i, chunks, logs.length);
+    }
     const cacheKey = `${cachePrefix}/${i}.json`;
     const cacheString = await getObject(cacheKey);
     const cache =
