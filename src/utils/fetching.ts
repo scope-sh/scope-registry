@@ -251,16 +251,7 @@ async function fetchLogs(
       sourceInfo.fetchType === 'incremental' &&
       logs.length >= maxLogsPerIncrementalFetch
     ) {
-      const lastLog = logs.at(-1);
-      if (!lastLog) {
-        throw new Error('Unable to get the last log');
-      }
-      return {
-        logs,
-        newBlocks,
-        startBlock,
-        nextBlock,
-      };
+      break;
     }
   }
   // Write new events to the cache in chunks
