@@ -247,6 +247,21 @@ async function fetchLogs(
     logs = logs.concat(pageLogs);
     newBlocks += pageLogs.length;
     fromBlock = nextBlock;
+    if (
+      sourceInfo.fetchType === 'incremental' &&
+      logs.length >= maxLogsPerIncrementalFetch
+    ) {
+      const lastLog = logs.at(-1);
+      if (!lastLog) {
+        throw new Error('Unable to get the last log');
+      }
+      return {
+        logs,
+        newBlocks,
+        startBlock,
+        nextBlock,
+      };
+    }
   }
   // Write new events to the cache in chunks
   const firstChunk = Math.floor(cacheMetadata.lastBlock / chunkSize);
