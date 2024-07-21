@@ -236,7 +236,8 @@ class Source extends BaseSource {
     if (!assetsSha) {
       return [];
     }
-    const assetsDir = await githubClient.get(assetsSha).json<TreeResponse>();
+    const assetsDirResponse = await githubClient.get(assetsSha);
+    const assetsDir = await assetsDirResponse.json<TreeResponse>();
     return assetsDir.tree.map((item) => item.path.toLowerCase());
   }
 }

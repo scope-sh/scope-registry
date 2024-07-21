@@ -191,7 +191,6 @@ async function fetchLogs(
   const chunkSize = 100_000;
   const client = getHyperSyncClient(chain);
   const height = await getChainHeight(client);
-  console.log('chain height', chain, height);
   // Read cache chunks one-by-one
   let logs: Log[] = [];
   const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
@@ -285,10 +284,11 @@ function getHyperSyncClient(chain: ChainId): KyInstance {
 }
 
 async function getChainHeight(client: KyInstance): Promise<number> {
-  const response = await client.get('height').json<{
+  const response = await client.get('height');
+  const data = await response.json<{
     height: number;
   }>();
-  return response.height;
+  return data.height;
 }
 
 async function getLogsPaginated(
@@ -321,15 +321,14 @@ async function getLogsPaginated(
     },
   };
 
-  const response = await client
-    .post('query', {
-      json: query,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .json<QueryResponse>();
-  const logs = response.data
+  const response = await client.post('query', {
+    json: query,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const queryData = await response.json<QueryResponse>();
+  const logs = queryData.data
     .map((dataPage) => {
       const pageLogs = dataPage.logs || [];
       return pageLogs.map((log) => {
@@ -343,7 +342,7 @@ async function getLogsPaginated(
       });
     })
     .flat();
-  const nextBlock = response.next_block;
+  const nextBlock = queryData.next_block;
   if (!nextBlock) {
     throw new Error('Invalid response');
   }
