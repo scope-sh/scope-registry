@@ -218,9 +218,8 @@ class Source extends BaseSource {
     if (!blockchainsSha) {
       return [];
     }
-    const blockchainsDir = await githubClient
-      .get(blockchainsSha)
-      .json<TreeResponse>();
+    const blockchainsDirResponse = await githubClient.get(blockchainsSha);
+    const blockchainsDir = await blockchainsDirResponse.json<TreeResponse>();
     const chainName = getChainName(chainId);
     if (!chainName) {
       return [];
@@ -231,7 +230,8 @@ class Source extends BaseSource {
     if (!chainSha) {
       return [];
     }
-    const chainDir = await githubClient.get(chainSha).json<TreeResponse>();
+    const chainDirResponse = await githubClient.get(chainSha);
+    const chainDir = await chainDirResponse.json<TreeResponse>();
     const assetsSha = chainDir.tree.find((item) => item.path === 'assets')?.sha;
     if (!assetsSha) {
       return [];
