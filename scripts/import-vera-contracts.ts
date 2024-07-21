@@ -1,6 +1,6 @@
 import { ZstdInit } from '@oneidentity/zstd-js/decompress';
-import axios from 'axios';
 import { FileMetaData, parquetMetadata, parquetRead } from 'hyparquet';
+import ky from 'ky';
 
 import {
   addCompiledContracts,
@@ -12,8 +12,8 @@ import {
 } from '@/utils/db';
 
 const endpointUrl = 'https://pub-f4b5a1306ebd42a3b1289ab59da1d9bf.r2.dev';
-const client = axios.create({
-  baseURL: endpointUrl,
+const client = ky.create({
+  prefixUrl: endpointUrl,
 });
 
 interface Manifest {
@@ -35,8 +35,7 @@ type ExtractKeys<T> = keyof T;
 const { ZstdStream } = await ZstdInit();
 
 async function getManifest(): Promise<Manifest> {
-  const response = await client.get<Manifest>('/manifest.json');
-  return response.data;
+  return await client.get('/manifest.json').json<Manifest>();
 }
 
 async function getParquetRows<T>(
@@ -45,27 +44,14 @@ async function getParquetRows<T>(
   rowStart?: number,
   rowEnd?: number,
 ): Promise<T[]> {
-  console.log('getParquetRows 1');
-  const response = await client.get<Buffer>(`/${fileName}`, {
-    responseType: 'arraybuffer',
-  });
-  console.log('getParquetRows 2');
-  const buffer = response.data;
-  console.log('getParquetRows 3');
-  const arrayBuffer = buffer.buffer.slice(
-    buffer.byteOffset,
-    buffer.byteOffset + buffer.byteLength,
-  ) as ArrayBuffer;
-  console.log('getParquetRows 4');
-  const metadata = parquetMetadata(arrayBuffer);
-  console.log('getParquetRows 5');
+  const buffer = await client.get(`/${fileName}`).arrayBuffer();
+  const metadata = parquetMetadata(buffer);
   const rows = await readParquetFile<ObjectToTuple<T>>(
-    arrayBuffer,
+    buffer,
     metadata,
     rowStart,
     rowEnd,
   );
-  console.log('getParquetRows 6');
   return rows.map(
     (row) =>
       Object.fromEntries(
@@ -108,8 +94,11 @@ async function readParquetFile<T>(
 // Insert them verbatim into the database
 const manifest = await getManifest();
 
-const codeFiles = manifest.files.code;
-for (const path of codeFiles) {
+const codeFiles = [
+  ...manifest.files.code,
+  'code/code_1000000_1100000_zstd.parquet',
+];
+for (const path of codeFiles.slice(3)) {
   const codeRows = await getParquetRows<{
     codeHash: Uint8Array;
     code: Uint8Array;
@@ -136,7 +125,10 @@ await addContracts(
   })),
 );
 
-const contractDeploymentFiles = manifest.files.contract_deployments;
+const contractDeploymentFiles = [
+  ...manifest.files.contract_deployments,
+  'contract_deployments/contract_deployments_1000000_2000000_zstd.parquet',
+];
 for (const path of contractDeploymentFiles) {
   const contractDeploymentRows = await getParquetRows<{
     id: string;
@@ -176,71 +168,74 @@ const compiledContractFilePath = compiledContractFiles[0];
 if (!compiledContractFilePath) {
   throw new Error('No compiled contract file found in manifest');
 }
-const compiledContractRows = await getParquetRows<{
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  updatedBy: string;
-  compiler: string;
-  version: string;
-  language: string;
-  name: string;
-  fullyQualifiedName: string;
-  sources: string;
-  compilerSettings: string;
-  compilationArtifacts: string;
-  creationCodeHash: Uint8Array;
-  creationCodeArtifacts: string;
-  runtimeCodeHash: Uint8Array;
-  runtimeCodeArtifacts: string;
-}>(
-  compiledContractFilePath,
-  [
-    'id',
-    'createdAt',
-    'updatedAt',
-    'createdBy',
-    'updatedBy',
-    'compiler',
-    'version',
-    'language',
-    'name',
-    'fullyQualifiedName',
-    'sources',
-    'compilerSettings',
-    'compilationArtifacts',
-    'creationCodeHash',
-    'creationCodeArtifacts',
-    'runtimeCodeHash',
-    'runtimeCodeArtifacts',
-  ],
-  1,
-  1000,
-);
-await addCompiledContracts(
-  compiledContractRows.map((row) => {
-    return {
-      id: row.id,
-      createdAt: row.createdAt,
-      updatedAt: row.updatedAt,
-      createdBy: row.createdBy,
-      updatedBy: row.updatedBy,
-      compiler: row.compiler,
-      version: row.version,
-      language: row.language,
-      name: row.name,
-      fullyQualifiedName: row.fullyQualifiedName,
-      sources: row.sources,
-      compilerSettings: row.compilerSettings,
-      compilationArtifacts: row.compilationArtifacts,
-      creationCodeHash: Buffer.from(row.creationCodeHash),
-      creationCodeArtifacts: row.creationCodeArtifacts,
-      runtimeCodeHash: Buffer.from(row.runtimeCodeHash),
-      runtimeCodeArtifacts: row.runtimeCodeArtifacts,
-    };
-  }),
-);
+for (let i = 0; i < 10; i++) {
+  console.log('i', i);
+  const compiledContractRows = await getParquetRows<{
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy: string;
+    updatedBy: string;
+    compiler: string;
+    version: string;
+    language: string;
+    name: string;
+    fullyQualifiedName: string;
+    sources: string;
+    compilerSettings: string;
+    compilationArtifacts: string;
+    creationCodeHash: Uint8Array;
+    creationCodeArtifacts: string;
+    runtimeCodeHash: Uint8Array;
+    runtimeCodeArtifacts: string;
+  }>(
+    compiledContractFilePath,
+    [
+      'id',
+      'createdAt',
+      'updatedAt',
+      'createdBy',
+      'updatedBy',
+      'compiler',
+      'version',
+      'language',
+      'name',
+      'fullyQualifiedName',
+      'sources',
+      'compilerSettings',
+      'compilationArtifacts',
+      'creationCodeHash',
+      'creationCodeArtifacts',
+      'runtimeCodeHash',
+      'runtimeCodeArtifacts',
+    ],
+    1000 * i + 1,
+    1000 * (i + 1),
+  );
+  await addCompiledContracts(
+    compiledContractRows.map((row) => {
+      return {
+        id: row.id,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+        createdBy: row.createdBy,
+        updatedBy: row.updatedBy,
+        compiler: row.compiler,
+        version: row.version,
+        language: row.language,
+        name: row.name,
+        fullyQualifiedName: row.fullyQualifiedName,
+        sources: row.sources,
+        compilerSettings: row.compilerSettings,
+        compilationArtifacts: row.compilationArtifacts,
+        creationCodeHash: Buffer.from(row.creationCodeHash),
+        creationCodeArtifacts: row.creationCodeArtifacts,
+        runtimeCodeHash: Buffer.from(row.runtimeCodeHash),
+        runtimeCodeArtifacts: row.runtimeCodeArtifacts,
+      };
+    }),
+  );
+}
 
 const verifiedContractFiles = manifest.files.verified_contracts;
 for (const path of verifiedContractFiles) {

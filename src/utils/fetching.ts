@@ -1,6 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
-import axiosRetry from 'axios-retry';
 import { AlchemyChain, alchemy } from 'evm-providers';
+import ky, { KyInstance } from 'ky';
 import { Address, Hex, PublicClient, createPublicClient, http } from 'viem';
 
 import erc20Abi from '@/abi/erc20.js';
@@ -20,9 +19,6 @@ import {
   updateLogBlock as updateSourceMetadataBlock,
 } from './source.js';
 import { getObject, putObject } from './storage.js';
-
-// Bun doesn't support brotli yet
-axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
 
 const alchemyKey = process.env.ALCHEMY_KEY as string;
 
@@ -195,6 +191,7 @@ async function fetchLogs(
   const chunkSize = 100_000;
   const client = getHyperSyncClient(chain);
   const height = await getChainHeight(client);
+  console.log('chain height', chain, height);
   // Read cache chunks one-by-one
   let logs: Log[] = [];
   const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
@@ -274,27 +271,28 @@ async function fetchLogs(
   };
 }
 
-function getHyperSyncClient(chain: ChainId): AxiosInstance {
+function getHyperSyncClient(chain: ChainId): KyInstance {
   const endpointUrl = `https://${chain}.hypersync.xyz`;
-  const client = axios.create({
-    baseURL: endpointUrl,
-  });
-  axiosRetry(client, {
-    retries: 100,
-    retryDelay: () => 10_000,
+  const client = ky.create({
+    prefixUrl: endpointUrl,
+    retry: {
+      limit: 100,
+      delay: () => 10_000,
+    },
+    timeout: false,
   });
   return client;
 }
 
-async function getChainHeight(client: AxiosInstance): Promise<number> {
-  const response = await client.get<{
+async function getChainHeight(client: KyInstance): Promise<number> {
+  const response = await client.get('height').json<{
     height: number;
-  }>('height');
-  return response.data.height;
+  }>();
+  return response.height;
 }
 
 async function getLogsPaginated(
-  client: AxiosInstance,
+  client: KyInstance,
   address: Address,
   topic0: Hex,
   startBlock: number,
@@ -323,12 +321,15 @@ async function getLogsPaginated(
     },
   };
 
-  const response = await client.post<QueryResponse>('query', query, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const logs = response.data.data
+  const response = await client
+    .post('query', {
+      json: query,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .json<QueryResponse>();
+  const logs = response.data
     .map((dataPage) => {
       const pageLogs = dataPage.logs || [];
       return pageLogs.map((log) => {
@@ -342,7 +343,7 @@ async function getLogsPaginated(
       });
     })
     .flat();
-  const nextBlock = response.data.next_block;
+  const nextBlock = response.next_block;
   if (!nextBlock) {
     throw new Error('Invalid response');
   }

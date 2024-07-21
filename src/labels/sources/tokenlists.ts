@@ -1,4 +1,4 @@
-import axios from 'axios';
+import ky from 'ky';
 import { Address } from 'viem';
 
 import type { ChainId } from '@/utils/chains.js';
@@ -145,29 +145,14 @@ class Source extends BaseSource {
   }
 
   async #getList(url: string): Promise<TokenList | null> {
-    let tries = 0;
-    for (;;) {
-      const delay = 1000 * 2 ** tries;
-      if (tries > 10) {
-        return null;
-      }
-      await sleep(delay);
-      tries++;
-      try {
-        const listResponse = await axios.get(url);
-        if (listResponse.status !== 200) {
-          continue;
-        }
-        return listResponse.data as TokenList;
-      } catch (e) {
-        continue;
-      }
-    }
+    return await ky
+      .get(url, {
+        retry: {
+          limit: 15,
+        },
+      })
+      .json<TokenList>();
   }
-}
-
-async function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms, null));
 }
 
 export default Source;

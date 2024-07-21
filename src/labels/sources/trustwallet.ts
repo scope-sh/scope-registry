@@ -1,4 +1,4 @@
-import axios from 'axios';
+import ky from 'ky';
 import { Address } from 'viem';
 
 import { Source as BaseSource } from '@/labels/base.js';
@@ -64,8 +64,8 @@ interface Tree {
   sha: string;
 }
 
-const githubClient = axios.create({
-  baseURL: 'https://api.github.com/repos/trustwallet/assets/git/trees/',
+const githubClient = ky.create({
+  prefixUrl: 'https://api.github.com/repos/trustwallet/assets/git/trees/',
   headers: {
     Authorization: `Bearer ${githubToken}`,
   },
@@ -211,33 +211,33 @@ class Source extends BaseSource {
       }
     }
 
-    const rootDir = await githubClient.get<TreeResponse>('master');
-    const blockchainsSha = rootDir.data.tree.find(
+    const rootDir = await githubClient.get('master').json<TreeResponse>();
+    const blockchainsSha = rootDir.tree.find(
       (item) => item.path === 'blockchains',
     )?.sha;
     if (!blockchainsSha) {
       return [];
     }
-    const blockchainsDir = await githubClient.get<TreeResponse>(blockchainsSha);
+    const blockchainsDir = await githubClient
+      .get(blockchainsSha)
+      .json<TreeResponse>();
     const chainName = getChainName(chainId);
     if (!chainName) {
       return [];
     }
-    const chainSha = blockchainsDir.data.tree.find(
+    const chainSha = blockchainsDir.tree.find(
       (item) => item.path === chainName,
     )?.sha;
     if (!chainSha) {
       return [];
     }
-    const chainDir = await githubClient.get<TreeResponse>(chainSha);
-    const assetsSha = chainDir.data.tree.find(
-      (item) => item.path === 'assets',
-    )?.sha;
+    const chainDir = await githubClient.get(chainSha).json<TreeResponse>();
+    const assetsSha = chainDir.tree.find((item) => item.path === 'assets')?.sha;
     if (!assetsSha) {
       return [];
     }
-    const assetsDir = await githubClient.get<TreeResponse>(assetsSha);
-    return assetsDir.data.tree.map((item) => item.path.toLowerCase());
+    const assetsDir = await githubClient.get(assetsSha).json<TreeResponse>();
+    return assetsDir.tree.map((item) => item.path.toLowerCase());
   }
 }
 
