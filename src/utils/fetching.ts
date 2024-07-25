@@ -382,7 +382,7 @@ async function getDeployed(
     if (!label) {
       continue;
     }
-    const bytecode = await client.getBytecode({
+    const bytecode = await client.getCode({
       address,
     });
     if (!bytecode) {
