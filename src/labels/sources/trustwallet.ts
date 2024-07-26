@@ -69,6 +69,10 @@ const githubClient = ky.create({
   headers: {
     Authorization: `Bearer ${githubToken}`,
   },
+  timeout: false,
+  retry: {
+    limit: 10,
+  },
 });
 
 class Source extends BaseSource {
@@ -113,7 +117,14 @@ class Source extends BaseSource {
         continue;
       }
       // Prevent using token symbol as a label value for multiple tokens
-      const value = tokenValues.has(symbol) ? name : symbol;
+      const value = !tokenValues.has(symbol)
+        ? symbol
+        : !tokenValues.has(name)
+          ? name
+          : null;
+      if (!value) {
+        continue;
+      }
       tokenValues.add(value);
       const label: Label = {
         value,

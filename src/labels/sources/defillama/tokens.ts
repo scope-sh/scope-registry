@@ -69,7 +69,14 @@ class Source extends BaseSource {
     }
     for (const asset of labelAssets) {
       // Prevent using token symbol as a label value for multiple tokens
-      const value = tokenValues.has(asset.symbol) ? asset.name : asset.symbol;
+      const value = !tokenValues.has(asset.symbol)
+        ? asset.symbol
+        : !tokenValues.has(asset.name)
+          ? asset.name
+          : null;
+      if (!value) {
+        continue;
+      }
       tokenValues.add(value);
       const label: Label = {
         value,

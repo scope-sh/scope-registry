@@ -128,7 +128,14 @@ class Source extends BaseSource {
     }
     for (const asset of labelAssets) {
       // Prevent using token symbol as a label value for multiple tokens
-      const value = tokenValues.has(asset.symbol) ? asset.name : asset.symbol;
+      const value = !tokenValues.has(asset.symbol)
+        ? asset.symbol
+        : !tokenValues.has(asset.name)
+          ? asset.name
+          : null;
+      if (!value) {
+        continue;
+      }
       tokenValues.add(value);
       const label: Label = {
         value,
@@ -145,13 +152,13 @@ class Source extends BaseSource {
   }
 
   async #getList(url: string): Promise<TokenList | null> {
-    return await ky
-      .get(url, {
-        retry: {
-          limit: 15,
-        },
-      })
-      .json<TokenList>();
+    const response = await ky.get(url, {
+      retry: {
+        limit: 15,
+      },
+      timeout: false,
+    });
+    return response.json<TokenList>();
   }
 }
 
