@@ -27,30 +27,30 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ethereum-sourcify/lib-sourcify": "^1.8.0",
+    "@ethereum-sourcify/lib-sourcify": "^1.9.0",
     "@oneidentity/zstd-js": "^1.0.3",
     "axios": "^1.7.2",
-    "axios-retry": "^4.4.1",
+    "axios-retry": "^4.4.2",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.32.0",
-    "evm-providers": "^0.4.3",
-    "hyparquet": "^1.0.0",
-    "ky": "^1.4.0",
+    "drizzle-orm": "^0.32.1",
+    "evm-providers": "^0.4.5",
+    "hyparquet": "^1.1.0",
+    "ky": "^1.5.0",
     "minio": "^8.0.1",
     "pg": "^8.12.0",
     "solc": "0.5.12",
-    "viem": "^2.17.4"
+    "viem": "^2.18.4"
   },
   "devDependencies": {
     "@types/bun": "^1.1.6",
     "@types/pg": "^8.11.6",
-    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
     "drizzle-kit": "^0.23.0",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
-    "prettier": "^3.2.5",
-    "tsx": "^4.9.3",
-    "typescript": "^5.5.2"
+    "prettier": "^3.3.3",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
   }
 }
