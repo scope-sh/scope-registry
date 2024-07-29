@@ -385,6 +385,7 @@ class Source extends BaseSource {
         };
       })
       .filter((change) => change.key === 'avatar');
+    console.log('getAvatarMap 3');
 
     const map: Record<Hex, string> = Object.fromEntries(
       textChanges.map((change) => [change.node, change.value]),
