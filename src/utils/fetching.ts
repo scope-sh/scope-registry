@@ -406,13 +406,34 @@ async function getLogsPaginated(
     },
   };
 
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogsPaginated 1', query);
+  }
   const response = await client.post('query', {
     json: query,
     headers: {
       'Content-Type': 'application/json',
     },
   });
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogsPaginated 2', response);
+  }
   const queryData = await response.json<QueryResponse>();
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogsPaginated 3', queryData);
+  }
   const logs = queryData.data
     .map((dataPage) => {
       const pageLogs = dataPage.logs || [];
@@ -427,6 +448,13 @@ async function getLogsPaginated(
       });
     })
     .flat();
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogsPaginated 4', logs.length);
+  }
   const nextBlock = queryData.next_block;
   if (!nextBlock) {
     throw new Error('Invalid response');
