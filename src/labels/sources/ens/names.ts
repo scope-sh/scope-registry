@@ -335,6 +335,7 @@ class Source extends BaseSource {
         address: decodedLog.args.a.toLowerCase() as Address,
       };
     });
+    console.log('getAddressMap 4');
     const addressChanges = addrChangedLogs.map((log) => {
       const decodedLog = decodeEventLog({
         abi: ensPublicResolverAbi,
