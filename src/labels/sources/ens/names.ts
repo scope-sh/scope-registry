@@ -105,30 +105,35 @@ class Source extends BaseSource {
   }
 
   async #getLabelHashMap(chain: ChainId): Promise<Record<Hex, string>> {
+    console.log('getLabelHashMap 1');
     const legacyNameRegistrationLogs = await getLogs(
       this.getInfo(),
       chain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED_LEGACY,
     );
+    console.log('getLabelHashMap 2', legacyNameRegistrationLogs.length);
     const legacyNameRenewalLogs = await getLogs(
       this.getInfo(),
       chain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
     );
+    console.log('getLabelHashMap 3', legacyNameRegistrationLogs.length);
     const nameRegistrationLogs = await getLogs(
       this.getInfo(),
       chain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED,
     );
+    console.log('getLabelHashMap 4', nameRegistrationLogs.length);
     const nameRenewalLogs = await getLogs(
       this.getInfo(),
       chain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
     );
+    console.log('getLabelHashMap 5', nameRegistrationLogs.length);
 
     const legacyNameRegistrations = legacyNameRegistrationLogs.map((log) => {
       const decodedLog = decodeEventLog({
@@ -220,12 +225,14 @@ class Source extends BaseSource {
   }
 
   async #getReverseClaimMap(chain: ChainId): Promise<Record<Address, string>> {
+    console.log('getReverseClaimMap 1');
     const reverseClaimedLogs = await getLogs(
       this.getInfo(),
       chain,
       ADDRESS_REVERSE_REGISTRAR,
       TOPIC_REVERSE_CLAIMED,
     );
+    console.log('getReverseClaimMap 2', reverseClaimedLogs.length);
     const reverseClaims = reverseClaimedLogs.map((log) => {
       const decodedLog = decodeEventLog({
         abi: ensReverseRegistrarAbi,
@@ -247,12 +254,14 @@ class Source extends BaseSource {
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
     );
+    console.log('getReverseClaimMap 3', legacyNameChangedLogs.length);
     const nameChangedLogs = await getLogs(
       this.getInfo(),
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
     );
+    console.log('getReverseClaimMap 4', nameChangedLogs.length);
     const legacyNameChanges = legacyNameChangedLogs.map((log) => {
       const decodedLog = decodeEventLog({
         abi: ensLegacyPublicResolverAbi,
@@ -296,6 +305,7 @@ class Source extends BaseSource {
   }
 
   async #getAddressMap(chain: ChainId): Promise<Record<Hex, Address>> {
+    console.log('getAddressMap 1');
     // Process "AddrChanged" events to get actively set addresses
     const legacyAddrChangedLogs = await getLogs(
       this.getInfo(),
@@ -303,12 +313,14 @@ class Source extends BaseSource {
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_ADDR_CHANGED,
     );
+    console.log('getAddressMap 2', legacyAddrChangedLogs.length);
     const addrChangedLogs = await getLogs(
       this.getInfo(),
       chain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_ADDR_CHANGED,
     );
+    console.log('getAddressMap 3', addrChangedLogs.length);
     const legacyAddressChanges = legacyAddrChangedLogs.map((log) => {
       const decodedLog = decodeEventLog({
         abi: ensLegacyPublicResolverAbi,
@@ -346,6 +358,7 @@ class Source extends BaseSource {
   }
 
   async #getAvatarMap(chain: ChainId): Promise<Record<Hex, string>> {
+    console.log('getAvatarMap 1');
     // Process "TextChanged" events to get avatars
     const textChangedLogs = await getLogs(
       this.getInfo(),
@@ -353,6 +366,7 @@ class Source extends BaseSource {
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_TEXT_CHANGED,
     );
+    console.log('getAvatarMap 2', textChangedLogs.length);
     const textChanges = textChangedLogs
       .map((log) => {
         const decodedLog = decodeEventLog({
