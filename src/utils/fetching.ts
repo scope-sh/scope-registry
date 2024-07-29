@@ -139,6 +139,13 @@ async function getLogs(
   // Read cache metadata
   const cachePrefix = `events/${chain}/${address}/${topic0}`;
   const cacheMetadata = await getLogCacheMetadata(cachePrefix);
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogs 1', cacheMetadata);
+  }
   const { logs, newBlocks, startBlock, nextBlock } = await fetchLogs(
     sourceInfo,
     chain,
@@ -147,6 +154,18 @@ async function getLogs(
     cachePrefix,
     cacheMetadata,
   );
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogs 2', {
+      logs: logs.length,
+      newBlocks,
+      startBlock,
+      nextBlock,
+    });
+  }
   if (nextBlock > cacheMetadata.lastBlock) {
     // Update cache metadata
     const metadata = `${cachePrefix}/metadata.json`;
@@ -155,6 +174,13 @@ async function getLogs(
       lastBlock: nextBlock - 1,
     };
     await putObject(metadata, JSON.stringify(newMetadata));
+  }
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogs 3');
   }
   // Update the source metadata
   if (sourceInfo.fetchType === 'incremental') {
@@ -165,6 +191,13 @@ async function getLogs(
       topic0,
       nextBlock - 1,
     );
+  }
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('getLogs 4');
   }
   return sourceInfo.fetchType !== 'incremental'
     ? logs
@@ -190,12 +223,33 @@ async function fetchLogs(
   const maxLogsPerIncrementalFetch = 1_000_000;
   const chunkSize = 100_000;
   const client = getHyperSyncClient(chain);
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('fetchLogs 1');
+  }
   const height = await getChainHeight(client);
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('fetchLogs 2', height);
+  }
   // Read cache chunks one-by-one
   let logs: Log[] = [];
   const chunks = Math.ceil(cacheMetadata.lastBlock / chunkSize);
   // Get the start block from the source metadata
   const sourceMetadata = await getSourceMetadata(chain, sourceInfo);
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('fetchLogs 3', sourceMetadata);
+  }
   const sourceAddressMetadata = sourceMetadata.latestLogBlock[address] || {};
   const sourceLatestBlock = sourceAddressMetadata[topic0] || -1;
   const startBlock =
@@ -203,6 +257,13 @@ async function fetchLogs(
   const startChunk = Math.floor(startBlock / chunkSize);
   for (let i = startChunk; i < chunks; i++) {
     const cacheKey = `${cachePrefix}/${i}.json`;
+    if (
+      address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+      topic0 ===
+        '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+    ) {
+      console.log('fetchLogs 4', i);
+    }
     const cacheString = await getObject(cacheKey);
     const cache =
       cacheString === null ? null : (JSON.parse(cacheString) as Log[]);
@@ -230,12 +291,29 @@ async function fetchLogs(
   let fromBlock = startingBlock;
   let newBlocks = 0;
   while (fromBlock <= height) {
+    if (
+      address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+      topic0 ===
+        '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+    ) {
+      console.log('fetchLogs 5', fromBlock);
+    }
     const { logs: pageLogs, nextBlock } = await getLogsPaginated(
       client,
       address,
       topic0,
       fromBlock,
     );
+    if (
+      address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+      topic0 ===
+        '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+    ) {
+      console.log('fetchLogs 6', {
+        pageLogs: pageLogs.length,
+        nextBlock,
+      });
+    }
     logs = logs.concat(pageLogs);
     newBlocks += pageLogs.length;
     fromBlock = nextBlock;
@@ -245,6 +323,13 @@ async function fetchLogs(
     ) {
       break;
     }
+  }
+  if (
+    address === '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63' &&
+    topic0 ===
+      '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2'
+  ) {
+    console.log('fetchLogs 7');
   }
   // Write new events to the cache in chunks
   const firstChunk = Math.floor(cacheMetadata.lastBlock / chunkSize);
