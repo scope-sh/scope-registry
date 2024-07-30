@@ -88,7 +88,6 @@ async function fetch(chain: ChainId): Promise<ChainLabelMap> {
   }
   for (const source of sources) {
     const info = source.getInfo();
-    console.info(`Fetching from the "${info.name}" source…`);
     const metadata = await getMetadata(chain, info);
     const isTimeToFetch = isTimeToFetchSource(
       metadata,
@@ -96,9 +95,9 @@ async function fetch(chain: ChainId): Promise<ChainLabelMap> {
       Date.now(),
     );
     if (!isTimeToFetch) {
-      console.info('Skipping fetching: too early');
       continue;
     }
+    console.info(`Fetching from the "${info.name}" source…`);
     const sourceLabels = await source.fetch(chain, labels);
     for (const addressString in sourceLabels) {
       const address = addressString as Address;
