@@ -55,6 +55,7 @@ type LabelNamespaceId =
   | 'etherspot'
   | 'farcaster'
   | 'fun'
+  | 'klaster'
   | 'light'
   | 'nani'
   | 'openfort'

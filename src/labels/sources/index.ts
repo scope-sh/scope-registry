@@ -37,6 +37,7 @@ import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
 import FunV1Source from './fun/v1.js';
+import KlasterSource from './klaster/index.js';
 import LightV0_1AccountSource from './light/v0_1-accounts.js';
 import LightV0_1Source from './light/v0_1.js';
 import LightV0_2AccountSource from './light/v0_2-accounts.js';
@@ -163,6 +164,7 @@ const sources: Source[] = [
   new EtherspotSource(),
   new FunV1AccountSource(),
   new FunV1Source(),
+  new KlasterSource(),
   new LightV0_1AccountSource(),
   new LightV0_1Source(),
   new LightV0_2AccountSource(),
