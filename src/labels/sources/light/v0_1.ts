@@ -11,7 +11,7 @@ class Source extends BaseSource {
   getInfo(): SourceInfo {
     return {
       name: 'Light V0.1',
-      id: 'light-v0_1',
+      id: 'light-v0.1',
       interval: {
         seconds: 0,
         minutes: 0,

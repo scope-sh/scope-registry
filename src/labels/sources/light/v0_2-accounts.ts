@@ -9,7 +9,7 @@ class Source extends BaseSource {
   getInfo(): SourceInfo {
     return {
       name: 'Light V0.2 Accounts',
-      id: 'light-v0_2-accounts',
+      id: 'light-v0.2-accounts',
       interval: {
         seconds: 0,
         minutes: 1,
