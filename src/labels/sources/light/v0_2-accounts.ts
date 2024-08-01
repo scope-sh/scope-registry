@@ -1,7 +1,7 @@
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getEntryPoint0_7_0Accounts } from '@/utils/entryPoint.js';
+import { getEntryPoint0_6_0Accounts } from '@/utils/entryPoint.js';
 
 const FACTORY_0_2_ADDRESS = '0x00000000001269b052c004ffb71b47ab22c898b0';
 
@@ -21,7 +21,7 @@ class Source extends BaseSource {
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
-    const accounts = await getEntryPoint0_7_0Accounts(this.getInfo(), chain);
+    const accounts = await getEntryPoint0_6_0Accounts(this.getInfo(), chain);
     const factoryAccounts = accounts.filter(
       (account) => account.factory === FACTORY_0_2_ADDRESS,
     );
