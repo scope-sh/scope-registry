@@ -29,7 +29,7 @@ class Source extends BaseSource {
     return Object.fromEntries(
       factoryAccounts.map((account) => {
         return [
-          account,
+          account.sender,
           {
             value: 'Account',
             sourceId: this.getInfo().id,

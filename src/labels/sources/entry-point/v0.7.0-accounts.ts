@@ -24,7 +24,7 @@ class Source extends BaseSource {
     return Object.fromEntries(
       accounts.map((account) => {
         return [
-          account,
+          account.sender,
           {
             value: 'Entry Point V0.7.0 Account',
             sourceId: this.getInfo().id,
