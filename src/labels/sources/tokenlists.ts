@@ -2,7 +2,7 @@ import ky from 'ky';
 import { Address } from 'viem';
 
 import type { ChainId } from '@/utils/chains.js';
-import { getErc20Metadata } from '@/utils/fetching.js';
+import { getErc20Metadata, isErc20Ignored } from '@/utils/fetching.js';
 
 import { Source as BaseSource } from '../base.js';
 import type {
@@ -19,7 +19,7 @@ interface TokenList {
 
 interface Token {
   chainId: number;
-  address: string;
+  address: Address;
   name: string;
   symbol: string;
   decimals: number;
@@ -83,6 +83,9 @@ class Source extends BaseSource {
     for (const list of lists) {
       const tokens = list.tokens.filter((token) => token.chainId === chain);
       for (const token of tokens) {
+        if (isErc20Ignored(chain, token.address)) {
+          continue;
+        }
         const address = token.address.toLowerCase() as Address;
         if (!assets[address]) {
           assets[address] = {

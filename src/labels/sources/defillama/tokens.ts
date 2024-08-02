@@ -1,7 +1,7 @@
 import { Address } from 'viem';
 
 import type { ChainId } from '@/utils/chains.js';
-import { getErc20Metadata } from '@/utils/fetching.js';
+import { getErc20Metadata, isErc20Ignored } from '@/utils/fetching.js';
 
 import { Source as BaseSource } from '../../base.js';
 import type {
@@ -50,14 +50,16 @@ class Source extends BaseSource {
     }
     const chainAssetAddresses = chainTokenList.map((token) => token.address);
     const chainMetadata = await getErc20Metadata(chain, chainAssetAddresses);
-    const labelAssets = chainTokenList.map((asset) => {
-      const { address, name, symbol } = asset;
-      return {
-        address,
-        name: chainMetadata[address]?.name || name,
-        symbol: chainMetadata[address]?.symbol || symbol,
-      };
-    });
+    const labelAssets = chainTokenList
+      .map((asset) => {
+        const { address, name, symbol } = asset;
+        return {
+          address,
+          name: chainMetadata[address]?.name || name,
+          symbol: chainMetadata[address]?.symbol || symbol,
+        };
+      })
+      .filter((asset) => isErc20Ignored(chain, asset.address));
     const tokenValues = new Set<string>();
     for (const addressLabels of Object.values(previousLabels)) {
       const erc20Labels = addressLabels.filter(

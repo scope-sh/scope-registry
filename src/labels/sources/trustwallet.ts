@@ -49,7 +49,7 @@ import {
   BLAST_SEPOLIA,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
-import { getErc20Metadata } from '@/utils/fetching.js';
+import { getErc20Metadata, isErc20Ignored } from '@/utils/fetching.js';
 
 const githubToken = process.env.GITHUB_TOKEN as string;
 
@@ -108,6 +108,9 @@ class Source extends BaseSource {
     }
     for (const addressString in chainMetadata) {
       const address = addressString as Address;
+      if (isErc20Ignored(chain, address)) {
+        continue;
+      }
       const addressMetadata = chainMetadata[address];
       if (!addressMetadata) {
         continue;
