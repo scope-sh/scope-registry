@@ -65,6 +65,7 @@ import StaticSource from './static.js';
 import ThirdwebAccountSource from './thirdweb/accounts.js';
 import ThirdwebSource from './thirdweb/index.js';
 import TokenlistSource from './tokenlists.js';
+import TokensSource from './tokens.js';
 import TrustwalletSource from './trustwallet.js';
 import UniPassSource from './unipass/index.js';
 import UniswapV2PoolSource from './uniswap/v2-pools.js';
@@ -127,6 +128,7 @@ const sources: Source[] = [
   new StaticSource(),
   // ERC20
   new WrappedSource(),
+  new TokensSource(),
   new TokenlistSource(),
   new TrustwalletSource(),
   new DefillamaTokensSource(),
