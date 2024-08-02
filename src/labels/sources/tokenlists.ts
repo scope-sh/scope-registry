@@ -48,7 +48,7 @@ const listUrls: string[] = [
   'https://raw.githubusercontent.com/balancer/assets/refactor-for-multichain/generated/optimism.listed.json',
   'https://raw.githubusercontent.com/balancer/assets/refactor-for-multichain/generated/polygon.listed.tokenlist.json',
   'https://unpkg.com/quickswap-default-token-list/build/quickswap-default.tokenlist.json',
-  'https://raw.githubusercontent.com/maticnetwork/polygon-token-list/dev/src/tokens/polygonTokens.json',
+  'https://api-polygon-tokens.polygon.technology/tokenlists/polygon.tokenlist.json',
 ];
 
 class Source extends BaseSource {
