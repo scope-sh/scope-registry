@@ -25,14 +25,14 @@ class Source extends BaseSource {
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0xbf2137a23f439ca5aa4360cc6970d70b24d07ea2': 'Ownable Validator',
-      '0x1c936be884ce91ecfbdd10c7898c22b473eab81a': 'Webauthn Validator',
+      '0xccaec32b52795a11de7d21ab45238c5fc9146fb5': 'Webauthn Validator',
       '0x3b48f49a55de3adfb7aba5ede084d4555d687b0e': 'Multi Factor Validator',
       '0x38a1deabbb1a0ea05ee05c780217a138c7138c31': 'Auto Savings Executor',
       '0x5341b4e7b347b7db9e124b15eba10a5c236ec3bb': 'Scheduled Orders Executor',
       '0xf1ae317941efeb1ffb103d959ef58170f1e577e0':
         'ScheduledTransfers Executor',
       '0xc98b026383885f41d9a995f85fc480e9bb8bb891': 'Ownable Executor',
-      '0xbf77ce9a552857f8c01b8f00f2d71e04276ce764': 'Cold Storage Hook',
+      '0xe0d989d4d908a0bb9cc801d8a8864276a5780ab9': 'Cold Storage Hook',
       '0x944e786244f367f16ae038cbcfca7119fa266949': 'Cold Storage Flashloan',
       '0xc5409e364bed768facd8ce3e534a9c7787c0ec3b': 'Session Key Manager',
       '0x0ecd5e6721bb885a68b4cba52b74827994abd66c': 'Social Recovery',

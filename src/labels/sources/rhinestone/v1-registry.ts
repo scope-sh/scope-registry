@@ -13,7 +13,7 @@ interface Module {
   resolver: Hex;
 }
 
-const REGISTRY_ADDRESS = '0xe0cde9239d16bef05e62bbf7aa93e420f464c826';
+const REGISTRY_ADDRESS = '0x0000000000e23e0033c3e93d9d4ebc2ff2ab2aef';
 
 class Source extends BaseSource {
   getInfo(): SourceInfo {
