@@ -463,7 +463,10 @@ async function getErc20Metadata(
 
 function isErc20Ignored(chain: ChainId, address: Address): boolean {
   const ignoredMap: Partial<Record<ChainId, Set<Address>>> = {
-    [ETHEREUM]: new Set(['0xdfe66b14d37c77f4e9b180ceb433d1b164f0281d']),
+    [ETHEREUM]: new Set([
+      '0xdfe66b14d37c77f4e9b180ceb433d1b164f0281d',
+      '0xe14e06671702f0db50055388c29adc66821d933b',
+    ]),
     [POLYGON]: new Set([
       '0x113f3d54c31ebc71510fd664c8303b34fbc2b355',
       '0xa48ad8b964bbf2c420e964b648146567ceb6d5e1',

@@ -51,6 +51,13 @@ class Source extends BaseSource {
         '0x7cd167b101d2808cfd2c45d17b2e7ea9f46b74b6': {
           name: 'Wormhole USDC 2',
         },
+        '0xdd974d5c2e2928dea5f71b9825b8b646686bd200': {
+          name: 'Kyber Network Crystal',
+        },
+        '0xdefa4e8a7bcba345f687a2f1456f5edd9ce97202': {
+          name: 'Kyber Network Crystal v2',
+          symbol: 'KNC',
+        },
       },
       [POLYGON]: {
         '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359': {
@@ -116,6 +123,22 @@ class Source extends BaseSource {
           symbol: 'wstETH',
         },
         '0x81c9a7b55a4df39a9b7b5f781ec0e53539694873': { name: 'Exacly USDC' },
+        '0x2416092f143378750bb29b79ed961ab195cceea5': {
+          name: 'Renzo Restaked ETH',
+          symbol: 'ezETH',
+        },
+        '0x99c59acebfef3bbfb7129dc90d1a11db0e91187f': {
+          name: 'Pyth Network',
+          symbol: 'PYTH',
+        },
+        '0xb0ffa8000886e57f86dd5264b9582b2ad87b2b91': {
+          name: 'Wormhole Token',
+          symbol: 'W',
+        },
+        '0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8': {
+          name: 'Everclear',
+          symbol: 'NEXT',
+        },
       },
       [BASE]: {
         '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': {
@@ -136,6 +159,10 @@ class Source extends BaseSource {
         },
         '0x7f5373ae26c3e8ffc4c77b7255df7ec1a9af52a6': {
           name: 'Axelar Tether USD',
+        },
+        '0x04c0599ae5a44757c0af6f9ec3b93da8976c150a': {
+          name: 'Wrapped eETH',
+          symbol: 'weETH',
         },
       },
       [ARBITRUM]: {
@@ -165,6 +192,38 @@ class Source extends BaseSource {
           symbol: 'wstETH',
         },
         '0x1ddcaa4ed761428ae348befc6718bcb12e63bfaa': { name: 'deBridge USDC' },
+        '0xd22a58f79e9481d1a88e00c343885a588b34b68b': {
+          name: 'Stasis Euro',
+          symbol: 'EURS',
+        },
+        '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8': {
+          name: 'Rocket Pool ETH',
+          symbol: 'rETH',
+        },
+        '0x35751007a407ca6feffe80b3cb397736d2cf4dbe': {
+          name: 'Wrapped eETH',
+          symbol: 'weETH',
+        },
+        '0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33': {
+          name: 'Gho Token',
+          symbol: 'GHO',
+        },
+        '0xe4d5c6ae46adfaf04313081e8c0052a30b6dd724': {
+          name: 'Pyth Network',
+          symbol: 'PYTH',
+        },
+        '0x680447595e8b7b3Aa1B43beB9f6098C79ac2Ab3f': {
+          name: 'Decentralized USD',
+          symbol: 'USDD',
+        },
+        '0xb0ffa8000886e57f86dd5264b9582b2ad87b2b91': {
+          name: 'Wormhole Token',
+          symbol: 'W',
+        },
+        '0x178412e79c25968a32e89b11f63b33f733770c2a': {
+          name: 'Frax Ether',
+          symbol: 'frxETH',
+        },
       },
     };
     const chainTokens = tokens[chain] || {};
