@@ -42,7 +42,7 @@ class Source extends BaseSource {
           {
             value: collection.value,
             sourceId: this.getInfo().id,
-            indexed: true,
+            indexed: false,
             type: collection.type,
             iconUrl: collection.iconUrl,
           },
