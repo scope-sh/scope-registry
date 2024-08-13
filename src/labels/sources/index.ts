@@ -42,6 +42,8 @@ import LightV0_1AccountSource from './light/v0.1-accounts.js';
 import LightV0_1Source from './light/v0.1.js';
 import LightV0_2AccountSource from './light/v0.2-accounts.js';
 import LightV0_2Source from './light/v0.2.js';
+import MorphoSource from './morpho/index.js';
+import MorphoVaultSource from './morpho/vaults.js';
 import NaniSource from './nani/index.js';
 import NaniV0AccountSource from './nani/v0-accounts.js';
 import NaniV1AccountSource from './nani/v1-accounts.js';
@@ -137,6 +139,8 @@ const sources: Source[] = [
   new AaveV2TokenSource(),
   new AaveV3Source(),
   new AaveV3TokenSource(),
+  new MorphoSource(),
+  new MorphoVaultSource(),
   new ParifiV1Source(),
   new UniswapV2PoolSource(),
   new UniswapV2Source(),
