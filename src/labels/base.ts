@@ -12,6 +12,7 @@ type LabelTypeId =
   | 'aave-v3-atoken'
   | 'aave-v3-vtoken'
   | 'aave-v3-stoken'
+  | 'aerodrome-v1-pool'
   | 'alchemy-v1-multi-owner-modular-account'
   | 'alchemy-v1.0-light-account'
   | 'alchemy-v1.0-light-account'
@@ -43,6 +44,7 @@ type LabelTypeId =
 type LabelNamespaceId =
   | 'aave-v2'
   | 'aave-v3'
+  | 'aerodrome-v1'
   | 'alchemy'
   | 'biconomy'
   | 'biconomy-v2'
