@@ -6,6 +6,8 @@ import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getLogs } from '@/utils/fetching.js';
 
+import namedVaults from './vaults.json';
+
 class Source extends BaseSource {
   getInfo(): SourceInfo {
     return {
@@ -22,6 +24,10 @@ class Source extends BaseSource {
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
+    const chainNamedVaults =
+      (namedVaults as Partial<Record<ChainId, Record<Address, string>>>)[
+        chain
+      ] || {};
     const address = '0xa9c3d3a366466fa809d1ae982fb2c46e5fc41101';
     if (!address) {
       return {};
@@ -52,7 +58,7 @@ class Source extends BaseSource {
       vaults.map((vault) => [
         vault,
         {
-          value: 'Vault',
+          value: chainNamedVaults[vault] || 'Vault',
           sourceId: this.getInfo().id,
           indexed: false,
           type: 'morpho-vault',
