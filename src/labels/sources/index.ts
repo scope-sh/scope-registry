@@ -40,6 +40,7 @@ import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
 import FunV1Source from './fun/v1.js';
 import KlasterSource from './klaster/index.js';
+import LidoSource from './lido/index.js';
 import LightV0_1AccountSource from './light/v0.1-accounts.js';
 import LightV0_1Source from './light/v0.1.js';
 import LightV0_2AccountSource from './light/v0.2-accounts.js';
@@ -150,6 +151,7 @@ const sources: Source[] = [
   new UniswapV3Source(),
   new AerodromePoolSource(),
   new AerodromeSource(),
+  new LidoSource(),
   // NFT
   new OpenseaSeaportSource(),
   new OpenseaCollectionSource(),

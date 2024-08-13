@@ -59,6 +59,7 @@ type LabelNamespaceId =
   | 'farcaster'
   | 'fun'
   | 'klaster'
+  | 'lido'
   | 'light'
   | 'morpho'
   | 'nani'

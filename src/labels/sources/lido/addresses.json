@@ -1,0 +1,24 @@
+{
+  "1": {
+    "0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb": "Lido Locator",
+    "0xae7ab96520de3a18e5e111b5eaab095312d7fe84": "Lido and stETH token",
+    "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0": "wstETH token",
+    "0x8f73e4c2a6d852bb4ab2a45e6a9cf5715b3228b7": "EIP-712 helper for stETH",
+    "0xfddf38947afb03c621c71b06c9c70bce73f12999": "Staking Router",
+    "0x55032650b14df07b85bf18a3a3ec8e0af2e028d5": "Node Operators registry",
+    "0xae7b191a31f627b4eb1d4dac64eab9976995b433": "Simple DVT",
+    "0xc77f8768774e1c9244beed705c4354f2113cfc09": "Deposit Security Module",
+    "0x388c818ca8b9251b393131c08a736a67ccb19297": "Execution Layer Rewards Vault",
+    "0x889edc2edab5f40e902b864ad4d7ade8e412f9b1": "Withdrawal Queue ERC721",
+    "0xb9d7934878b5fb9610b3fe8a5e441e8fad7e293f": "Withdrawal Vault",
+    "0xd15a672319cf0352560ee76d9e89eab0889046d3": "Burner",
+    "0xf95f069f9ad107938f6ba802a3da87892298610e": "MEV Boost Relay Allowed List",
+    "0x852ded011285fe67063a08005c71a85690503cee": "Accounting Oracle",
+    "0xd624b08c83baecf0807dd2c6880c3154a5f0b288": "Hash Consensus",
+    "0x0de4ea0184c2ad0baca7183356aea5b8d5bf5c6e": "Validators Exit Bus Oracle",
+    "0x7fadb6358950c5faa66cb5eb8ee5147de3df355a": "Hash Consensus",
+    "0x9305c1dbfe22c12c66339184c0025d7006f0f1cc": "Oracle Report Sanity Checker",
+    "0xbf05a929c3d7885a6aead833a992da6e5ac23b09": "Oracle Daemon Config",
+    "0x442af784a788a5bd6f42a01ebe9f287a871243fb": "Legacy Oracle"
+  }
+}
