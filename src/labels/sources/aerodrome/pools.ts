@@ -59,10 +59,10 @@ class Source extends BaseSource {
       if (decodedLog.eventName !== 'PoolCreated') {
         throw new Error('Invalid event name');
       }
-      const token0 = decodedLog.args[0];
-      const token1 = decodedLog.args[1];
+      const token0 = decodedLog.args[0].toLowerCase() as Address;
+      const token1 = decodedLog.args[1].toLowerCase() as Address;
       const stable = decodedLog.args[2];
-      const pool = decodedLog.args[3];
+      const pool = decodedLog.args[3].toLowerCase() as Address;
       return {
         address: pool,
         stable,
@@ -77,9 +77,9 @@ class Source extends BaseSource {
         {
           value: getPoolLabel(pool, previousLabels),
           sourceId: this.getInfo().id,
-          indexed: false,
-          type: 'morpho-vault',
-          namespace: 'morpho',
+          indexed: true,
+          type: 'aerodrome-v1-pool',
+          namespace: 'aerodrome-v1',
         },
       ]),
     );
