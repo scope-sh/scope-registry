@@ -51,7 +51,7 @@ class Source extends BaseSource {
       if (decodedLog.eventName !== 'CreateMetaMorpho') {
         throw new Error('Invalid event name');
       }
-      return decodedLog.args.metaMorpho;
+      return decodedLog.args.metaMorpho.toLowerCase() as Address;
     });
 
     return Object.fromEntries(
@@ -60,7 +60,7 @@ class Source extends BaseSource {
         {
           value: chainNamedVaults[vault] || 'Vault',
           sourceId: this.getInfo().id,
-          indexed: false,
+          indexed: true,
           type: 'morpho-vault',
           namespace: 'morpho',
         },
