@@ -15,8 +15,8 @@ import AaveV2TokenSource from './aave/v2-tokens.js';
 import AaveV2Source from './aave/v2.js';
 import AaveV3TokenSource from './aave/v3-tokens.js';
 import AaveV3Source from './aave/v3.js';
-import AerodromeSource from './aerodrome/index.js';
-import AerodromePoolSource from './aerodrome/pools.js';
+import AerodromeV1PoolSource from './aerodrome/v1-pools.js';
+import AerodromeV1Source from './aerodrome/v1.js';
 import AlchemyAccountSource from './alchemy/accounts.js';
 import AlchemyInfraSource from './alchemy/infra.js';
 import BiconomyInfraSource from './biconomy/infra.js';
@@ -149,8 +149,8 @@ const sources: Source[] = [
   new UniswapV2Source(),
   new UniswapV3PoolSource(),
   new UniswapV3Source(),
-  new AerodromePoolSource(),
-  new AerodromeSource(),
+  new AerodromeV1PoolSource(),
+  new AerodromeV1Source(),
   new LidoSource(),
   // NFT
   new OpenseaSeaportSource(),

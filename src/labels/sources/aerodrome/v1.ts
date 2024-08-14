@@ -6,7 +6,7 @@ import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { toChainLabelMap } from '../../utils.js';
 import { ChainId } from '../index.js';
 
-import addresses from './addresses.json';
+import addresses from './v1-addresses.json';
 
 // https://docs.morpho.org/addresses
 class Source extends BaseSource {

@@ -21,7 +21,7 @@ class Source extends BaseSource {
   getInfo(): SourceInfo {
     return {
       name: 'Aerodrome Pools',
-      id: 'aerodrome-pool',
+      id: 'aerodrome-v1-pools',
       interval: {
         seconds: 0,
         minutes: 0,
