@@ -18,6 +18,7 @@ for (const chain of CHAINS) {
 }
 
 async function fetchLabels(chain: ChainId): Promise<void> {
+  let ranErc20Source = false;
   const labels: ChainLabelMap = {};
   const isValid = validateSources(SOURCES);
   if (!isValid) {
@@ -33,6 +34,13 @@ async function fetchLabels(chain: ChainId): Promise<void> {
       Date.now(),
     );
     if (!isTimeToFetch) {
+      continue;
+    }
+    // Make sure ERC20 dependant sources are run only if the ERC20 source has been run
+    if (info.id === 'erc20') {
+      ranErc20Source = true;
+    }
+    if (info.requiresErc20 && !ranErc20Source) {
       continue;
     }
     console.info(`Fetching from the "${info.name}" source…`);

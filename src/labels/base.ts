@@ -109,6 +109,7 @@ interface SourceInfo {
   id: string;
   interval: SourceInterval;
   fetchType: 'incremental' | 'full';
+  requiresErc20?: boolean;
 }
 
 abstract class Source {

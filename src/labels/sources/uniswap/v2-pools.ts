@@ -30,6 +30,7 @@ class Source extends BaseSource {
         days: 1,
       },
       fetchType: 'full',
+      requiresErc20: true,
     };
   }
 
