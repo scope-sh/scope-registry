@@ -276,6 +276,7 @@ function getHyperSyncClient(chain: ChainId): KyInstance {
   const client = ky.create({
     prefixUrl: endpointUrl,
     retry: {
+      methods: ['get', 'post'],
       limit: 100,
       delay: () => 10_000,
     },
