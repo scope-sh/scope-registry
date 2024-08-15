@@ -11,7 +11,7 @@ import {
   Label,
   SourceInfo,
 } from '@/labels/base.js';
-import { ChainId, ETHEREUM, SEPOLIA } from '@/utils/chains';
+import { ChainId, ETHEREUM, SEPOLIA, getChainData } from '@/utils/chains';
 import { getLogs } from '@/utils/fetching';
 
 const ADDRESS_ETH_REGISTRAR = '0x253553366da8546fc250f225fe3d25d0c782303b';
@@ -26,8 +26,8 @@ const TOPIC_NAME_RENEWED =
   '0x3da24c024582931cfaf8267d8ed24d13a82a8068d5bd337d30ec45cea4e506ae';
 const TOPIC_NAME_CHANGED =
   '0xb7d29e911041e8d9b843369e890bcb72c9388692ba48b65ac54e7214c4c348f7';
-const TOPIC_ADDR_CHANGED =
-  '0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2';
+const TOPIC_ADDRESS_CHANGED =
+  '0x65412581168e88a1e60c6459d7f44ae83ad0832e670826c05a4e2476b57af752';
 const TOPIC_TEXT_CHANGED =
   '0x448bc014f1536726cf8d54ff3d6481ed3cbc683c2591ca204274009afa09b1a1';
 const TOPIC_NAME_REGISTERED =
@@ -54,13 +54,14 @@ class Source extends BaseSource {
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
-    if (chain !== ETHEREUM && chain !== SEPOLIA) {
-      return {};
-    }
     const reverseClaimMap = await this.#getReverseClaimMap(chain);
+    console.log('fetch 1');
     const labelHashMap = await this.#getLabelHashMap(chain);
+    console.log('fetch 2');
     const addressMap = await this.#getAddressMap(chain);
+    console.log('fetch 3');
     const avatarMap = await this.#getAvatarMap(chain);
+    console.log('fetch 4');
     const labels: ChainSingleLabelMap = {};
     // First priority: reverse claims
     for (const addressString in reverseClaimMap) {
@@ -86,7 +87,25 @@ class Source extends BaseSource {
       if (!name) {
         continue;
       }
-      const address = addressMap[node];
+      const chainMap = addressMap[node] || ({} as Record<ChainId, Address>);
+      const chains = Object.keys(chainMap).map(
+        (chain) => parseInt(chain) as ChainId,
+      );
+      chains.sort((a, b) => {
+        // First priority: the chain we are fetching for
+        if (a === chain) return -1;
+        if (b === chain) return 1;
+        // Second priority: Ethereum
+        if (a === ETHEREUM) return -1;
+        if (b === ETHEREUM) return 1;
+        // Third priority: other chains
+        return a - b;
+      });
+      const topChain = chains[0];
+      if (!topChain) {
+        continue;
+      }
+      const address = chainMap[topChain];
       if (!address) {
         continue;
       }
@@ -106,27 +125,28 @@ class Source extends BaseSource {
   }
 
   async #getLabelHashMap(chain: ChainId): Promise<Record<Hex, string>> {
+    const ensChain = getEnsChain(chain);
     const legacyNameRegistrationLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED_LEGACY,
     );
     const legacyNameRenewalLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_LEGACY_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
     );
     const nameRegistrationLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_REGISTERED,
     );
     const nameRenewalLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_ETH_REGISTRAR,
       TOPIC_NAME_RENEWED,
     );
@@ -221,9 +241,10 @@ class Source extends BaseSource {
   }
 
   async #getReverseClaimMap(chain: ChainId): Promise<Record<Address, string>> {
+    const ensChain = getEnsChain(chain);
     const reverseClaimedLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_REVERSE_REGISTRAR,
       TOPIC_REVERSE_CLAIMED,
     );
@@ -244,13 +265,13 @@ class Source extends BaseSource {
 
     const legacyNameChangedLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
     );
     const nameChangedLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_NAME_CHANGED,
     );
@@ -296,61 +317,53 @@ class Source extends BaseSource {
     );
   }
 
-  async #getAddressMap(chain: ChainId): Promise<Record<Hex, Address>> {
+  async #getAddressMap(
+    chain: ChainId,
+  ): Promise<Record<Hex, Record<ChainId, Address>>> {
+    const ensChain = getEnsChain(chain);
     // Process "AddrChanged" events to get actively set addresses
-    const legacyAddrChangedLogs = await getLogs(
+    const legacyAddressChangedLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
-      TOPIC_ADDR_CHANGED,
+      TOPIC_ADDRESS_CHANGED,
     );
-    const addrChangedLogs = await getLogs(
+    const addressChangedLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_PUBLIC_RESOLVER,
-      TOPIC_ADDR_CHANGED,
+      TOPIC_ADDRESS_CHANGED,
     );
-    const legacyAddressChanges = legacyAddrChangedLogs.map((log) => {
-      const decodedLog = decodeEventLog({
-        abi: ensLegacyPublicResolverAbi,
-        data: log.data,
-        topics: log.topics as [Hex, ...Hex[]],
-      });
-      if (decodedLog.eventName !== 'AddrChanged') {
-        throw new Error('Unexpected event name');
-      }
-      return {
-        node: decodedLog.args.node,
-        address: decodedLog.args.a.toLowerCase() as Address,
-      };
-    });
-    const addressChanges = addrChangedLogs.map((log) => {
+    const logs = [...legacyAddressChangedLogs, ...addressChangedLogs];
+    const map: Record<Hex, Record<ChainId, Address>> = {};
+    for (const log of logs) {
       const decodedLog = decodeEventLog({
         abi: ensPublicResolverAbi,
         data: log.data,
         topics: log.topics as [Hex, ...Hex[]],
       });
-      if (decodedLog.eventName !== 'AddrChanged') {
+      if (decodedLog.eventName !== 'AddressChanged') {
         throw new Error('Unexpected event name');
       }
-      return {
-        node: decodedLog.args.node,
-        address: decodedLog.args.a.toLowerCase() as Address,
-      };
-    });
-    const map: Record<Hex, Address> = Object.fromEntries(
-      legacyAddressChanges
-        .concat(addressChanges)
-        .map((change) => [change.node, change.address]),
-    );
+      const coinType = decodedLog.args.coinType;
+      const chainId = convertCoinTypeToEvmChainId(coinType, ensChain);
+      if (!map[decodedLog.args.node]) {
+        map[decodedLog.args.node] = {} as Record<ChainId, Address>;
+      }
+      const nodeMap = map[decodedLog.args.node];
+      if (nodeMap) {
+        nodeMap[chainId] = decodedLog.args.newAddress.toLowerCase() as Address;
+      }
+    }
     return map;
   }
 
   async #getAvatarMap(chain: ChainId): Promise<Record<Hex, string>> {
+    const ensChain = getEnsChain(chain);
     // Process "TextChanged" events to get avatars
     const textChangedLogs = await getLogs(
       this.getInfo(),
-      chain,
+      ensChain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_TEXT_CHANGED,
     );
@@ -378,6 +391,20 @@ class Source extends BaseSource {
 
     return map;
   }
+}
+
+function getEnsChain(chain: ChainId): ChainId {
+  const chainData = getChainData(chain);
+  return chainData.testnet ? SEPOLIA : ETHEREUM;
+}
+
+function convertCoinTypeToEvmChainId(
+  coinType: bigint,
+  ensChain: ChainId,
+): ChainId {
+  const coinTypeNumber = parseInt(coinType.toString());
+  if (coinTypeNumber === 60) return ensChain;
+  return ((0x7fffffff & coinTypeNumber) >> 0) as ChainId;
 }
 
 export default Source;
