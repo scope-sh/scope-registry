@@ -21,12 +21,12 @@ import CoinbaseSmartWalletV1Accounts from './coinbase/smart-wallet-v1-accounts.j
 import CoinbaseSmartWalletV1 from './coinbase/smart-wallet-v1.js';
 import DaimoV1AccountSource from './daimo/v1-accounts.js';
 import DaimoV1Source from './daimo/v1.js';
-import DefillamaTokensSource from './defillama/tokens.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
 // import EnsNamesSource from './ens/names.js';
 import EntryPointV0_6_0Source from './entry-point/v0.6.0-accounts.js';
 import EntryPointV0_7_0Source from './entry-point/v0.7.0-accounts.js';
+import Erc20Source from './erc20/index.js';
 import EtherspotSource from './etherspot/index.js';
 import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
@@ -61,15 +61,11 @@ import StackupSource from './stackup/index.js';
 import StaticSource from './static.js';
 import ThirdwebAccountSource from './thirdweb/accounts.js';
 import ThirdwebSource from './thirdweb/index.js';
-import TokenlistSource from './tokenlists.js';
-import TokensSource from './tokens.js';
-import TrustwalletSource from './trustwallet.js';
 import UniPassSource from './unipass/index.js';
 import UniswapV2PoolSource from './uniswap/v2-pools.js';
 import UniswapV2Source from './uniswap/v2.js';
 import UniswapV3PoolSource from './uniswap/v3-pools.js';
 import UniswapV3Source from './uniswap/v3.js';
-import WrappedSource from './wrapped.js';
 import ZeroDevInfraSource from './zerodev/infra.js';
 import ZeroDevKernelV1AccountSource from './zerodev/kernel-v1-accounts.js';
 import ZeroDevKernelV1Source from './zerodev/kernel-v1.js';
@@ -83,11 +79,7 @@ const SOURCES: Source[] = [
   // Default
   new StaticSource(),
   // ERC20
-  new WrappedSource(),
-  new TokensSource(),
-  new TokenlistSource(),
-  new TrustwalletSource(),
-  new DefillamaTokensSource(),
+  new Erc20Source(),
   // DeFi
   new AaveV2Source(),
   new AaveV2TokenSource(),
