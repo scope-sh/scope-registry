@@ -19,8 +19,8 @@ interface Asset {
 class Source extends BaseSource {
   getInfo(): SourceInfo {
     return {
-      name: 'Tokens',
-      id: 'tokens',
+      name: 'ERC20',
+      id: 'erc20',
       interval: {
         seconds: 0,
         minutes: 0,
