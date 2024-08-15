@@ -78,6 +78,19 @@ async function addLabels(
   }
 }
 
+async function removeSourceLabels(
+  chain: ChainId,
+  sourceId: string,
+): Promise<void> {
+  const db = getDb();
+  await db
+    .delete(tableLabels)
+    .where(
+      and(eq(tableLabels.chain, chain), eq(tableLabels.sourceId, sourceId)),
+    )
+    .execute();
+}
+
 async function addContractCodes(codes: ContractCodeValues[]): Promise<void> {
   const db = getDb();
   const batchSize = 5_000;
@@ -193,6 +206,7 @@ function getDb(): NodePgDatabase {
 
 export {
   addLabels,
+  removeSourceLabels,
   addContractCodes,
   addContracts,
   addContractDeployments,

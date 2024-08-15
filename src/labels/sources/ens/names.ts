@@ -49,6 +49,7 @@ class Source extends BaseSource {
         days: 7,
       },
       fetchType: 'full',
+      requiresDeletion: true,
     };
   }
 

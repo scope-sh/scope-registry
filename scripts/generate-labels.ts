@@ -5,7 +5,12 @@ import { Address } from 'viem';
 import { ChainLabelMap } from '@/labels/base';
 import { SOURCES } from '@/labels/sources/index.js';
 import { ChainId, CHAINS } from '@/utils/chains.js';
-import { addLabels, disconnect, type LabelWithAddress } from '@/utils/db.js';
+import {
+  addLabels,
+  disconnect,
+  removeSourceLabels,
+  type LabelWithAddress,
+} from '@/utils/db.js';
 import {
   getMetadata,
   isTimeToFetch as isTimeToFetchSources,
@@ -67,6 +72,9 @@ async function fetchLabels(chain: ChainId): Promise<void> {
         });
       }
       labels[address] = addressLabels;
+    }
+    if (info.requiresDeletion) {
+      await removeSourceLabels(chain, info.id);
     }
     await addLabels(chain, sourceLabelsWithAddress);
     await updateSourceFetchTimestamp(chain, info);
