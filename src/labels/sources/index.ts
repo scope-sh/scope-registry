@@ -23,7 +23,7 @@ import DaimoV1AccountSource from './daimo/v1-accounts.js';
 import DaimoV1Source from './daimo/v1.js';
 import EasSource from './eas/index.js';
 import EnsSource from './ens/index.js';
-// import EnsNamesSource from './ens/names.js';
+import EnsNamesSource from './ens/names.js';
 import EntryPointV0_6_0Source from './entry-point/v0.6.0-accounts.js';
 import EntryPointV0_7_0Source from './entry-point/v0.7.0-accounts.js';
 import Erc20Source from './erc20/index.js';
@@ -101,7 +101,7 @@ const SOURCES: Source[] = [
   // Social
   new EasSource(),
   new EnsSource(),
-  // new EnsNamesSource(),
+  new EnsNamesSource(),
   new FarcasterSource(),
   // Account Abstraction
   new AlchemyInfraSource(),
