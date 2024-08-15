@@ -1,15 +1,7 @@
-import { Address } from 'viem';
-
 import type { ChainId } from '@/utils/chains.js';
-import {
-  getMetadata,
-  validate as validateSources,
-  isTimeToFetch as isTimeToFetchSource,
-  updateFetchTimestamp as updateSourceFetchTimestamp,
-} from '@/utils/source.js';
 
 import { Source } from '../base.js';
-import type { Label, LabelMap, ChainLabelMap } from '../base.js';
+import type { Label, LabelMap } from '../base.js';
 
 import AaveV2TokenSource from './aave/v2-tokens.js';
 import AaveV2Source from './aave/v2.js';
@@ -87,48 +79,7 @@ import ZeroDevKernelV3AccountSource from './zerodev/kernel-v3-accounts.js';
 import ZeroDevKernelV3ModuleSource from './zerodev/kernel-v3-modules.js';
 import ZeroDevKernelV3Source from './zerodev/kernel-v3.js';
 
-async function fetch(chain: ChainId): Promise<ChainLabelMap> {
-  const labels: ChainLabelMap = {};
-  const isValid = validateSources(sources);
-  if (!isValid) {
-    throw new Error('Invalid sources');
-  }
-  for (const source of sources) {
-    const info = source.getInfo();
-    const metadata = await getMetadata(chain, info);
-    const isTimeToFetch = isTimeToFetchSource(
-      metadata,
-      info.interval,
-      Date.now(),
-    );
-    if (!isTimeToFetch) {
-      continue;
-    }
-    console.info(`Fetching from the "${info.name}" source…`);
-    const sourceLabels = await source.fetch(chain, labels);
-    for (const addressString in sourceLabels) {
-      const address = addressString as Address;
-      const sourceLabel = sourceLabels[address];
-      if (!sourceLabel) {
-        continue;
-      }
-      const addressLabels = labels[address] || [];
-      // Append a label if there is no label with the same type
-      const hasSameType = addressLabels.some(
-        (label) =>
-          label.type && sourceLabel.type && label.type === sourceLabel.type,
-      );
-      if (!hasSameType) {
-        addressLabels.push(sourceLabel);
-      }
-      labels[address] = addressLabels;
-    }
-    await updateSourceFetchTimestamp(chain, info);
-  }
-  return labels;
-}
-
-const sources: Source[] = [
+const SOURCES: Source[] = [
   // Default
   new StaticSource(),
   // ERC20
@@ -212,5 +163,5 @@ const sources: Source[] = [
   new EntryPointV0_7_0Source(),
 ];
 
-export { fetch };
+export { SOURCES };
 export type { ChainId, Label, LabelMap };
