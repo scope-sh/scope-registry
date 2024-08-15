@@ -108,7 +108,7 @@ const SOURCES: Source[] = [
   new OpenseaCollectionSource(),
   // Social
   new EasSource(),
-  new EnsSource(),
+  // new EnsSource(),
   new EnsNamesSource(),
   new FarcasterSource(),
   // Account Abstraction
