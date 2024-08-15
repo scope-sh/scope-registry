@@ -53,15 +53,42 @@ class Source extends BaseSource {
     };
   }
 
+  cache: Partial<
+    Record<
+      ChainId,
+      {
+        reverseClaimMap: Record<Address, string>;
+        labelHashMap: Record<Hex, string>;
+        addressMap: Record<Hex, Record<ChainId, Address>>;
+        avatarMap: Record<Hex, string>;
+      }
+    >
+  > = {};
+
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
-    const reverseClaimMap = await this.#getReverseClaimMap(chain);
+    const ensChain = getEnsChain(chain);
+    const reverseClaimMap = this.cache[ensChain]?.reverseClaimMap
+      ? this.cache[ensChain].reverseClaimMap
+      : await this.#getReverseClaimMap(ensChain);
     console.log('fetch 1');
-    const labelHashMap = await this.#getLabelHashMap(chain);
+    const labelHashMap = this.cache[ensChain]?.labelHashMap
+      ? this.cache[ensChain].labelHashMap
+      : await this.#getLabelHashMap(ensChain);
     console.log('fetch 2');
-    const addressMap = await this.#getAddressMap(chain);
+    const addressMap = this.cache[ensChain]?.addressMap
+      ? this.cache[ensChain].addressMap
+      : await this.#getAddressMap(ensChain);
     console.log('fetch 3');
-    const avatarMap = await this.#getAvatarMap(chain);
+    const avatarMap = this.cache[ensChain]?.avatarMap
+      ? this.cache[ensChain].avatarMap
+      : await this.#getAvatarMap(ensChain);
     console.log('fetch 4');
+    this.cache[ensChain] = {
+      reverseClaimMap,
+      labelHashMap,
+      addressMap,
+      avatarMap,
+    };
     const labels: ChainSingleLabelMap = {};
     // First priority: reverse claims
     for (const addressString in reverseClaimMap) {
@@ -124,8 +151,7 @@ class Source extends BaseSource {
     return labels;
   }
 
-  async #getLabelHashMap(chain: ChainId): Promise<Record<Hex, string>> {
-    const ensChain = getEnsChain(chain);
+  async #getLabelHashMap(ensChain: ChainId): Promise<Record<Hex, string>> {
     const legacyNameRegistrationLogs = await getLogs(
       this.getInfo(),
       ensChain,
@@ -240,8 +266,9 @@ class Source extends BaseSource {
     return map;
   }
 
-  async #getReverseClaimMap(chain: ChainId): Promise<Record<Address, string>> {
-    const ensChain = getEnsChain(chain);
+  async #getReverseClaimMap(
+    ensChain: ChainId,
+  ): Promise<Record<Address, string>> {
     const reverseClaimedLogs = await getLogs(
       this.getInfo(),
       ensChain,
@@ -318,9 +345,8 @@ class Source extends BaseSource {
   }
 
   async #getAddressMap(
-    chain: ChainId,
+    ensChain: ChainId,
   ): Promise<Record<Hex, Record<ChainId, Address>>> {
-    const ensChain = getEnsChain(chain);
     // Process "AddrChanged" events to get actively set addresses
     const legacyAddressChangedLogs = await getLogs(
       this.getInfo(),
@@ -358,8 +384,7 @@ class Source extends BaseSource {
     return map;
   }
 
-  async #getAvatarMap(chain: ChainId): Promise<Record<Hex, string>> {
-    const ensChain = getEnsChain(chain);
+  async #getAvatarMap(ensChain: ChainId): Promise<Record<Hex, string>> {
     // Process "TextChanged" events to get avatars
     const textChangedLogs = await getLogs(
       this.getInfo(),
