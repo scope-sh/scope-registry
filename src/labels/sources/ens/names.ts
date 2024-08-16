@@ -407,8 +407,13 @@ class Source extends BaseSource {
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_TEXT_CHANGED,
     );
+    console.log('getAvatarMap 1', textChangedLogs.length);
     const textChanges = textChangedLogs
       .map((log) => {
+        const index = textChangedLogs.indexOf(log);
+        if (index % 10000 === 0) {
+          console.log(`Processing log ${index}/${textChangedLogs.length}`);
+        }
         const decodedLog = decodeEventLog({
           abi: ensPublicResolverAbi,
           data: log.data,
@@ -424,10 +429,12 @@ class Source extends BaseSource {
         };
       })
       .filter((change) => change.key === 'avatar');
+    console.log('getAvatarMap 2');
 
     const map: Record<Hex, string> = Object.fromEntries(
       textChanges.map((change) => [change.node, change.value]),
     );
+    console.log('getAvatarMap 3');
 
     return map;
   }
