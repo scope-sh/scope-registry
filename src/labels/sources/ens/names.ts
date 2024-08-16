@@ -362,7 +362,13 @@ class Source extends BaseSource {
       TOPIC_ADDRESS_CHANGED,
     );
     console.log('getAddressMap 2', addressChangedLogs.length);
-    const logs = [...legacyAddressChangedLogs, ...addressChangedLogs];
+    // Get the most recent 500,000 logs from the legacy resolver only
+    const logs = [
+      ...legacyAddressChangedLogs.slice(
+        legacyAddressChangedLogs.length - 1_000_000,
+      ),
+      ...addressChangedLogs,
+    ];
     console.log('getAddressMap 3');
     const map: Record<Hex, Record<ChainId, Address>> = {};
     console.log('getAddressMap 4', logs.length);
