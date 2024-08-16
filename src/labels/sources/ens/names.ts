@@ -354,15 +354,23 @@ class Source extends BaseSource {
       ADDRESS_LEGACY_PUBLIC_RESOLVER,
       TOPIC_ADDRESS_CHANGED,
     );
+    console.log('getAddressMap 1', legacyAddressChangedLogs.length);
     const addressChangedLogs = await getLogs(
       this.getInfo(),
       ensChain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_ADDRESS_CHANGED,
     );
+    console.log('getAddressMap 2', addressChangedLogs.length);
     const logs = [...legacyAddressChangedLogs, ...addressChangedLogs];
+    console.log('getAddressMap 3');
     const map: Record<Hex, Record<ChainId, Address>> = {};
+    console.log('getAddressMap 4', logs.length);
     for (const log of logs) {
+      const index = logs.indexOf(log);
+      if (index % 10000 === 0) {
+        console.log(`Processing log ${index}/${logs.length}`);
+      }
       const decodedLog = decodeEventLog({
         abi: ensPublicResolverAbi,
         data: log.data,
@@ -381,6 +389,7 @@ class Source extends BaseSource {
         nodeMap[chainId] = decodedLog.args.newAddress.toLowerCase() as Address;
       }
     }
+    console.log('getAddressMap 5');
     return map;
   }
 
