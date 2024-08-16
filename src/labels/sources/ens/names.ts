@@ -347,35 +347,18 @@ class Source extends BaseSource {
   async #getAddressMap(
     ensChain: ChainId,
   ): Promise<Record<Hex, Record<ChainId, Address>>> {
-    // Process "AddrChanged" events to get actively set addresses
-    const legacyAddressChangedLogs = await getLogs(
-      this.getInfo(),
-      ensChain,
-      ADDRESS_LEGACY_PUBLIC_RESOLVER,
-      TOPIC_ADDRESS_CHANGED,
-    );
-    console.log('getAddressMap 1', legacyAddressChangedLogs.length);
     const addressChangedLogs = await getLogs(
       this.getInfo(),
       ensChain,
       ADDRESS_PUBLIC_RESOLVER,
       TOPIC_ADDRESS_CHANGED,
     );
-    console.log('getAddressMap 2', addressChangedLogs.length);
-    // Get the most recent 500,000 logs from the legacy resolver only
-    const logs = [
-      ...legacyAddressChangedLogs.slice(
-        legacyAddressChangedLogs.length - 1_000_000,
-      ),
-      ...addressChangedLogs,
-    ];
-    console.log('getAddressMap 3');
+    console.log('getAddressMap 1', addressChangedLogs.length);
     const map: Record<Hex, Record<ChainId, Address>> = {};
-    console.log('getAddressMap 4', logs.length);
-    for (const log of logs) {
-      const index = logs.indexOf(log);
+    for (const log of addressChangedLogs) {
+      const index = addressChangedLogs.indexOf(log);
       if (index % 10000 === 0) {
-        console.log(`Processing log ${index}/${logs.length}`);
+        console.log(`Processing log ${index}/${addressChangedLogs.length}`);
       }
       const decodedLog = decodeEventLog({
         abi: ensPublicResolverAbi,
@@ -395,7 +378,7 @@ class Source extends BaseSource {
         nodeMap[chainId] = decodedLog.args.newAddress.toLowerCase() as Address;
       }
     }
-    console.log('getAddressMap 5');
+    console.log('getAddressMap 2');
     return map;
   }
 
