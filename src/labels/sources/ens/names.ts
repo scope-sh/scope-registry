@@ -389,7 +389,7 @@ class Source extends BaseSource {
       map[node as Address] =
         legacyAddressMap[node as Address] || ({} as Record<ChainId, Address>);
     }
-    for (const node in Object.entries(addressMap)) {
+    for (const node in addressMap) {
       map[node as Address] = {
         ...map[node as Address],
         ...addressMap[node as Address],
