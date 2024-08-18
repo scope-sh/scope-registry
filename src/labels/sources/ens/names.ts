@@ -13,6 +13,7 @@ import {
 } from '@/labels/base.js';
 import { ChainId, ETHEREUM, SEPOLIA, getChainData } from '@/utils/chains';
 import { getLogs } from '@/utils/fetching';
+import { getObject, putObject } from '@/utils/storage';
 
 const TOPIC_NAME_RENEWED =
   '0x3da24c024582931cfaf8267d8ed24d13a82a8068d5bd337d30ec45cea4e506ae';
@@ -355,7 +356,9 @@ class Source extends BaseSource {
       TOPIC_ADDRESS_CHANGED,
     );
     console.log('getAddressMap 1', addressChangedLogs.length);
-    const map: Record<Hex, Record<ChainId, Address>> = {};
+    const map: Record<Hex, Record<ChainId, Address>> = await getAddressMapCache(
+      ensChain,
+    );
     for (const log of addressChangedLogs) {
       const index = addressChangedLogs.indexOf(log);
       if (index % 10000 === 0) {
@@ -385,6 +388,8 @@ class Source extends BaseSource {
         }
       }
     }
+
+    await setAddressMapCache(ensChain, map);
     console.log('getAddressMap 2');
     return map;
   }
@@ -430,6 +435,38 @@ class Source extends BaseSource {
 
     return map;
   }
+}
+
+async function getAddressMapCache(
+  chain: ChainId,
+): Promise<Record<Hex, Record<ChainId, Address>>> {
+  return getCache(chain, 'addressMap');
+}
+
+async function setAddressMapCache(
+  chain: ChainId,
+  map: Record<Hex, Record<ChainId, Address>>,
+): Promise<void> {
+  return setCache(chain, 'addressMap', map);
+}
+
+async function getCache<K extends string, V>(
+  chain: ChainId,
+  cacheId: string,
+): Promise<Record<K, V>> {
+  const cacheKey = `ens/${chain}/${cacheId}.json`;
+  const cacheString = await getObject(cacheKey);
+  const cache: Record<K, V> = cacheString ? JSON.parse(cacheString) : {};
+  return cache;
+}
+
+async function setCache<K extends string, V>(
+  chain: ChainId,
+  cacheId: string,
+  cache: Record<K, V>,
+): Promise<void> {
+  const cacheKey = `ens/${chain}/${cacheId}.json`;
+  await putObject(cacheKey, JSON.stringify(cache));
 }
 
 function getEthRegistrarAddress(chain: ChainId): Address {
