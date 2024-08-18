@@ -46,42 +46,16 @@ class Source extends BaseSource {
     };
   }
 
-  cache: Partial<
-    Record<
-      ChainId,
-      {
-        reverseClaimMap: Record<Address, string>;
-        labelHashMap: Record<Hex, string>;
-        addressMap: Record<Hex, Record<ChainId, Address>>;
-        avatarMap: Record<Hex, string>;
-      }
-    >
-  > = {};
-
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const ensChain = getEnsChain(chain);
-    const reverseClaimMap = this.cache[ensChain]?.reverseClaimMap
-      ? this.cache[ensChain].reverseClaimMap
-      : await this.#getReverseClaimMap(ensChain);
+    const reverseClaimMap = await this.#getReverseClaimMap(ensChain);
     console.log('fetch 1');
-    const labelHashMap = this.cache[ensChain]?.labelHashMap
-      ? this.cache[ensChain].labelHashMap
-      : await this.#getLabelHashMap(ensChain);
+    const labelHashMap = await this.#getLabelHashMap(ensChain);
     console.log('fetch 2');
-    const addressMap = this.cache[ensChain]?.addressMap
-      ? this.cache[ensChain].addressMap
-      : await this.#getAddressMap(ensChain);
+    const addressMap = await this.#getAddressMap(ensChain);
     console.log('fetch 3');
-    const avatarMap = this.cache[ensChain]?.avatarMap
-      ? this.cache[ensChain].avatarMap
-      : await this.#getAvatarMap(ensChain);
+    const avatarMap = await this.#getAvatarMap(ensChain);
     console.log('fetch 4');
-    this.cache[ensChain] = {
-      reverseClaimMap,
-      labelHashMap,
-      addressMap,
-      avatarMap,
-    };
     const labels: ChainSingleLabelMap = {};
     // First priority: reverse claims
     for (const addressString in reverseClaimMap) {
