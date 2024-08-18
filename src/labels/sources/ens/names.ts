@@ -385,7 +385,7 @@ class Source extends BaseSource {
 
     console.log('getAddressMap 2');
     const map: Record<Hex, Record<ChainId, Address>> = {};
-    for (const node in Object.entries(legacyAddressMap)) {
+    for (const node in legacyAddressMap) {
       map[node as Address] =
         legacyAddressMap[node as Address] || ({} as Record<ChainId, Address>);
     }
