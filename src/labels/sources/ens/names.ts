@@ -1,4 +1,4 @@
-import { Address, Hex, decodeEventLog, namehash } from 'viem';
+import { Address, Hex, decodeEventLog, namehash, size } from 'viem';
 
 import ensEthRegistrarControllerAbi from '@/abi/ensEthRegistrarController';
 import ensLegacyEthRegistrarControllerAbi from '@/abi/ensLegacyEthRegistrarController';
@@ -376,7 +376,13 @@ class Source extends BaseSource {
       }
       const nodeMap = map[decodedLog.args.node];
       if (nodeMap) {
-        nodeMap[chainId] = decodedLog.args.newAddress.toLowerCase() as Address;
+        const newAddress = decodedLog.args.newAddress.toLowerCase() as Address;
+        if (size(newAddress) === 0) {
+          // Removal
+          delete nodeMap[chainId];
+        } else {
+          nodeMap[chainId] = newAddress;
+        }
       }
     }
     console.log('getAddressMap 2');
