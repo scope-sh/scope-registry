@@ -303,7 +303,7 @@ class Source extends BaseSource {
       }
       nameMap[decodedLog.args.node] = decodedLog.args.name;
     }
-    await setNameMapCache(ensChain, legacyNameMap);
+    await setNameMapCache(ensChain, nameMap);
 
     const names = {
       ...legacyNameMap,
