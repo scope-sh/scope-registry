@@ -14,14 +14,6 @@ import {
 import { ChainId, ETHEREUM, SEPOLIA, getChainData } from '@/utils/chains';
 import { getLogs } from '@/utils/fetching';
 
-const ADDRESS_ETH_REGISTRAR = '0x253553366da8546fc250f225fe3d25d0c782303b';
-const ADDRESS_PUBLIC_RESOLVER = '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63';
-const ADDRESS_LEGACY_ETH_REGISTRAR =
-  '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5';
-const ADDRESS_LEGACY_PUBLIC_RESOLVER =
-  '0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41';
-const ADDRESS_REVERSE_REGISTRAR = '0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
-
 const TOPIC_NAME_RENEWED =
   '0x3da24c024582931cfaf8267d8ed24d13a82a8068d5bd337d30ec45cea4e506ae';
 const TOPIC_NAME_CHANGED =
@@ -152,28 +144,30 @@ class Source extends BaseSource {
   }
 
   async #getLabelHashMap(ensChain: ChainId): Promise<Record<Hex, string>> {
+    const legacyEthRegistrarAddress = getLegacyEthRegistrarAddress(ensChain);
+    const ethRegistrarAddress = getEthRegistrarAddress(ensChain);
     const legacyNameRegistrationLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_LEGACY_ETH_REGISTRAR,
+      legacyEthRegistrarAddress,
       TOPIC_NAME_REGISTERED_LEGACY,
     );
     const legacyNameRenewalLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_LEGACY_ETH_REGISTRAR,
+      legacyEthRegistrarAddress,
       TOPIC_NAME_RENEWED,
     );
     const nameRegistrationLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_ETH_REGISTRAR,
+      ethRegistrarAddress,
       TOPIC_NAME_REGISTERED,
     );
     const nameRenewalLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_ETH_REGISTRAR,
+      ethRegistrarAddress,
       TOPIC_NAME_RENEWED,
     );
 
@@ -269,10 +263,15 @@ class Source extends BaseSource {
   async #getReverseClaimMap(
     ensChain: ChainId,
   ): Promise<Record<Address, string>> {
+    const reverseRegistrarAddress = getReverseRegistrarAddress(ensChain);
+    const legacyPublicResolverAddress =
+      getLegacyPublicResolverAddress(ensChain);
+    const publicResolverAddress = getPublicResolverAddress(ensChain);
+
     const reverseClaimedLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_REVERSE_REGISTRAR,
+      reverseRegistrarAddress,
       TOPIC_REVERSE_CLAIMED,
     );
     const reverseClaims = reverseClaimedLogs.map((log) => {
@@ -293,13 +292,13 @@ class Source extends BaseSource {
     const legacyNameChangedLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_LEGACY_PUBLIC_RESOLVER,
+      legacyPublicResolverAddress,
       TOPIC_NAME_CHANGED,
     );
     const nameChangedLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_PUBLIC_RESOLVER,
+      publicResolverAddress,
       TOPIC_NAME_CHANGED,
     );
     const legacyNameChanges = legacyNameChangedLogs.map((log) => {
@@ -347,10 +346,12 @@ class Source extends BaseSource {
   async #getAddressMap(
     ensChain: ChainId,
   ): Promise<Record<Hex, Record<ChainId, Address>>> {
+    const publicResolverAddress = getPublicResolverAddress(ensChain);
+
     const addressChangedLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_PUBLIC_RESOLVER,
+      publicResolverAddress,
       TOPIC_ADDRESS_CHANGED,
     );
     console.log('getAddressMap 1', addressChangedLogs.length);
@@ -383,11 +384,13 @@ class Source extends BaseSource {
   }
 
   async #getAvatarMap(ensChain: ChainId): Promise<Record<Hex, string>> {
+    const publicResolverAddress = getPublicResolverAddress(ensChain);
+
     // Process "TextChanged" events to get avatars
     const textChangedLogs = await getLogs(
       this.getInfo(),
       ensChain,
-      ADDRESS_PUBLIC_RESOLVER,
+      publicResolverAddress,
       TOPIC_TEXT_CHANGED,
     );
     console.log('getAvatarMap 1', textChangedLogs.length);
@@ -420,6 +423,61 @@ class Source extends BaseSource {
     console.log('getAvatarMap 3');
 
     return map;
+  }
+}
+
+function getEthRegistrarAddress(chain: ChainId): Address {
+  switch (chain) {
+    case ETHEREUM:
+      return '0x253553366da8546fc250f225fe3d25d0c782303b';
+    case SEPOLIA:
+      return '0xfed6a969aaa60e4961fcd3ebf1a2e8913ac65b72';
+    default:
+      throw new Error('Unsupported chain');
+  }
+}
+
+function getPublicResolverAddress(chain: ChainId): Address {
+  switch (chain) {
+    case ETHEREUM:
+      return '0x231b0ee14048e9dccd1d247744d114a4eb5e8e63';
+    case SEPOLIA:
+      return '0x8fade66b79cc9f707ab26799354482eb93a5b7dd';
+    default:
+      throw new Error('Unsupported chain');
+  }
+}
+
+function getLegacyEthRegistrarAddress(chain: ChainId): Address {
+  switch (chain) {
+    case ETHEREUM:
+      return '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5';
+    case SEPOLIA:
+      return '0x7e02892cfc2bfd53a75275451d73cf620e793fc0';
+    default:
+      throw new Error('Unsupported chain');
+  }
+}
+
+function getLegacyPublicResolverAddress(chain: ChainId): Address {
+  switch (chain) {
+    case ETHEREUM:
+      return '0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41';
+    case SEPOLIA:
+      return '0x0ceec524b2807841739d3b5e161f5bf1430ffa48';
+    default:
+      throw new Error('Unsupported chain');
+  }
+}
+
+function getReverseRegistrarAddress(chain: ChainId): Address {
+  switch (chain) {
+    case ETHEREUM:
+      return '0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
+    case SEPOLIA:
+      return '0xa0a1abcdae1a2a4a2ef8e9113ff0e02dd81dc0c6';
+    default:
+      throw new Error('Unsupported chain');
   }
 }
 
