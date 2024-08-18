@@ -326,10 +326,6 @@ class Source extends BaseSource {
       map: Record<Hex, Record<ChainId, Address>>,
     ): void {
       for (const log of logs) {
-        const index = logs.indexOf(log);
-        if (index % 10000 === 0) {
-          console.log(`Processing log ${index}/${logs.length}`);
-        }
         const decodedLog = decodeEventLog({
           abi: ensPublicResolverAbi,
           data: log.data,
@@ -367,7 +363,6 @@ class Source extends BaseSource {
       legacyPublicResolverAddress,
       TOPIC_ADDRESS_CHANGED,
     );
-    console.log('getAddressMap 0', legacyAddressChangedLogs.length);
     const legacyAddressMap = await getLegacyAddressMapCache(ensChain);
     process(legacyAddressChangedLogs, legacyAddressMap);
     await setLegacyAddressMapCache(ensChain, legacyAddressMap);
@@ -378,12 +373,10 @@ class Source extends BaseSource {
       publicResolverAddress,
       TOPIC_ADDRESS_CHANGED,
     );
-    console.log('getAddressMap 1', addressChangedLogs.length);
     const addressMap = await getAddressMapCache(ensChain);
     process(addressChangedLogs, addressMap);
     await setAddressMapCache(ensChain, addressMap);
 
-    console.log('getAddressMap 2');
     const map: Record<Hex, Record<ChainId, Address>> = {};
     for (const node in legacyAddressMap) {
       map[node as Address] =
@@ -408,13 +401,8 @@ class Source extends BaseSource {
       publicResolverAddress,
       TOPIC_TEXT_CHANGED,
     );
-    console.log('getAvatarMap 1', textChangedLogs.length);
     const textChanges = textChangedLogs
       .map((log) => {
-        const index = textChangedLogs.indexOf(log);
-        if (index % 10000 === 0) {
-          console.log(`Processing log ${index}/${textChangedLogs.length}`);
-        }
         const decodedLog = decodeEventLog({
           abi: ensPublicResolverAbi,
           data: log.data,
@@ -430,14 +418,12 @@ class Source extends BaseSource {
         };
       })
       .filter((change) => change.key === 'avatar');
-    console.log('getAvatarMap 2');
 
     const map = await getAvatarMapCache(ensChain);
     for (const change of textChanges) {
       map[change.node] = change.value;
     }
     await setAvatarMapCache(ensChain, map);
-    console.log('getAvatarMap 3');
 
     return map;
   }
