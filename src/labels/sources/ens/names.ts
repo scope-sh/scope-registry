@@ -12,7 +12,7 @@ import {
   SourceInfo,
 } from '@/labels/base.js';
 import { ChainId, ETHEREUM, SEPOLIA, getChainData } from '@/utils/chains';
-import { getLogs } from '@/utils/fetching';
+import { getLogs, Log } from '@/utils/fetching';
 import { getObject, putObject } from '@/utils/storage';
 
 const TOPIC_NAME_RENEWED =
@@ -41,7 +41,7 @@ class Source extends BaseSource {
         hours: 0,
         days: 14,
       },
-      fetchType: 'full',
+      fetchType: 'incremental',
       requiresDeletion: true,
     };
   }
@@ -241,15 +241,16 @@ class Source extends BaseSource {
     registrationList.sort((a, b) => a.block - b.block);
     // Store the most recent registration for each name
     // But preserve the order of name registrations to get the first name for each address
-    const names: Record<string, bigint> = {};
+    const names = await getNameExpiryMapCache(ensChain);
     for (const registration of registrationList) {
       const name = registration.name;
       const expires = registration.expires;
       const previousExpires = names[name];
       if (!previousExpires || previousExpires < expires) {
-        names[name] = expires;
+        names[name] = parseInt(expires.toString());
       }
     }
+    await setNameExpiryMapCache(ensChain, names);
     const map: Record<Hex, string> = Object.fromEntries(
       Object.entries(names)
         .filter(([, expires]) => expires > Date.now() / 1000)
@@ -269,13 +270,14 @@ class Source extends BaseSource {
       getLegacyPublicResolverAddress(ensChain);
     const publicResolverAddress = getPublicResolverAddress(ensChain);
 
+    const reverseClaimMap = await getReverseClaimMapCache(ensChain);
     const reverseClaimedLogs = await getLogs(
       this.getInfo(),
       ensChain,
       reverseRegistrarAddress,
       TOPIC_REVERSE_CLAIMED,
     );
-    const reverseClaims = reverseClaimedLogs.map((log) => {
+    for (const log of reverseClaimedLogs) {
       const decodedLog = decodeEventLog({
         abi: ensReverseRegistrarAbi,
         data: log.data,
@@ -284,25 +286,19 @@ class Source extends BaseSource {
       if (decodedLog.eventName !== 'ReverseClaimed') {
         throw new Error('Unexpected event name');
       }
-      return {
-        node: decodedLog.args.node,
-        address: decodedLog.args.addr.toLowerCase() as Address,
-      };
-    });
+      reverseClaimMap[decodedLog.args.node] =
+        decodedLog.args.addr.toLowerCase() as Address;
+    }
+    setReverseClaimMapCache(ensChain, reverseClaimMap);
 
+    const legacyNameMap = await getLegacyNameMapCache(ensChain);
     const legacyNameChangedLogs = await getLogs(
       this.getInfo(),
       ensChain,
       legacyPublicResolverAddress,
       TOPIC_NAME_CHANGED,
     );
-    const nameChangedLogs = await getLogs(
-      this.getInfo(),
-      ensChain,
-      publicResolverAddress,
-      TOPIC_NAME_CHANGED,
-    );
-    const legacyNameChanges = legacyNameChangedLogs.map((log) => {
+    for (const log of legacyNameChangedLogs) {
       const decodedLog = decodeEventLog({
         abi: ensLegacyPublicResolverAbi,
         data: log.data,
@@ -311,12 +307,18 @@ class Source extends BaseSource {
       if (decodedLog.eventName !== 'NameChanged') {
         throw new Error('Unexpected event name');
       }
-      return {
-        node: decodedLog.args.node,
-        name: decodedLog.args.name,
-      };
-    });
-    const nameChanges = nameChangedLogs.map((log) => {
+      legacyNameMap[decodedLog.args.node] = decodedLog.args.name;
+    }
+    await setLegacyNameMapCache(ensChain, legacyNameMap);
+
+    const nameMap = await getNameMapCache(ensChain);
+    const nameChangedLogs = await getLogs(
+      this.getInfo(),
+      ensChain,
+      publicResolverAddress,
+      TOPIC_NAME_CHANGED,
+    );
+    for (const log of nameChangedLogs) {
       const decodedLog = decodeEventLog({
         abi: ensPublicResolverAbi,
         data: log.data,
@@ -325,21 +327,19 @@ class Source extends BaseSource {
       if (decodedLog.eventName !== 'NameChanged') {
         throw new Error('Unexpected event name');
       }
-      return {
-        node: decodedLog.args.node,
-        name: decodedLog.args.name,
-      };
-    });
-    const nameMap = Object.fromEntries(
-      legacyNameChanges
-        .concat(nameChanges)
-        .map((change) => [change.node, change.name]),
-    );
+      nameMap[decodedLog.args.node] = decodedLog.args.name;
+    }
+    await setNameMapCache(ensChain, legacyNameMap);
+
+    const names = {
+      ...legacyNameMap,
+      ...nameMap,
+    };
 
     return Object.fromEntries(
-      reverseClaims.map((claim) => [
-        claim.address,
-        nameMap[claim.node] as string,
+      Object.entries(reverseClaimMap).map(([node, address]) => [
+        address,
+        names[node as Hex] as string,
       ]),
     );
   }
@@ -347,7 +347,56 @@ class Source extends BaseSource {
   async #getAddressMap(
     ensChain: ChainId,
   ): Promise<Record<Hex, Record<ChainId, Address>>> {
+    function process(
+      logs: Log[],
+      map: Record<Hex, Record<ChainId, Address>>,
+    ): void {
+      for (const log of logs) {
+        const index = logs.indexOf(log);
+        if (index % 10000 === 0) {
+          console.log(`Processing log ${index}/${logs.length}`);
+        }
+        const decodedLog = decodeEventLog({
+          abi: ensPublicResolverAbi,
+          data: log.data,
+          topics: log.topics as [Hex, ...Hex[]],
+        });
+        if (decodedLog.eventName !== 'AddressChanged') {
+          throw new Error('Unexpected event name');
+        }
+        const coinType = decodedLog.args.coinType;
+        const chainId = convertCoinTypeToEvmChainId(coinType, ensChain);
+        if (!map[decodedLog.args.node]) {
+          map[decodedLog.args.node] = {} as Record<ChainId, Address>;
+        }
+        const nodeMap = map[decodedLog.args.node];
+        if (nodeMap) {
+          const newAddress =
+            decodedLog.args.newAddress.toLowerCase() as Address;
+          if (size(newAddress) === 0) {
+            // Removal
+            delete nodeMap[chainId];
+          } else {
+            nodeMap[chainId] = newAddress;
+          }
+        }
+      }
+    }
+
+    const legacyPublicResolverAddress =
+      getLegacyPublicResolverAddress(ensChain);
     const publicResolverAddress = getPublicResolverAddress(ensChain);
+
+    const legacyAddressChangedLogs = await getLogs(
+      this.getInfo(),
+      ensChain,
+      legacyPublicResolverAddress,
+      TOPIC_ADDRESS_CHANGED,
+    );
+    console.log('getAddressMap 0', legacyAddressChangedLogs.length);
+    const legacyAddressMap = await getLegacyAddressMapCache(ensChain);
+    process(legacyAddressChangedLogs, legacyAddressMap);
+    await setLegacyAddressMapCache(ensChain, legacyAddressMap);
 
     const addressChangedLogs = await getLogs(
       this.getInfo(),
@@ -356,41 +405,22 @@ class Source extends BaseSource {
       TOPIC_ADDRESS_CHANGED,
     );
     console.log('getAddressMap 1', addressChangedLogs.length);
-    const map: Record<Hex, Record<ChainId, Address>> = await getAddressMapCache(
-      ensChain,
-    );
-    for (const log of addressChangedLogs) {
-      const index = addressChangedLogs.indexOf(log);
-      if (index % 10000 === 0) {
-        console.log(`Processing log ${index}/${addressChangedLogs.length}`);
-      }
-      const decodedLog = decodeEventLog({
-        abi: ensPublicResolverAbi,
-        data: log.data,
-        topics: log.topics as [Hex, ...Hex[]],
-      });
-      if (decodedLog.eventName !== 'AddressChanged') {
-        throw new Error('Unexpected event name');
-      }
-      const coinType = decodedLog.args.coinType;
-      const chainId = convertCoinTypeToEvmChainId(coinType, ensChain);
-      if (!map[decodedLog.args.node]) {
-        map[decodedLog.args.node] = {} as Record<ChainId, Address>;
-      }
-      const nodeMap = map[decodedLog.args.node];
-      if (nodeMap) {
-        const newAddress = decodedLog.args.newAddress.toLowerCase() as Address;
-        if (size(newAddress) === 0) {
-          // Removal
-          delete nodeMap[chainId];
-        } else {
-          nodeMap[chainId] = newAddress;
-        }
-      }
-    }
+    const addressMap = await getAddressMapCache(ensChain);
+    process(addressChangedLogs, addressMap);
+    await setAddressMapCache(ensChain, addressMap);
 
-    await setAddressMapCache(ensChain, map);
     console.log('getAddressMap 2');
+    const map: Record<Hex, Record<ChainId, Address>> = {};
+    for (const node in Object.entries(legacyAddressMap)) {
+      map[node as Address] =
+        legacyAddressMap[node as Address] || ({} as Record<ChainId, Address>);
+    }
+    for (const node in Object.entries(addressMap)) {
+      map[node as Address] = {
+        ...map[node as Address],
+        ...addressMap[node as Address],
+      } as Record<ChainId, Address>;
+    }
     return map;
   }
 
@@ -428,13 +458,78 @@ class Source extends BaseSource {
       .filter((change) => change.key === 'avatar');
     console.log('getAvatarMap 2');
 
-    const map: Record<Hex, string> = Object.fromEntries(
-      textChanges.map((change) => [change.node, change.value]),
-    );
+    const map = await getAvatarMapCache(ensChain);
+    for (const change of textChanges) {
+      map[change.node] = change.value;
+    }
+    await setAvatarMapCache(ensChain, map);
     console.log('getAvatarMap 3');
 
     return map;
   }
+}
+
+async function getNameExpiryMapCache(
+  chain: ChainId,
+): Promise<Record<string, number>> {
+  return getCache(chain, 'nameExpiryMap');
+}
+
+async function setNameExpiryMapCache(
+  chain: ChainId,
+  map: Record<string, number>,
+): Promise<void> {
+  return setCache(chain, 'nameExpiryMap', map);
+}
+
+async function getReverseClaimMapCache(
+  chain: ChainId,
+): Promise<Record<Hex, Address>> {
+  return getCache(chain, 'reverseClaimMap');
+}
+
+async function setReverseClaimMapCache(
+  chain: ChainId,
+  map: Record<Hex, Address>,
+): Promise<void> {
+  return setCache(chain, 'reverseClaimMap', map);
+}
+
+async function getLegacyNameMapCache(
+  chain: ChainId,
+): Promise<Record<Hex, string>> {
+  return getCache(chain, 'legacyNameMap');
+}
+
+async function setLegacyNameMapCache(
+  chain: ChainId,
+  map: Record<Hex, string>,
+): Promise<void> {
+  return setCache(chain, 'legacyNameMap', map);
+}
+
+async function getNameMapCache(chain: ChainId): Promise<Record<Hex, string>> {
+  return getCache(chain, 'nameMap');
+}
+
+async function setNameMapCache(
+  chain: ChainId,
+  map: Record<Hex, string>,
+): Promise<void> {
+  return setCache(chain, 'nameMap', map);
+}
+
+async function getLegacyAddressMapCache(
+  chain: ChainId,
+): Promise<Record<Hex, Record<ChainId, Address>>> {
+  return getCache(chain, 'legacyAddressMap');
+}
+
+async function setLegacyAddressMapCache(
+  chain: ChainId,
+  map: Record<Hex, Record<ChainId, Address>>,
+): Promise<void> {
+  return setCache(chain, 'legacyAddressMap', map);
 }
 
 async function getAddressMapCache(
@@ -448,6 +543,17 @@ async function setAddressMapCache(
   map: Record<Hex, Record<ChainId, Address>>,
 ): Promise<void> {
   return setCache(chain, 'addressMap', map);
+}
+
+async function getAvatarMapCache(chain: ChainId): Promise<Record<Hex, string>> {
+  return getCache(chain, 'avatarMap');
+}
+
+async function setAvatarMapCache(
+  chain: ChainId,
+  map: Record<Hex, string>,
+): Promise<void> {
+  return setCache(chain, 'avatarMap', map);
 }
 
 async function getCache<K extends string, V>(
