@@ -53,6 +53,13 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
         name: 'Bridged USDC',
         symbol: 'USDC.e',
       },
+      '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619': {
+        name: 'Wrapped Ether',
+        symbol: 'WETH',
+      },
+      '0x11cd37bb86f65419713f30673a480ea33c826872': {
+        name: 'Wormhole Wrapped Ether',
+      },
       '0x4318cb63a2b8edf2de971e2f17f77097e499459d': { name: 'Wormhole USDC' },
       '0x576cf361711cd940cd9c397bb98c4c896cbd38de': {
         name: 'Wormhole USDC 2',
