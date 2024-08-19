@@ -45,6 +45,10 @@ class Source extends BaseSource {
       const assets = await fetchFn(chain);
       for (const asset of assets) {
         const { address, symbol, name } = asset;
+        // Prevent overwriting existing labels
+        if (labels[address]) {
+          continue;
+        }
         // Prevent using token symbol as a label value for multiple tokens
         const value =
           symbol && !tokenValues.has(symbol)
