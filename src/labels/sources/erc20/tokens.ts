@@ -19,6 +19,10 @@ interface Token {
 async function fetch(chain: ChainId): Promise<Asset[]> {
   const tokens: Partial<Record<ChainId, Record<Address, Token | null>>> = {
     [ETHEREUM]: {
+      '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
+        name: 'USD Coin',
+        symbol: 'USDC',
+      },
       '0xde60adfddaabaaac3dafa57b26acc91cb63728c4': {
         name: 'Wormhole Tether USD',
         symbol: 'wormholeUSDT',
