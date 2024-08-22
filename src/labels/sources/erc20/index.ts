@@ -66,7 +66,8 @@ class Source extends BaseSource {
           sourceId: this.getInfo().id,
           type: 'erc20',
           metadata: {
-            symbol,
+            // Only set metadata if it was used as a label value
+            symbol: value === symbol ? symbol : undefined,
           },
         };
       }
