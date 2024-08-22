@@ -65,6 +65,11 @@ class Source extends BaseSource {
         continue;
       }
       const nameHash = namehash(name);
+      // Only use the reverse record if the name itself resolves to the address
+      const resolvedAddress = (addressMap[nameHash] || {})[chain];
+      if (resolvedAddress !== address) {
+        continue;
+      }
       const avatar = avatarMap[nameHash];
       const label: Label = {
         value: name,
