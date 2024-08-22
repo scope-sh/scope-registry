@@ -43,6 +43,54 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
         name: 'Kyber Network Crystal v2',
         symbol: 'KNC',
       },
+      '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': {
+        name: 'Wrapped Staked Ether',
+        symbol: 'wstETH',
+      },
+      '0xbe9895146f7af43049ca1c1ae358b0541ea49704': {
+        name: 'Coinbase Staked Ether',
+        symbol: 'cbETH',
+      },
+      '0xae78736cd615f374d3085123a210448e74fc6393': {
+        name: 'Rocket Pool Staked Ether',
+        symbol: 'rETH',
+      },
+      '0xd533a949740bb3306d119cc777fa900ba034cd52': {
+        name: 'Curve DAO Token',
+        symbol: 'CRV',
+      },
+      '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2': {
+        name: 'Maker',
+        symbol: 'MKR',
+      },
+      '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984': {
+        name: 'Uniswap',
+        symbol: 'UNI',
+      },
+      '0x853d955acef822db058eb8505911ed77f175b99e': {
+        name: 'Frax Finance',
+        symbol: 'FRAX',
+      },
+      '0xd33526068d116ce69f19a9ee46f0bd304f21a51f': {
+        name: 'Rocket Pool',
+        symbol: 'RPL',
+      },
+      '0x6c3ea9036406852006290770bedfcaba0e23a0e8': {
+        name: 'Paypal USD Coin',
+        symbol: 'PYUSD',
+      },
+      '0xf1c9acdc66974dfb6decb12aa385b9cd01190e38': {
+        name: 'StakeWise Staked Ether',
+        symbol: 'osETH',
+      },
+      '0x4c9edd5852cd905f086c759e8383e09bff1e68b3': {
+        name: 'Ethena USD',
+        symbol: 'USDe',
+      },
+      '0xa35b1b31ce002fbf2058d22f30f95d405200a15b': {
+        name: 'Stader Ether',
+        symbol: 'ETHx',
+      },
     },
     [POLYGON]: {
       '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359': {
@@ -88,6 +136,30 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       },
       '0xd7bb095a60d7666d4a6f236423b47ddd6ae6cfa7': { name: 'Axelar wstETH' },
       '0x1ddcaa4ed761428ae348befc6718bcb12e63bfaa': { name: 'deBridge USDC' },
+      '0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7': {
+        name: 'Aavegochi',
+        symbol: 'GHST',
+      },
+      '0x85955046df4668e1dd369d2de9f3aeb98dd2a369': {
+        name: 'DefiPulse Index',
+        symbol: 'DPI',
+      },
+      '0xe111178a87a3bff0c8d18decba5798827539ae99': {
+        name: 'STASIS Euro',
+        symbol: 'EURS',
+      },
+      '0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c': {
+        name: 'Jarvis Synthetic Euro',
+        symbol: 'jEUR',
+      },
+      '0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4': {
+        name: 'Lido Staked MATIC',
+        symbol: 'stMATIC',
+      },
+      '0xfa68fb4628dff1028cfec22b4162fccd0d45efb6': {
+        name: 'Stader Staked MATIC',
+        symbol: 'MaticX',
+      },
     },
     [OPTIMISM]: {
       '0x0b2c639c533813f4aa9d7837caf62653d097ff85': {
@@ -130,6 +202,22 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       '0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8': {
         name: 'Everclear',
         symbol: 'NEXT',
+      },
+      '0x68f180fcce6836688e9084f035309e29bf0a2095': {
+        name: 'Wrapped Bitcoin',
+        symbol: 'WBTC',
+      },
+      '0x76fb31fb4af56892a25e32cfc43de717950c9278': {
+        name: 'Aave Token',
+        symbol: 'AAVE',
+      },
+      '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9': {
+        name: 'Synth USD',
+        symbol: 'sUSD',
+      },
+      '0xc40f949f8a4e094d1b49a23ea9241d289b7b2819': {
+        name: 'Liquity USD Stablecoin',
+        symbol: 'LUSD',
       },
     },
     [BASE]: {
@@ -215,6 +303,14 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       '0x178412e79c25968a32e89b11f63b33f733770c2a': {
         name: 'Frax Ether',
         symbol: 'frxETH',
+      },
+      '0xba5ddd1f9d7f570dc94a51479a000e3bce967196': {
+        name: 'Aave Token',
+        symbol: 'AAVE',
+      },
+      '0x93b346b6bc2548da6a1e7d98e9a421b42541425b': {
+        name: 'Liquity USD Stablecoin',
+        symbol: 'LUSD',
       },
     },
   };
