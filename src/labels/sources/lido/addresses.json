@@ -2,7 +2,6 @@
   "1": {
     "0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb": "Lido Locator",
     "0xae7ab96520de3a18e5e111b5eaab095312d7fe84": "Lido and stETH token",
-    "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0": "wstETH token",
     "0x8f73e4c2a6d852bb4ab2a45e6a9cf5715b3228b7": "EIP-712 helper for stETH",
     "0xfddf38947afb03c621c71b06c9c70bce73f12999": "Staking Router",
     "0x55032650b14df07b85bf18a3a3ec8e0af2e028d5": "Node Operators registry",
