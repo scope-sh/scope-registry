@@ -65,6 +65,9 @@ class Source extends BaseSource {
           indexed: true,
           sourceId: this.getInfo().id,
           type: 'erc20',
+          metadata: {
+            symbol,
+          },
         };
       }
     }
