@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
 import { Address, Hex, decodeEventLog, namehash, size } from 'viem';
 
 import ensEthRegistrarControllerAbi from '@/abi/ensEthRegistrarController';
@@ -58,6 +61,41 @@ class Source extends BaseSource {
     console.log('fetch 4');
     const labels: ChainSingleLabelMap = {};
     // First priority: reverse claims
+    const legacyReverseMapString = await readFile(
+      join(__dirname, './legacyReverseMap.json'),
+      'utf-8',
+    );
+    const legacyReverseMap = JSON.parse(legacyReverseMapString) as Record<
+      ChainId,
+      Record<Address, string>
+    >;
+    const chainLegacyReverseMap = legacyReverseMap[chain] || {};
+    console.log(
+      'fetch 5',
+      legacyReverseMapString.length,
+      Object.keys(chainLegacyReverseMap).length,
+    );
+    for (const addressString in chainLegacyReverseMap) {
+      const address = addressString as Address;
+      const name = chainLegacyReverseMap[address];
+      if (!name) {
+        continue;
+      }
+      const nameHash = namehash(name);
+      // Only use the reverse record if the name itself resolves to the address
+      const resolvedAddress = (addressMap[nameHash] || {})[chain];
+      if (resolvedAddress !== address) {
+        continue;
+      }
+      const avatar = avatarMap[nameHash];
+      const label: Label = {
+        value: name,
+        sourceId: this.getInfo().id,
+        indexed: false,
+        iconUrl: avatar,
+      };
+      labels[address] = label;
+    }
     for (const addressString in reverseClaimMap) {
       const address = addressString as Address;
       const name = reverseClaimMap[address];
