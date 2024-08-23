@@ -42,7 +42,7 @@ class Source extends BaseSource {
         seconds: 0,
         minutes: 0,
         hours: 0,
-        days: 1,
+        days: 7,
       },
       fetchType: 'incremental',
       requiresDeletion: true,
@@ -70,11 +70,6 @@ class Source extends BaseSource {
       Record<Address, string>
     >;
     const chainLegacyReverseMap = legacyReverseMap[chain] || {};
-    console.log(
-      'fetch 5',
-      legacyReverseMapString.length,
-      Object.keys(chainLegacyReverseMap).length,
-    );
     for (const addressString in chainLegacyReverseMap) {
       const address = addressString as Address;
       const name = chainLegacyReverseMap[address];
