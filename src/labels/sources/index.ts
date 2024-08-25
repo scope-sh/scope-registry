@@ -53,6 +53,7 @@ import PimlicoSource from './pimlico/index.js';
 import RhinestoneV1ModuleSource from './rhinestone/v1-modules.js';
 import RhinestoneV1RegistrySource from './rhinestone/v1-registry.js';
 import RhinestoneV1Source from './rhinestone/v1.js';
+import Safe7579_V1_0_0AccountSource from './safe/7579-v1.0.0-accounts.js';
 import SafeCoreSource from './safe/core.js';
 import SafeV1_3_0Source from './safe/v1.3.0.js';
 import SafeV1_4_1AccountSource from './safe/v1.4.1-accounts.js';
@@ -139,6 +140,7 @@ const SOURCES: Source[] = [
   new SafeV1_3_0Source(),
   new SafeV1_4_1AccountSource(),
   new SafeV1_4_1Source(),
+  new Safe7579_V1_0_0AccountSource(),
   new StackupSource(),
   new ThirdwebSource(),
   new ThirdwebAccountSource(),

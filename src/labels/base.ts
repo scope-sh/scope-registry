@@ -35,6 +35,7 @@ type LabelTypeId =
   | 'nani-v1-account'
   | 'patch-wallet-v1-account'
   | 'rhinestone-v1-module'
+  | 'safe7579-v1.0.0-account'
   | 'safe-v1.3.0-account'
   | 'safe-v1.4.1-account'
   | 'thirdweb-v1-managed-account'
