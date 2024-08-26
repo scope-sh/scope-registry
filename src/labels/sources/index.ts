@@ -62,6 +62,7 @@ import StackupSource from './stackup/index.js';
 import StaticSource from './static.js';
 import ThirdwebAccountSource from './thirdweb/accounts.js';
 import ThirdwebSource from './thirdweb/index.js';
+import UnionV1Source from './union/v1.js';
 import UniPassSource from './unipass/index.js';
 import UniswapV2PoolSource from './uniswap/v2-pools.js';
 import UniswapV2Source from './uniswap/v2.js';
@@ -81,6 +82,8 @@ const SOURCES: Source[] = [
   new StaticSource(),
   // ERC20
   new Erc20Source(),
+  // Messaging
+  new UnionV1Source(),
   // DeFi
   new AaveV2Source(),
   new AaveV2TokenSource(),
