@@ -194,6 +194,7 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
           address: chainAsset.address,
           name: chainAsset.name,
           symbol: chainAsset.symbol,
+          decimals: 18,
         },
       ]
     : [];

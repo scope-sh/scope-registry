@@ -83,7 +83,7 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
     if (!addressMetadata) {
       continue;
     }
-    const { name, symbol } = addressMetadata;
+    const { name, symbol, decimals } = addressMetadata;
     if (!name || !symbol) {
       continue;
     }
@@ -91,6 +91,7 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       address,
       name,
       symbol,
+      decimals: decimals || undefined,
     };
     assetList.push(asset);
   }

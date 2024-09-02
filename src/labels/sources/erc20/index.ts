@@ -14,6 +14,7 @@ interface Asset {
   address: Address;
   symbol?: string;
   name?: string;
+  decimals?: number;
 }
 
 class Source extends BaseSource {
@@ -44,7 +45,7 @@ class Source extends BaseSource {
     for (const fetchFn of fetchFns) {
       const assets = await fetchFn(chain);
       for (const asset of assets) {
-        const { address, symbol, name } = asset;
+        const { address, symbol, name, decimals } = asset;
         // Prevent overwriting existing labels
         if (labels[address]) {
           continue;
@@ -68,6 +69,7 @@ class Source extends BaseSource {
           metadata: {
             // Only set metadata if it was used as a label value
             symbol: value === symbol ? symbol : undefined,
+            decimals,
           },
         };
       }

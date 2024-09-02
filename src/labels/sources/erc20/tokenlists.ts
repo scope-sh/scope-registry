@@ -23,6 +23,7 @@ interface Metadata {
   address: string;
   name: string;
   symbol: string;
+  decimals: number;
 }
 
 interface MetadataWithCount extends Metadata {
@@ -68,6 +69,7 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
           address,
           name: token.name,
           symbol: token.symbol,
+          decimals: token.decimals,
         };
       }
       const asset = assets[address];
@@ -90,11 +92,12 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
   );
   const labelAssets = chainTokenlistAssets
     .map((asset) => {
-      const { address, name, symbol } = asset;
+      const { address, name, symbol, decimals } = asset;
       return {
         address: address as Address,
         name: chainMetadata[address]?.name || name,
         symbol: chainMetadata[address]?.symbol || symbol,
+        decimals: chainMetadata[address]?.decimals || decimals,
       };
     })
     .filter((asset) => isErc20Ignored(chain, asset.address));

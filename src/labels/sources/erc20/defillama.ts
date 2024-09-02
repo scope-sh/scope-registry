@@ -13,6 +13,7 @@ interface TokenMapValue {
   symbol: string;
   logoURI: string;
   logoURI2: string | null;
+  decimals: number;
 }
 
 type TokenMap = Partial<Record<ChainId, TokenMapValue[]>>;
@@ -26,11 +27,12 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
   const chainMetadata = await getErc20Metadata(chain, chainAssetAddresses);
   const labelAssets = chainTokenList
     .map((asset) => {
-      const { address, name, symbol } = asset;
+      const { address, name, symbol, decimals } = asset;
       return {
         address,
         name: chainMetadata[address]?.name || name,
         symbol: chainMetadata[address]?.symbol || symbol,
+        decimals: chainMetadata[address]?.decimals || decimals,
       };
     })
     .filter((asset) => isErc20Ignored(chain, asset.address));

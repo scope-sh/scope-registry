@@ -31,6 +31,7 @@ interface LogCacheMetadata {
 interface Erc20Metadata {
   name: string | null;
   symbol: string | null;
+  decimals: number | null;
 }
 
 type BlockFieldSelection = 'number' | 'timestamp';
@@ -435,6 +436,11 @@ async function getErc20Metadata(
             abi: erc20Abi,
             functionName: 'symbol',
           },
+          {
+            address: address as Address,
+            abi: erc20Abi,
+            functionName: 'decimals',
+          },
         ] as const;
       })
       .flat();
@@ -442,19 +448,25 @@ async function getErc20Metadata(
       contracts: calls,
     });
     for (const [index, address] of batch.entries()) {
-      const nameResult = results[2 * index];
+      const nameResult = results[3 * index];
       if (!nameResult || nameResult.status === 'failure') {
         continue;
       }
-      const name = nameResult.result;
-      const symbolResult = results[2 * index + 1];
+      const name = nameResult.result as string;
+      const symbolResult = results[3 * index + 1];
       if (!symbolResult || symbolResult.status === 'failure') {
         continue;
       }
-      const symbol = symbolResult.result;
+      const symbol = symbolResult.result as string;
+      const decimalResult = results[3 * index + 1];
+      if (!decimalResult || decimalResult.status === 'failure') {
+        continue;
+      }
+      const decimals = decimalResult.result as number;
       metadata[address] = {
         name,
         symbol,
+        decimals,
       };
     }
   }
