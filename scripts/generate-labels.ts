@@ -67,8 +67,6 @@ async function fetchLabels(chain: ChainId): Promise<void> {
         sourceLabelsWithAddress.push({
           address,
           ...sourceLabel,
-          // Metadata is used to generate the labels, remove it
-          metadata: undefined,
         });
       }
       labels[address] = addressLabels;
