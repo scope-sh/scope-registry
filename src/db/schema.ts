@@ -62,6 +62,7 @@ const labels = pgTable(
     typeId: text('type_id'),
     namespaceId: text('namespace_id'),
     iconUrl: text('icon_url'),
+    metadata: jsonb<Record<string, unknown>>('metadata'),
   },
   (table) => {
     return {
