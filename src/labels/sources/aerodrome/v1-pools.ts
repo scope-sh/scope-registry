@@ -1,6 +1,6 @@
 import { Address, Hex, decodeEventLog, encodeEventTopics } from 'viem';
 
-import aerodromeFactoryAbi from '@/abi/aerodromeFactory.js';
+import aerodromeV1FactoryAbi from '@/abi/aerodromeV1Factory.js';
 import { Source as BaseSource } from '@/labels/base.js';
 import type {
   ChainLabelMap,
@@ -42,7 +42,7 @@ class Source extends BaseSource {
       return {};
     }
     const topics = encodeEventTopics({
-      abi: aerodromeFactoryAbi,
+      abi: aerodromeV1FactoryAbi,
       eventName: 'PoolCreated',
     });
     const topic = topics[0];
@@ -53,7 +53,7 @@ class Source extends BaseSource {
 
     const pools: Pool[] = logs.map((log) => {
       const decodedLog = decodeEventLog({
-        abi: aerodromeFactoryAbi,
+        abi: aerodromeV1FactoryAbi,
         data: log.data,
         topics: log.topics as [Hex, ...Hex[]],
       });
