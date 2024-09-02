@@ -458,7 +458,7 @@ async function getErc20Metadata(
         continue;
       }
       const symbol = symbolResult.result as string;
-      const decimalResult = results[3 * index + 1];
+      const decimalResult = results[3 * index + 2];
       if (!decimalResult || decimalResult.status === 'failure') {
         continue;
       }
