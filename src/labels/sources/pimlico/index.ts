@@ -42,6 +42,8 @@ class Source extends BaseSource {
       '0x49ee41bc335fb36be46a17307dcfe536a3494644': 'USDC.e Paymaster',
       '0x939263eafe57038a072cb4edd6b25dd81a8a6c56': 'USDC Paymaster',
       '0x0000000000dd6dd248ab5487218e1c2d7fbb29c9': 'USDC Paymaster',
+      '0x0000000000000039cd5e8ae05257ce51c473ddd1': 'Singleton Paymaster',
+      '0x00000000000000fb866daaa79352cc568a005d96': 'Singleton Paymaster',
     };
     const bundlers: Address[] = [
       '0x4337000440b59cbbe061c169a2ca627d35549b9e',
