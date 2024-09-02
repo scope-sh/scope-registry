@@ -81,6 +81,9 @@ class Source extends BaseSource {
           indexed: true,
           type: 'aerodrome-v1-pool',
           namespace: 'aerodrome-v1',
+          metadata: {
+            tokens: [pool.token0, pool.token1],
+          },
         },
       ]),
     );
