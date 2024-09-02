@@ -59,6 +59,7 @@ async function addLabels(
         typeId: label.type,
         namespaceId: label.namespace,
         iconUrl: label.iconUrl,
+        metadata: label.metadata,
       };
     });
     await db
@@ -72,6 +73,7 @@ async function addLabels(
           typeId: sql`excluded.type_id`,
           namespaceId: sql`excluded.namespace_id`,
           iconUrl: sql`excluded.icon_url`,
+          metadata: sql`excluded.metadata`,
         },
       })
       .execute();
