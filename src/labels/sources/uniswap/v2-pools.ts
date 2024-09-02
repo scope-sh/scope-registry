@@ -79,6 +79,9 @@ class Source extends BaseSource {
             indexed: true,
             type: 'uniswap-v2-pool',
             namespace: 'uniswap-v2',
+            metadata: {
+              tokens: [pool.token0, pool.token1],
+            },
           },
         ];
       }),
