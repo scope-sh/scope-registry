@@ -10,7 +10,7 @@ import { toChainLabelMap } from '../../utils.js';
 class Source extends BaseSource {
   getInfo(): SourceInfo {
     return {
-      name: 'Alchemy',
+      name: 'Alchemy Infra',
       id: 'alchemy-infra',
       interval: {
         seconds: 0,
