@@ -24,9 +24,8 @@ class Source extends BaseSource {
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
-      '0x0000002512019dafb59528b82cb92d3c5d2423ac':
-        'Smart Account Implementation V2',
-      '0x000000a56aaca3e9a4c479ea6b6cd0dbcb6634f5': 'Smart Account Factory V2',
+      '0x0000002512019dafb59528b82cb92d3c5d2423ac': 'Implementation',
+      '0x000000a56aaca3e9a4c479ea6b6cd0dbcb6634f5': 'Factory',
       '0x0000001c5b32f37f5bea87bdd5374eb2ac54ea8e': 'ECDSA Ownership Module',
       '0x000000824dc138db84fd9109fc154bdad332aa8e':
         'Multichain Validation Module',
