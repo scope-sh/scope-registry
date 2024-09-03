@@ -11,7 +11,7 @@ class Source extends BaseSource {
   getInfo(): SourceInfo {
     return {
       name: 'Alchemy',
-      id: 'alchemy',
+      id: 'alchemy-infra',
       interval: {
         seconds: 0,
         minutes: 0,
