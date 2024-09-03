@@ -52,6 +52,7 @@ type LabelNamespaceId =
   | 'blocto'
   | 'candide'
   | 'circle'
+  | 'coinbase'
   | 'coinbase-smart-wallet'
   | 'daimo'
   | 'ethereum-attestation-service'

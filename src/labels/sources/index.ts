@@ -17,6 +17,7 @@ import BiconomyV2Source from './biconomy/v2.js';
 import BloctoSource from './blocto/index.js';
 import CandideSource from './candide/index.js';
 import CircleSource from './circle/index.js';
+import CoinbaseInfra from './coinbase/infra.js';
 import CoinbaseSmartWalletV1Accounts from './coinbase/smart-wallet-v1-accounts.js';
 import CoinbaseSmartWalletV1 from './coinbase/smart-wallet-v1.js';
 import DaimoV1AccountSource from './daimo/v1-accounts.js';
@@ -118,6 +119,7 @@ const SOURCES: Source[] = [
   new CircleSource(),
   new CoinbaseSmartWalletV1(),
   new CoinbaseSmartWalletV1Accounts(),
+  new CoinbaseInfra(),
   new DaimoV1AccountSource(),
   new DaimoV1Source(),
   new EtherspotSource(),
