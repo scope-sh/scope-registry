@@ -10,6 +10,7 @@ import { ChainId } from '@/utils/chains.js';
 import {
   type Account,
   getEntryPoint0_6_0Accounts,
+  getEntryPoint0_7_0Accounts,
 } from '@/utils/entryPoint.js';
 
 const MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS =
@@ -41,39 +42,46 @@ class Source extends BaseSource {
   }
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
-    const accounts = await getEntryPoint0_6_0Accounts(this.getInfo(), chain);
+    const ep0_6_0accounts = await getEntryPoint0_6_0Accounts(
+      this.getInfo(),
+      chain,
+    );
+    const ep0_7_0accounts = await getEntryPoint0_7_0Accounts(
+      this.getInfo(),
+      chain,
+    );
     const multiOwnerModularAccountFactoryV1_0_0Labels = this.#getAccountLabels(
-      accounts,
+      ep0_6_0accounts,
       MULTI_OWNER_MODULAR_ACCOUNT_FACTORY_V1_0_0_ADDRESS,
       'alchemy-v1-multi-owner-modular-account',
       'Multi Owner Modular Account V1',
     );
     const lightAccountFactoryV1_0_1Labels = this.#getAccountLabels(
-      accounts,
+      ep0_6_0accounts,
       LIGHT_ACCOUNT_FACTORY_V1_0_1_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.1',
     );
     const lightAccountFactoryV1_0_2Labels = this.#getAccountLabels(
-      accounts,
+      ep0_6_0accounts,
       LIGHT_ACCOUNT_FACTORY_V1_0_2_ADDRESS,
       'alchemy-v1.0-light-account',
       'Light Account V1.0.2',
     );
     const lightAccountFactoryV1_1_0Labels = this.#getAccountLabels(
-      accounts,
+      ep0_6_0accounts,
       LIGHT_ACCOUNT_FACTORY_V1_1_0_ADDRESS,
       'alchemy-v1.1-light-account',
       'Light Account V1.1',
     );
     const lightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
-      accounts,
+      ep0_7_0accounts,
       LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
       'alchemy-v2-light-account',
       'Light Account V2',
     );
     const multiOwnerLightAccountFactoryV2_0_0Labels = this.#getAccountLabels(
-      accounts,
+      ep0_7_0accounts,
       MULTI_OWNER_LIGHT_ACCOUNT_FACTORY_V2_0_0_ADDRESS,
       'alchemy-v2-multi-owner-light-account',
       'Multi Owner Light Account V2',
