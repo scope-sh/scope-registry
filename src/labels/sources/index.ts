@@ -29,6 +29,8 @@ import EntryPointV0_6_0Source from './entry-point/v0.6.0-accounts.js';
 import EntryPointV0_7_0Source from './entry-point/v0.7.0-accounts.js';
 import Erc20Source from './erc20/index.js';
 import EtherspotSource from './etherspot/index.js';
+import EtherspotModularV1AccountSource from './etherspot/modular-v1-accounts.js';
+import EtherspotModularV1Source from './etherspot/modular-v1.js';
 import FarcasterSource from './farcaster/index.js';
 import FunV1AccountSource from './fun/v1-accounts.js';
 import FunV1Source from './fun/v1.js';
@@ -123,6 +125,8 @@ const SOURCES: Source[] = [
   new DaimoV1AccountSource(),
   new DaimoV1Source(),
   new EtherspotSource(),
+  new EtherspotModularV1AccountSource(),
+  new EtherspotModularV1Source(),
   new FunV1AccountSource(),
   new FunV1Source(),
   new KlasterSource(),
