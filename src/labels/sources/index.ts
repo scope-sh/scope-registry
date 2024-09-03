@@ -10,6 +10,7 @@ import AaveV3Source from './aave/v3.js';
 import AerodromeV1PoolSource from './aerodrome/v1-pools.js';
 import AerodromeV1Source from './aerodrome/v1.js';
 import AlchemyAccountSource from './alchemy/accounts.js';
+import AlchemySource from './alchemy/index.js';
 import AlchemyInfraSource from './alchemy/infra.js';
 import BiconomyInfraSource from './biconomy/infra.js';
 import BiconomyV2AccountSource from './biconomy/v2-accounts.js';
@@ -111,6 +112,7 @@ const SOURCES: Source[] = [
   new EnsNamesSource(),
   new FarcasterSource(),
   // Account Abstraction
+  new AlchemySource(),
   new AlchemyInfraSource(),
   new AlchemyAccountSource(),
   new BiconomyInfraSource(),
