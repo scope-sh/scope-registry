@@ -29,8 +29,12 @@ class Source extends BaseSource {
       '0x0000001c5b32f37f5bea87bdd5374eb2ac54ea8e': 'ECDSA Ownership Module',
       '0x000000824dc138db84fd9109fc154bdad332aa8e':
         'Multichain Validation Module',
+      '0x00000d09967410f8c76752a104c9848b57ebba55':
+        'Batched Session Router Module',
       '0x000008da71757c0e1d83ce56c823e25aa49bc058':
         'Batched Session Router Module',
+      '0x000006bc2ecdae38113929293d241cf252d91861':
+        'ABI Session Validation Module',
       '0x000002fbffedd9b33f4e7156f2de8d48945e7489': 'Session Key Manager V1',
       '0x000031dd6d9d3a133e663660b959162870d755d4': 'Verifying Paymaster V1',
       '0x00000f79b7faf42eebadba19acc07cd08af44789':
