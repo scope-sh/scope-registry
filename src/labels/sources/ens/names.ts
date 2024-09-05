@@ -59,7 +59,7 @@ class Source extends BaseSource {
       ChainId,
       Record<Address, string>
     >;
-    const chainLegacyReverseMap = legacyReverseMap[chain] || {};
+    const chainLegacyReverseMap = legacyReverseMap[ensChain] || {};
     for (const addressString in chainLegacyReverseMap) {
       const address = addressString as Address;
       const name = chainLegacyReverseMap[address];
