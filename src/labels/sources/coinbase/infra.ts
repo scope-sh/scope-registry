@@ -31,6 +31,7 @@ class Source extends BaseSource {
       '0xc4a4e8ae10b82a954519ca2ecc9efc8f77819e86',
       '0x6d10c567db15b40bfb1a162c16cbd7a3e80bb12b',
       '0x1984c070e64e561631a7e20ea3c4cbf4eb198da8',
+      '0xaa2ed8d04d150a546e4de73b77795c5962d9f044',
     ];
     const chainAddresses = await getDeployed(chain, labels);
     for (const bundler of bundlers) {
