@@ -32,9 +32,9 @@ class Source extends BaseSource {
       id: 'ens-names',
       interval: {
         seconds: 0,
-        minutes: 1,
+        minutes: 0,
         hours: 0,
-        days: 0,
+        days: 7,
       },
       fetchType: 'incremental',
       requiresDeletion: true,
