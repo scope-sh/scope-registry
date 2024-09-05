@@ -34,7 +34,7 @@ class Source extends BaseSource {
         seconds: 0,
         minutes: 0,
         hours: 0,
-        days: 7,
+        days: 1,
       },
       fetchType: 'incremental',
       requiresDeletion: true,
