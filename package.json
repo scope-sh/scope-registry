@@ -45,7 +45,7 @@
     "@types/bun": "^1.1.6",
     "@types/pg": "^8.11.6",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
-    "drizzle-kit": "^0.23.0",
+    "drizzle-kit": "^0.24.2",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
