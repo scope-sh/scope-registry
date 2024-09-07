@@ -30,7 +30,6 @@
     "@ethereum-sourcify/lib-sourcify": "^1.9.1",
     "@oneidentity/zstd-js": "^1.0.3",
     "axios": "^1.7.7",
-    "axios-retry": "^4.5.0",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "evm-providers": "^0.4.6",
