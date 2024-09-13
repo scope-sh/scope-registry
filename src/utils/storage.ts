@@ -37,7 +37,7 @@ async function getObject(key: string): Promise<string | null> {
     const file = await minioClient.getObject(bucket, key);
     const fileString = await streamToString(file);
     return fileString;
-  } catch (e) {
+  } catch {
     return null;
   }
 }
