@@ -89,6 +89,9 @@ class Source extends BaseSource {
                 indexed: true,
                 type: 'aave-v2-atoken',
                 namespace: 'aave-v2',
+                metadata: {
+                  underlying: token.underlying,
+                },
               },
             ],
             [
@@ -103,6 +106,9 @@ class Source extends BaseSource {
                 indexed: true,
                 type: 'aave-v2-stable-debt-token',
                 namespace: 'aave-v2',
+                metadata: {
+                  underlying: token.underlying,
+                },
               },
             ],
             [
@@ -117,6 +123,9 @@ class Source extends BaseSource {
                 indexed: true,
                 type: 'aave-v2-variable-debt-token',
                 namespace: 'aave-v2',
+                metadata: {
+                  underlying: token.underlying,
+                },
               },
             ],
           ];
