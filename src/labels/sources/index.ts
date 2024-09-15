@@ -80,6 +80,9 @@ import ZeroDevKernelV2Source from './zerodev/kernel-v2.js';
 import ZeroDevKernelV3AccountSource from './zerodev/kernel-v3-accounts.js';
 import ZeroDevKernelV3ModuleSource from './zerodev/kernel-v3-modules.js';
 import ZeroDevKernelV3Source from './zerodev/kernel-v3.js';
+import ZoraSource from './zora/index.js';
+import ZoraTokens1155Source from './zora/tokens-1155.js';
+import ZoraTokens721Source from './zora/tokens-721.js';
 
 const SOURCES: Source[] = [
   // Default
@@ -106,6 +109,9 @@ const SOURCES: Source[] = [
   // NFT
   new OpenseaSeaportSource(),
   new OpenseaCollectionSource(),
+  new ZoraSource(),
+  new ZoraTokens721Source(),
+  new ZoraTokens1155Source(),
   // Social
   new EasSource(),
   new EnsSource(),

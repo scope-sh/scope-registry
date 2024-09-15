@@ -41,7 +41,9 @@ type LabelTypeId =
   | 'safe-v1.4.1-account'
   | 'thirdweb-v1-managed-account'
   | 'uniswap-v2-pool'
-  | 'uniswap-v3-pool';
+  | 'uniswap-v3-pool'
+  | 'zora-721-token'
+  | 'zora-1155-token';
 
 type LabelNamespaceId =
   | 'aave-v2'
@@ -85,7 +87,8 @@ type LabelNamespaceId =
   | 'zerodev'
   | 'zerodev-kernel-v1'
   | 'zerodev-kernel-v2'
-  | 'zerodev-kernel-v3';
+  | 'zerodev-kernel-v3'
+  | 'zora';
 
 type ChainSingleLabelMap = Record<Address, Label>;
 type ChainLabelMap = Record<Address, Label[]>;

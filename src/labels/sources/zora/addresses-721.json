@@ -1,0 +1,140 @@
+{
+  "1": {
+    "0x5914d9a241008b9f02f22811bf3a77e02b84d226": "Drop Metadata Renderer",
+    "0x192ce8267cbab9c3c477d61e85d7f0c5fe3b46af": "Edition Metadata Renderer",
+    "0x8237f421357f87a23ed0cff3a5586172f210a21b": "ERC-721 Drop Implementation",
+    "0x8da5ac3a39d3b8bcaa1fc15a01506cf4f5e79830": "ERC-721 Factory Upgrade Gate",
+    "0xf74b146ce44cc162b601dec3be331784db111dc1": "ERC-721 Factory",
+    "0x932a29dbfc1b8c3bdfc763ef53f113486a5b5e7d": "ERC-721 Factory V1 Implementation"
+  },
+  "10": {
+    "0x96ccf205a366e15e261d77b14586389f80a029e9": "Drop Metadata Renderer",
+    "0xa2a7d8bce0bf58d177137ecb94f3fa6aa06aa7a1": "Edition Metadata Renderer",
+    "0x3e8524770add176be381a0529e09f1c6c3502a5a": "ERC-721 Drop Implementation",
+    "0x192d663c3d6813a24a24582a76b8d872c4f6f7f9": "ERC-721 Factory Upgrade Gate",
+    "0x7d1a46c6e614a0091c39e102f2798c27c1fa8892": "ERC-721 Factory",
+    "0x805e0a08de70f85c01f7848370d5e3fc08aad0ea": "ERC-721 Factory V1 Implementation"
+  },
+  "11155111": {
+    "0x0cf8733ded6d9e0905a8ccc8dc767f381a76970a": "Drop Metadata Renderer",
+    "0xc5c958a65656a84b74100d1d420a1819fea18d41": "Edition Metadata Renderer",
+    "0x78b524931e9d847c40bcbf225c25e154a7b05fda": "ERC-721 Drop Implementation",
+    "0x3c1ebcf36ca9dd9371c9aa99c274e4988906c6e3": "ERC-721 Factory Upgrade Gate",
+    "0x87cfd516c5ea86e50b950678ca970a8a28de27ac": "ERC-721 Factory",
+    "0x2fbdbc34b6015e7b40638179aa05a2d2267452c7": "ERC-721 Factory V1 Implementation"
+  },
+  "168587773": {
+    "0xce6b190956d73da045ba348743e4c1cb6652f37f": "Drop Metadata Renderer",
+    "0x169007ef8ff4d2a225f361654e4b8280910fd8fc": "Edition Metadata Renderer",
+    "0x0cf8733ded6d9e0905a8ccc8dc767f381a76970a": "ERC-721 Drop Implementation",
+    "0x9b414a3f7872bdd2e6513689214bd2debbe48340": "ERC-721 Factory Upgrade Gate",
+    "0x3c1ebcf36ca9dd9371c9aa99c274e4988906c6e3": "ERC-721 Factory",
+    "0xc5c958a65656a84b74100d1d420a1819fea18d41": "ERC-721 Factory V1 Implementation"
+  },
+  "420": {
+    "0xce6b190956d73da045ba348743e4c1cb6652f37f": "Drop Metadata Renderer",
+    "0x169007ef8ff4d2a225f361654e4b8280910fd8fc": "Edition Metadata Renderer",
+    "0x61cb091f8ec70029e393d31ba8f6d533c1308408": "ERC-721 Drop Implementation",
+    "0x9b414a3f7872bdd2e6513689214bd2debbe48340": "ERC-721 Factory Upgrade Gate",
+    "0x3c1ebcf36ca9dd9371c9aa99c274e4988906c6e3": "ERC-721 Factory",
+    "0xbe83e15eed1fd666c241960f50549be9d639743c": "ERC-721 Factory V1 Implementation"
+  },
+  "42161": {
+    "0xc6a8c44c695f227097f6f10dfcb4335308af444d": "Drop Metadata Renderer",
+    "0x2667909314554b0f37d306c463e68737d1707953": "Edition Metadata Renderer",
+    "0x4e2d403fce103e386f8bc2bb25fd598469a62683": "ERC-721 Drop Implementation",
+    "0x765fbff9e400c55035a1180b78a9cbe12ac25414": "ERC-721 Factory Upgrade Gate",
+    "0xa5f8577cca2ee9d5577e76385db1af51517c76bb": "ERC-721 Factory",
+    "0x17b2da20b6717e05fa1e76b7f9ff0b5ca2b531f0": "ERC-721 Factory V1 Implementation"
+  },
+  "421614": {
+    "0x79368e7b6ab375a10eeb782f68bb33ab497085d9": "Drop Metadata Renderer",
+    "0xccc5b4d7855ca0a44564a41a4e6d85bdd93dc084": "Edition Metadata Renderer",
+    "0xc6a8c44c695f227097f6f10dfcb4335308af444d": "ERC-721 Drop Implementation",
+    "0x7b4989d8f916e3f2ec0d8e977b121ae2f2e0a81b": "ERC-721 Factory Upgrade Gate",
+    "0x765fbff9e400c55035a1180b78a9cbe12ac25414": "ERC-721 Factory",
+    "0x2667909314554b0f37d306c463e68737d1707953": "ERC-721 Factory V1 Implementation"
+  },
+  "424": {
+    "0xd77783b9df27bc9abd438d1dde67e3afb64618e0": "Drop Metadata Renderer",
+    "0xc647382dfbb02ddf39dde7fdebb5d844a832be33": "Edition Metadata Renderer",
+    "0x0ef82dab14798e63f1b99479ba689e3f6a6feb6c": "ERC-721 Drop Implementation",
+    "0x973577d5b73a9b2508296f81260415151d0a955e": "ERC-721 Factory Upgrade Gate",
+    "0x48d8db63724444c6270749fee80bbdb6cf33677f": "ERC-721 Factory",
+    "0x97eb05b8db496b12244bccf17cf377d00a99b67a": "ERC-721 Factory V1 Implementation"
+  },
+  "5": {
+    "0xd1adaf05575295710de1145c3c9427c364a70a7f": "ERC-721 Transfer Helper",
+    "0xcf5e957ca7b77ec16611992d79f4e179132ad98c": "Fee Manager",
+    "0x2f5c21ef9ddff9a1fe76a1c55dd5112fcf2efd39": "Edition Metadata Renderer",
+    "0x5956fd16c4d8c4b4711f2551971abb7c2f4af677": "Drop Metadata Renderer",
+    "0xe4c17055048aee01d0d122804816fee5e6ac4a67": "ERC-721 Drop Implementation",
+    "0x942c03c7afe5c8118bdb728aa06d1b894b1cd9a8": "ERC-721 Factory Upgrade Gate",
+    "0xb9583d05ba9ba8f7f14ccee3da10d2bc0a72f519": "ERC-721 Factory",
+    "0x0209aaec870be5c1cc243ee18ef6e80d545e9f32": "ERC-721 Factory V1 Implementation"
+  },
+  "58008": {
+    "0x973577d5b73a9b2508296f81260415151d0a955e": "Drop Metadata Renderer",
+    "0x0ef82dab14798e63f1b99479ba689e3f6a6feb6c": "Edition Metadata Renderer",
+    "0x48d8db63724444c6270749fee80bbdb6cf33677f": "ERC-721 Drop Implementation",
+    "0x97eb05b8db496b12244bccf17cf377d00a99b67a": "ERC-721 Factory Upgrade Gate",
+    "0x418b87c2c9579d27fc3d66605545ab9889737e60": "ERC-721 Factory",
+    "0x39c51a7957651ea176733f19125bd9c253894d6f": "ERC-721 Factory V1 Implementation"
+  },
+  "7777777": {
+    "0x4a0ad3ef9be8095590d854bc8481c9e50922a3c0": "Drop Metadata Renderer",
+    "0xca7bf48453b72e4e175267127b4ed7eb12f83b93": "Edition Metadata Renderer",
+    "0x53a85fbd2955ef713aa489ae0c48523e727a0c07": "ERC-721 Drop Implementation",
+    "0x446a4135fb31007064107effdc15b8843b72b6f6": "ERC-721 Factory Upgrade Gate",
+    "0xa2c2a96a232113dd4993e8b048eebc3371ae8d85": "ERC-721 Factory",
+    "0xfffd7409031b1aeb731271c6c2d59771523ff8a8": "ERC-721 Factory V1 Implementation"
+  },
+  "81457": {
+    "0x3e8524770add176be381a0529e09f1c6c3502a5a": "Drop Metadata Renderer",
+    "0x805e0a08de70f85c01f7848370d5e3fc08aad0ea": "Edition Metadata Renderer",
+    "0x8ca5e648c5dfefcdda06d627f4b490b719ccfd98": "ERC-721 Drop Implementation",
+    "0xeb29a4e5b84fef428c072deba2444e93c080ce87": "ERC-721 Factory Upgrade Gate",
+    "0x53a85fbd2955ef713aa489ae0c48523e727a0c07": "ERC-721 Factory",
+    "0x76cc78ef3aafd52e716a8e37f3dbbe0c42c51d54": "ERC-721 Factory V1 Implementation"
+  },
+  "8453": {
+    "0xd1cba36d92b052079523f471eb891563f2e5df5c": "Drop Metadata Renderer",
+    "0x7d1a46c6e614a0091c39e102f2798c27c1fa8892": "Edition Metadata Renderer",
+    "0xadf8ff6a7ea4f028a384d00136fef0fffeb39f14": "ERC-721 Drop Implementation",
+    "0xe3c0d82d1905c93a34d1c6e96842f499ece3bc86": "ERC-721 Factory Upgrade Gate",
+    "0x899ce31df6c6af81203acaad285bf539234ef4b8": "ERC-721 Factory",
+    "0x3678862f04290e565cca2ef163baeb92bb76790c": "ERC-721 Factory V1 Implementation"
+  },
+  "84531": {
+    "0x0cf8733ded6d9e0905a8ccc8dc767f381a76970a": "Drop Metadata Renderer",
+    "0xc5c958a65656a84b74100d1d420a1819fea18d41": "Edition Metadata Renderer",
+    "0x39bcc1e15b8ec15684f17fef298151f4a544b591": "ERC-721 Drop Implementation",
+    "0x3c1ebcf36ca9dd9371c9aa99c274e4988906c6e3": "ERC-721 Factory Upgrade Gate",
+    "0x87cfd516c5ea86e50b950678ca970a8a28de27ac": "ERC-721 Factory",
+    "0x489f8ffbd5f5ea8875c2ebc5ca9ed1214bd77f42": "ERC-721 Factory V1 Implementation"
+  },
+  "84532": {
+    "0xf643704cfb538af53dea5dfe9b1e795b9abf3bbf": "Drop Metadata Renderer",
+    "0x9168c5ba5a0a76db8a1bf5b2ee5557f2a0eca4f4": "Edition Metadata Renderer",
+    "0x06e71de8a63c5392a15d06665c36184dbe78c85b": "ERC-721 Drop Implementation",
+    "0xc126d0c412be68809827c0522eba05910936e46b": "ERC-721 Factory Upgrade Gate",
+    "0xb0c56317e9cebc6e0f7a59458a83d0a9ccc3e955": "ERC-721 Factory",
+    "0x6f34b90164e4e3d042bc1a9207365639658e8ee8": "ERC-721 Factory V1 Implementation"
+  },
+  "999": {
+    "0xb9583d05ba9ba8f7f14ccee3da10d2bc0a72f519": "Drop Metadata Renderer",
+    "0x481c56e15a9b2987bd6041043e1d807697505d23": "Edition Metadata Renderer",
+    "0x293997c6a1f2a1ca3ab971f548c4d95585e46282": "ERC-721 Drop Implementation",
+    "0x2068ba7be6e22b97d21f5eb6e152a36d2dc27da2": "ERC-721 Factory Upgrade Gate",
+    "0xeb29a4e5b84fef428c072deba2444e93c080ce87": "ERC-721 Factory",
+    "0xe4c17055048aee01d0d122804816fee5e6ac4a67": "ERC-721 Factory V1 Implementation"
+  },
+  "999999999": {
+    "0xfc688c45f8a7999b2cf8dbcc60ba4bcc7bc7c5ab": "Drop Metadata Renderer",
+    "0xe4b24fb719b7a39b1334d22702d612ae430c2a3c": "Edition Metadata Renderer",
+    "0x6b89100c67e5fb07eb65f9d42e14d3a82fa14b33": "ERC-721 Drop Implementation",
+    "0xc8155c2517c6c826dd68e4a704ab64902b7b4929": "ERC-721 Factory Upgrade Gate",
+    "0x6b28d7c2f8b2c2189e95b89b67886eeb16489a97": "ERC-721 Factory",
+    "0xeaf3f8ec6c865681101434142846f374bef62526": "ERC-721 Factory V1 Implementation"
+  }
+}
