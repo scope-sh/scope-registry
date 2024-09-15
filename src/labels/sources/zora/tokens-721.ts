@@ -69,7 +69,7 @@ class Source extends BaseSource {
           {
             value: '721 Drop',
             sourceId: this.getInfo().id,
-            indexed: true,
+            indexed: false,
             type: 'zora-721-token',
             namespace: 'zora',
           },
