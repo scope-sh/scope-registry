@@ -100,6 +100,9 @@ class Source extends BaseSource {
                 indexed: true,
                 type: 'aave-v3-atoken',
                 namespace: 'aave-v3',
+                metadata: {
+                  underlying: token.underlying,
+                },
               },
             ],
             [
@@ -110,6 +113,9 @@ class Source extends BaseSource {
                 indexed: true,
                 type: 'aave-v3-stoken',
                 namespace: 'aave-v3',
+                metadata: {
+                  underlying: token.underlying,
+                },
               },
             ],
             [
@@ -120,6 +126,9 @@ class Source extends BaseSource {
                 indexed: true,
                 type: 'aave-v3-vtoken',
                 namespace: 'aave-v3',
+                metadata: {
+                  underlying: token.underlying,
+                },
               },
             ],
           ];
