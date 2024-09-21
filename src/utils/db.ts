@@ -34,7 +34,7 @@ type LabelWithAddress = Label & {
   address: Address;
 };
 
-// eslint-disable-next-line import/no-named-as-default-member
+// eslint-disable-next-line import-x/no-named-as-default-member
 const client = new pg.Client({
   connectionString: databaseUrl,
 });
@@ -142,7 +142,7 @@ async function addContractDeployments(
         .values(contractDeploymentBatch)
         .onConflictDoNothing()
         .execute();
-    } catch (e) {
+    } catch {
       console.log('Error adding contract deployments');
     }
   }
