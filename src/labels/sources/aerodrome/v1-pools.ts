@@ -114,6 +114,9 @@ function getPoolLabel(pool: Pool, previousLabels: ChainLabelMap): string {
   }
   const token0Symbol = token0Label.metadata.symbol as string;
   const token1Symbol = token1Label.metadata.symbol as string;
+  if (!token0Symbol || !token1Symbol) {
+    return poolType;
+  }
   return `${token0Symbol}/${token1Symbol} ${poolType}`;
 }
 

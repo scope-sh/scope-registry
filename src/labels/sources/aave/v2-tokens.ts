@@ -184,6 +184,9 @@ function getTokenLabel(
     return kindName;
   }
   const tokenSymbol = label.metadata.symbol;
+  if (!tokenSymbol) {
+    return kindName;
+  }
   return `${tokenSymbol} ${kindName}`;
 }
 
