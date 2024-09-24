@@ -35,6 +35,7 @@ class Source extends BaseSource {
       '0x7777773606e7e46c8ba8b98c08f5cd218e31d340': '1155 Preminter',
       '0x777777722d078c97c6ad07d9f36801e653e356ae': 'Timed Sell Strategy',
       '0x777777794a6e310f2a55da6f157b16ed28fa5d91': 'Secondary Swap',
+      '0x77777771df91c56c5468746e80dfa8b880f9719f': 'Royalties',
     };
     if (erc721ChainAddresses) {
       Object.assign(contracts, erc721ChainAddresses);
