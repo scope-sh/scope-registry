@@ -34,7 +34,7 @@ class Source extends BaseSource {
       '0x777777c338d93e2c7adf08d102d45ca7cc4ed021': 'ERC-1155 Factory',
       '0x7777773606e7e46c8ba8b98c08f5cd218e31d340': '1155 Preminter',
       '0x777777722d078c97c6ad07d9f36801e653e356ae': 'Timed Sell Strategy',
-      '0x4db6ae59fb795969086c3f31216a2cd9b82bfa71': 'Secondary Swap',
+      '0x777777794a6e310f2a55da6f157b16ed28fa5d91': 'Secondary Swap',
     };
     if (erc721ChainAddresses) {
       Object.assign(contracts, erc721ChainAddresses);
