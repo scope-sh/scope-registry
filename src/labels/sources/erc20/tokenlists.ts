@@ -57,7 +57,9 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
   }
   const assets: Record<Address, MetadataWithCount> = {};
   for (const list of lists) {
-    const tokens = list.tokens.filter((token) => token.chainId === chain);
+    const tokens = (list.tokens || []).filter(
+      (token) => token.chainId === chain,
+    );
     for (const token of tokens) {
       if (isErc20Ignored(chain, token.address)) {
         continue;
