@@ -22,6 +22,7 @@ import {
 import { getObject, putObject } from './storage.js';
 
 const alchemyKey = process.env.ALCHEMY_KEY as string;
+const envioHypersyncApiKey = process.env.ENVIO_HYPERSYNC_API_KEY || '';
 
 interface LogCacheMetadata {
   count: number;
@@ -191,7 +192,7 @@ async function fetchLogs(
 }> {
   const maxLogsPerIncrementalFetch = 1_000_000;
   const chunkSize = 100_000;
-  const client = getHyperSyncClient(chain);
+  const client = getHyperSyncClient(chain, envioHypersyncApiKey);
   const height = await getChainHeight(client);
   // Read cache chunks one-by-one
   let logs: Log[] = [];
@@ -272,10 +273,13 @@ async function fetchLogs(
   };
 }
 
-function getHyperSyncClient(chain: ChainId): KyInstance {
+function getHyperSyncClient(chain: ChainId, apiKey: string): KyInstance {
   const endpointUrl = `https://${chain}.hypersync.xyz`;
   const client = ky.create({
     prefixUrl: endpointUrl,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
     retry: {
       methods: ['get', 'post'],
       limit: 100,
