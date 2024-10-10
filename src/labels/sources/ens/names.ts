@@ -44,11 +44,8 @@ class Source extends BaseSource {
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const ensChain = getEnsChain(chain);
     const reverseClaimMap = await this.#getReverseClaimMap(ensChain);
-    console.log('fetch 1');
     const addressMap = await this.#getAddressMap(ensChain);
-    console.log('fetch 2');
     const avatarMap = await this.#getAvatarMap(ensChain);
-    console.log('fetch 3');
     const labels: ChainSingleLabelMap = {};
     // Start with the legacy claims
     const legacyReverseMapString = await readFile(
