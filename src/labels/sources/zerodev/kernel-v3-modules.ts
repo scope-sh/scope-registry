@@ -36,6 +36,7 @@ class Source extends BaseSource {
       '0xd990393c670dcce8b4d8f858fb98c9912dbfaa06': 'WebAuthn Validator',
       '0xe884c2868cc82c16177ec73a93f7d9e6f3a5dc6e': 'Recovery Action',
       '0xb230f0a1c7c95fa11001647383c8c7a8f316b900': 'Only EntryPoint Hook',
+      '0x5c97aa67ba578e3c54ec5942a7563ea9130e4f5f': 'Multichain Validator',
     };
     const chainAddresses = await getDeployed(chain, labels);
     return toChainLabelMap(
