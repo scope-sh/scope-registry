@@ -27,7 +27,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ethereum-sourcify/lib-sourcify": "^1.9.1",
     "@oneidentity/zstd-js": "^1.0.3",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
