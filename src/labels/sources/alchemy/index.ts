@@ -3,7 +3,6 @@ import { Address } from 'viem';
 import { Source as BaseSource } from '@/labels/base.js';
 import type { ChainSingleLabelMap, SourceInfo } from '@/labels/base.js';
 import { ChainId } from '@/utils/chains.js';
-import {} from '@/utils/entryPoint.js';
 import { getDeployed } from '@/utils/fetching.js';
 
 import { toChainLabelMap } from '../../utils.js';
