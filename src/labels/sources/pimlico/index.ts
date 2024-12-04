@@ -42,6 +42,10 @@ class Source extends BaseSource {
       '0x49ee41bc335fb36be46a17307dcfe536a3494644': 'USDC.e Paymaster',
       '0x939263eafe57038a072cb4edd6b25dd81a8a6c56': 'USDC Paymaster',
       '0x0000000000dd6dd248ab5487218e1c2d7fbb29c9': 'USDC Paymaster',
+      '0x0000000000fabfa8079ab313d1d14dcf4d15582a': 'USDC Paymaster',
+      '0x0000000000fce6614d3c6f679e48c9cdd09aa634': 'USDC Paymaster',
+      '0x000000000058e13d711bb4706bf822a79c35d8b1': 'USDC Paymaster',
+      '0x00000000003011eef3f79892ba3d521e5ba5c5c0': 'USDC Paymaster',
       '0x0000000000000039cd5e8ae05257ce51c473ddd1': 'Singleton Paymaster',
       '0x00000000000000fb866daaa79352cc568a005d96': 'Singleton Paymaster',
     };
