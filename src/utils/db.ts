@@ -142,8 +142,8 @@ async function addContractDeployments(
         .values(contractDeploymentBatch)
         .onConflictDoNothing()
         .execute();
-    } catch {
-      console.log('Error adding contract deployments');
+    } catch (e) {
+      console.error('Error adding contract deployments', e);
     }
   }
 }
@@ -168,7 +168,7 @@ async function addCompiledContracts(
         .onConflictDoNothing()
         .execute();
     } catch (e) {
-      console.log('Error adding compiled contracts', e);
+      console.error('Error adding compiled contracts', e);
     }
   }
 }
@@ -193,12 +193,13 @@ async function addVerifiedContracts(
         .onConflictDoNothing()
         .execute();
     } catch (e) {
-      console.log('Error adding verified contracts', e);
+      console.error('Error adding verified contracts', e);
     }
   }
 }
 
 async function disconnect(): Promise<void> {
+  console.info('Disconnecting from the database…');
   await client.end();
 }
 
