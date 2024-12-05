@@ -12,13 +12,6 @@ class Source extends BaseSource {
     return {
       name: 'ZeroDev Kernel V2',
       id: 'zerodev-kernel-v2',
-      interval: {
-        seconds: 0,
-        minutes: 0,
-        hours: 0,
-        days: 7,
-      },
-      fetchType: 'full',
     };
   }
 

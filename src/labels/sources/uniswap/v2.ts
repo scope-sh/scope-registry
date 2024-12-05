@@ -13,13 +13,6 @@ class Source extends BaseSource {
     return {
       name: 'Uniswap V2',
       id: 'uniswap-v2',
-      interval: {
-        seconds: 0,
-        minutes: 0,
-        hours: 0,
-        days: 7,
-      },
-      fetchType: 'full',
     };
   }
 

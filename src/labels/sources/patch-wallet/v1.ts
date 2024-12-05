@@ -12,13 +12,6 @@ class Source extends BaseSource {
     return {
       name: 'Patch Wallet V1',
       id: 'patch-wallet-v1',
-      interval: {
-        seconds: 0,
-        minutes: 0,
-        hours: 0,
-        days: 7,
-      },
-      fetchType: 'full',
     };
   }
 

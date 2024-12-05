@@ -77,10 +77,6 @@ interface SourceInterval {
 interface SourceInfo {
   name: string;
   id: string;
-  interval: SourceInterval;
-  fetchType: 'incremental' | 'full';
-  requiresErc20?: boolean;
-  requiresDeletion?: boolean;
 }
 
 abstract class Source {

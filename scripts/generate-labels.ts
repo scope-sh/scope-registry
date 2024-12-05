@@ -2,28 +2,16 @@ import 'dotenv/config';
 
 import { Address } from 'viem';
 
-import { ChainLabelMap } from '@/labels/base';
+import { ChainLabelMap, Source } from '@/labels/base';
 import { SOURCES } from '@/labels/sources/index.js';
 import { ChainId, CHAINS } from '@/utils/chains.js';
-import {
-  addLabels,
-  disconnect,
-  removeSourceLabels,
-  type LabelWithAddress,
-} from '@/utils/db.js';
-import {
-  getMetadata,
-  isTimeToFetch as isTimeToFetchSources,
-  updateFetchTimestamp as updateSourceFetchTimestamp,
-  validate as validateSources,
-} from '@/utils/source';
+import { addLabels, disconnect, type LabelWithAddress } from '@/utils/db.js';
 
 for (const chain of CHAINS) {
   await fetchLabels(chain);
 }
 
 async function fetchLabels(chain: ChainId): Promise<void> {
-  let ranErc20Source = false;
   const labels: ChainLabelMap = {};
   const isValid = validateSources(SOURCES);
   if (!isValid) {
@@ -32,22 +20,6 @@ async function fetchLabels(chain: ChainId): Promise<void> {
   for (const source of SOURCES) {
     const sourceLabelsWithAddress: LabelWithAddress[] = [];
     const info = source.getInfo();
-    const metadata = await getMetadata(chain, info);
-    const isTimeToFetch = isTimeToFetchSources(
-      metadata,
-      info.interval,
-      Date.now(),
-    );
-    if (!isTimeToFetch) {
-      continue;
-    }
-    // Make sure ERC20 dependant sources are run only if the ERC20 source has been run
-    if (info.id === 'erc20') {
-      ranErc20Source = true;
-    }
-    if (info.requiresErc20 && !ranErc20Source) {
-      continue;
-    }
     console.info(`Fetching from the "${info.name}" source…`);
     const sourceLabels = await source.fetch(chain, labels);
     for (const addressString in sourceLabels) {
@@ -71,12 +43,21 @@ async function fetchLabels(chain: ChainId): Promise<void> {
       }
       labels[address] = addressLabels;
     }
-    if (info.requiresDeletion) {
-      await removeSourceLabels(chain, info.id);
-    }
     await addLabels(chain, sourceLabelsWithAddress);
-    await updateSourceFetchTimestamp(chain, info);
   }
+}
+
+function validateSources(sources: Source[]): boolean {
+  // Source IDs must be unique
+  const ids = new Set<string>();
+  for (const source of sources) {
+    const id = source.getInfo().id;
+    if (ids.has(id)) {
+      return false;
+    }
+    ids.add(id);
+  }
+  return true;
 }
 
 await disconnect();

@@ -12,13 +12,6 @@ class Source extends BaseSource {
     return {
       name: 'Coinbase Smart Wallet V1',
       id: 'coinbase-smart-wallet-v1',
-      interval: {
-        seconds: 0,
-        minutes: 0,
-        hours: 0,
-        days: 7,
-      },
-      fetchType: 'full',
     };
   }
 

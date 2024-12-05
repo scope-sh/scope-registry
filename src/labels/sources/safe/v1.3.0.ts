@@ -14,13 +14,6 @@ class Source extends BaseSource {
     return {
       name: 'Safe V1.3.0',
       id: 'safe-v1.3.0',
-      interval: {
-        seconds: 0,
-        minutes: 0,
-        hours: 0,
-        days: 7,
-      },
-      fetchType: 'full',
     };
   }
 

@@ -12,13 +12,6 @@ class Source extends BaseSource {
     return {
       name: 'Rhinestone V1 Modules',
       id: 'rhinestone-v1-modules',
-      interval: {
-        seconds: 0,
-        minutes: 1,
-        hours: 0,
-        days: 0,
-      },
-      fetchType: 'incremental',
     };
   }
 

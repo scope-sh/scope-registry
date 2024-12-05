@@ -12,13 +12,6 @@ class Source extends BaseSource {
     return {
       name: 'Biconomy Infra',
       id: 'biconomy-infra',
-      interval: {
-        seconds: 0,
-        minutes: 0,
-        hours: 0,
-        days: 7,
-      },
-      fetchType: 'full',
     };
   }
 
