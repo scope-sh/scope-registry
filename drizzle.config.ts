@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import { defineConfig } from 'drizzle-kit';
 
 const databaseUrl = process.env.DATABASE_URL as string;
