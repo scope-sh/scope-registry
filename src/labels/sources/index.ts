@@ -8,13 +8,16 @@ import AaveV3Source from './aave/v3.js';
 import AerodromeV1Source from './aerodrome/v1.js';
 import AlchemySource from './alchemy/index.js';
 import AlchemyInfraSource from './alchemy/infra.js';
+import AmbireSource from './ambire/index.js';
 import BiconomyInfraSource from './biconomy/infra.js';
+import BiconomyNexusSource from './biconomy/nexus.js';
 import BiconomyV2Source from './biconomy/v2.js';
 import BloctoSource from './blocto/index.js';
 import CandideSource from './candide/index.js';
 import CircleSource from './circle/index.js';
 import CoinbaseInfra from './coinbase/infra.js';
 import CoinbaseSmartWalletV1 from './coinbase/smart-wallet-v1.js';
+import ComethSource from './cometh/index.js';
 import DaimoV1Source from './daimo/v1.js';
 import EasSource from './eas/index.js';
 import Erc20Source from './erc20/index.js';
@@ -78,18 +81,21 @@ const SOURCES: Source[] = [
   new EasSource(),
   new FarcasterSource(),
   // Account Abstraction
-  new AlchemySource(),
   new AlchemyInfraSource(),
+  new AlchemySource(),
+  new AmbireSource(),
   new BiconomyInfraSource(),
+  new BiconomyNexusSource(),
   new BiconomyV2Source(),
   new BloctoSource(),
   new CandideSource(),
   new CircleSource(),
-  new CoinbaseSmartWalletV1(),
   new CoinbaseInfra(),
+  new CoinbaseSmartWalletV1(),
+  new ComethSource(),
   new DaimoV1Source(),
-  new EtherspotSource(),
   new EtherspotModularV1Source(),
+  new EtherspotSource(),
   new FunV1Source(),
   new KlasterSource(),
   new LightV0_1Source(),
