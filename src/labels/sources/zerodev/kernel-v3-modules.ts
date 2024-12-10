@@ -18,6 +18,7 @@ class Source extends BaseSource {
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
       '0x8104e3ad430ea6d354d013a6789fdfc71e671c43': 'ECDSA Validator',
+      '0x845adb2c711129d4f3966735ed98a9f09fc4ce57': 'ECDSA Validator',
       '0x6a6f069e2a08c2468e7724ab3250cdbfba14d4ff': 'ECDSA Signer',
       '0x8aa55d4bfae101609078681a69b5bc3181516612': 'WebAuthn Signer',
       '0xe4fec84b7b002273ecc86baa65a831ddb92d30a8': 'Call Policy',
