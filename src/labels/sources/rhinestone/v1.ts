@@ -17,17 +17,17 @@ class Source extends BaseSource {
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
-      '0x0000000000e23e0033c3e93d9d4ebc2ff2ab2aef': 'Module Registry',
+      '0x000000000069e2a187aeffb852bf3ccdc95151b2': 'Module Registry',
       '0x000000333034e9f539ce08819e12c1b8cb29084d': 'Attester',
       '0xf0f468571e764664c93308504642af941d9f77f1': 'Resolver',
       '0x86430e19d7d204807bbb8cda997bb57b7ee785dd': 'Schema Validator',
-      '0x7579f9feedf32331c645828139aff78d517d0001': 'Safe7579 Adapter',
-      '0x75796e975bd270d487be50b4e9797780360400ff': 'Safe7579 Launchpad',
-      '0xefff0157a29286b1b66f59184e1cc8c95bb69327':
+      '0x7579ee8307284f293b1927136486880611f20002': 'Safe7579 Adapter',
+      '0x7579011ab74c46090561ea277ba79d510c6c00ff': 'Safe7579 Launchpad',
+      '0xdc15682aedba36cf3121507993b50ef22b457053':
         'ERC-7579 Reference Factory',
-      '0xbb1e16b06da368da9d8be8a662e4da092cc80645':
+      '0xa951a1179ba8bd08b8140ab9dc7910af08ae7181':
         'ERC-7579 Reference Singleton (Advanced)',
-      '0xc33673e6a02ac64b90f2b8fac58f88309db6238b':
+      '0x1e919660050c68bfef868945cf5f9a26ad7e360b':
         'ERC-7579 Reference Bootstrap',
     };
     const chainAddresses = await getDeployed(chain, labels);

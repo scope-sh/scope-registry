@@ -17,21 +17,25 @@ class Source extends BaseSource {
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
-      '0xbf2137a23f439ca5aa4360cc6970d70b24d07ea2': 'Ownable Validator',
-      '0xccaec32b52795a11de7d21ab45238c5fc9146fb5': 'Webauthn Validator',
-      '0x3b48f49a55de3adfb7aba5ede084d4555d687b0e': 'Multi Factor Validator',
-      '0x38a1deabbb1a0ea05ee05c780217a138c7138c31': 'Auto Savings Executor',
-      '0x5341b4e7b347b7db9e124b15eba10a5c236ec3bb': 'Scheduled Orders Executor',
-      '0xf1ae317941efeb1ffb103d959ef58170f1e577e0':
-        'ScheduledTransfers Executor',
-      '0xc98b026383885f41d9a995f85fc480e9bb8bb891': 'Ownable Executor',
-      '0xe0d989d4d908a0bb9cc801d8a8864276a5780ab9': 'Cold Storage Hook',
-      '0x944e786244f367f16ae038cbcfca7119fa266949': 'Cold Storage Flashloan',
-      '0xc5409e364bed768facd8ce3e534a9c7787c0ec3b': 'Session Key Manager',
-      '0x0ecd5e6721bb885a68b4cba52b74827994abd66c': 'Social Recovery',
-      '0x34dedac925c00d63bd91800ff821e535fe59d6f5': 'Registry Hook',
-      '0xab614e4a5398bb2a2a0bf73f9c913ec7ff47d81f': 'Deadman Switch',
-      '0x6d561a8aee519807b7bf1313d59fd6d41372ed7f': 'Hook Multiplexer',
+      '0x2483da3a338895199e5e538530213157e931bf06': 'Ownable Validator',
+      '0xd990393c670dcce8b4d8f858fb98c9912dbfaa06': 'Webauthn Validator',
+      '0xf6bdf42c9be18ceca5c06c42a43daf7fbbe7896b': 'Multi Factor Validator',
+      '0x0000000000461517cb3dc37db9f367651443c628': 'Smart Sessions',
+      '0x6ae48bd83b6bdc8489584ea0814086f963d1bd95': 'Auto Savings Executor',
+      '0x40dc90d670c89f322fa8b9f685770296428dcb6b': 'Scheduled Orders Executor',
+      '0xa8e374779aee60413c974b484d6509c7e4ddb6ba':
+        'Scheduled Transfers Executor',
+      '0x4fd8d57b94966982b62e9588c27b4171b55e8354': 'Ownable Executor',
+      '0x7e31543b269632ddc55a23553f902f84c9dd8454': 'Cold Storage Hook',
+      '0x4422dbc3d055d59ee08f4a4d60e1046a9afb287f': 'Cold Storage Flashloan',
+      '0xa04d053b3c8021e8d5bf641816c42daa75d8b597': 'Social Recovery',
+      '0x0ac6160dba30d665cca6e6b6a2cdf147dc3ded22': 'Registry Hook',
+      '0x8bade54bca47199b6732eb2f92318dd666bde413': 'Deadman Switch',
+      '0xf6782ed057f95f334d04f0af1af4d14fb84de549': 'Hook Multiplexer',
+      '0x6321a90a05a5b57801138e1f75976f24cfbb16b6':
+        'ERC20 Spending Limit Policy',
+      '0x1d30adf0133bfdfe9c106aa5c4d86f08aefdb5a1': 'Universal Action Policy',
+      '0xc7e0345f64ddb9e01ba98034d0f1218d8d57de53': 'Sudo Policy',
     };
     const chainAddresses = await getDeployed(chain, labels);
     return toChainLabelMap(
