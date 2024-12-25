@@ -40,6 +40,8 @@ import {
   BLAST_SEPOLIA,
   HARMONY_SHARD_0,
   ChainId,
+  MODE_SEPOLIA,
+  MODE,
 } from '@/utils/chains.js';
 
 import { type Asset } from './index.js';
@@ -182,6 +184,12 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       name: 'Wrapped One',
       symbol: 'WONE',
     },
+    [MODE]: {
+      address: '0x4200000000000000000000000000000000000006',
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
+    },
+    [MODE_SEPOLIA]: null,
   };
 
   const chainAsset = assets[chain];

@@ -38,6 +38,8 @@ import {
   blast,
   blastSepolia,
   harmonyOne,
+  mode,
+  modeTestnet,
 } from 'viem/chains';
 
 const ETHEREUM = mainnet.id;
@@ -78,6 +80,8 @@ const AURORA = aurora.id;
 const BLAST = blast.id;
 const BLAST_SEPOLIA = blastSepolia.id;
 const HARMONY_SHARD_0 = harmonyOne.id;
+const MODE = mode.id;
+const MODE_SEPOLIA = modeTestnet.id;
 
 const CHAINS: ChainId[] = [
   ETHEREUM,
@@ -90,6 +94,8 @@ const CHAINS: ChainId[] = [
   BASE_SEPOLIA,
   ARBITRUM,
   ARBITRUM_SEPOLIA,
+  MODE,
+  MODE_SEPOLIA,
 ];
 
 type ChainId =
@@ -130,7 +136,9 @@ type ChainId =
   | typeof AURORA
   | typeof BLAST
   | typeof BLAST_SEPOLIA
-  | typeof HARMONY_SHARD_0;
+  | typeof HARMONY_SHARD_0
+  | typeof MODE
+  | typeof MODE_SEPOLIA;
 
 function getChainData(chain: ChainId): ChainData {
   switch (chain) {
@@ -210,6 +218,10 @@ function getChainData(chain: ChainId): ChainData {
       return blastSepolia;
     case HARMONY_SHARD_0:
       return harmonyOne;
+    case MODE:
+      return mode;
+    case MODE_SEPOLIA:
+      return modeTestnet;
   }
 }
 
@@ -253,6 +265,8 @@ export {
   BLAST,
   BLAST_SEPOLIA,
   HARMONY_SHARD_0,
+  MODE,
+  MODE_SEPOLIA,
   getChainData,
 };
 export type { ChainId };

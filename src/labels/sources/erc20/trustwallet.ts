@@ -40,6 +40,8 @@ import {
   HARMONY_SHARD_0,
   BLAST,
   BLAST_SEPOLIA,
+  MODE_SEPOLIA,
+  MODE,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata, isErc20Ignored } from '@/utils/fetching.js';
@@ -177,6 +179,10 @@ async function getAssets(chainId: ChainId): Promise<string[]> {
         return null;
       case HARMONY_SHARD_0:
         return 'harmony';
+      case MODE:
+        return null;
+      case MODE_SEPOLIA:
+        return null;
     }
   }
 
