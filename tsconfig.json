@@ -23,8 +23,10 @@
     "moduleResolution": "Bundler",
     "module": "preserve",
     "noEmit": true,
-    /* Browser-specific */
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    /* Erasable syntax */
+    "erasableSyntaxOnly": true,
+    /* Runtime-specific */
+    "lib": ["ES2022"],
     /* Imports */
     "baseUrl": "src",
     "paths": {
