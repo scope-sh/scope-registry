@@ -27,13 +27,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@oneidentity/zstd-js": "^1.0.3",
-    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.37.0",
     "evm-providers": "^0.4.6",
-    "hyparquet": "^1.6.3",
     "ky": "^1.7.2",
-    "minio": "^8.0.2",
     "pg": "^8.13.1",
     "viem": "^2.21.54"
   },
