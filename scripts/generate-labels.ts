@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { Address } from 'viem';
 
 import { ChainLabelMap, Source } from '@/labels/base';
