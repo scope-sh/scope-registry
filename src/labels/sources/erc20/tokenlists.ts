@@ -37,7 +37,6 @@ const listUrls: string[] = [
   'https://static.optimism.io/optimism.tokenlist.json',
   'https://bridge.arbitrum.io/token-list-42161.json',
   'https://gateway.ipfs.io/ipns/tokens.uniswap.org',
-  'https://token-list.sushi.com',
   'https://raw.githubusercontent.com/balancer/assets/master/generated/listed.tokenlist.json',
   'https://raw.githubusercontent.com/balancer/assets/refactor-for-multichain/generated/arbitrum.listed.tokenlist.json',
   'https://raw.githubusercontent.com/balancer/assets/refactor-for-multichain/generated/optimism.listed.json',
