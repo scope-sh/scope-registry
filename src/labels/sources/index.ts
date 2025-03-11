@@ -34,6 +34,7 @@ import NaniSource from './nani/index.js';
 import OpenfortSource from './openfort/index.js';
 import OpenseaCollectionSource from './opensea/collections.js';
 import OpenseaSeaportSource from './opensea/seaport.js';
+import OtimSource from './otim/index.js';
 import ParifiV1Source from './parifi/v1.js';
 import ParticleSource from './particle/index.js';
 import PatchWalletV1Source from './patch-wallet/v1.js';
@@ -102,6 +103,7 @@ const SOURCES: Source[] = [
   new LightV0_2Source(),
   new NaniSource(),
   new OpenfortSource(),
+  new OtimSource(),
   new ParticleSource(),
   new PatchWalletV1Source(),
   new PimlicoSource(),

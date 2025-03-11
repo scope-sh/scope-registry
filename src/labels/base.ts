@@ -33,6 +33,7 @@ type LabelNamespaceId =
   | 'nani'
   | 'openfort'
   | 'opensea-seaport'
+  | 'otim'
   | 'parifi-v1'
   | 'particle'
   | 'patch-wallet'
