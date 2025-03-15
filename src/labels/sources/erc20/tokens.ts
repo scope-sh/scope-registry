@@ -1,12 +1,25 @@
 import { Address } from 'viem';
 
 import {
-  ARBITRUM,
-  BASE,
   ChainId,
   ETHEREUM,
+  SEPOLIA,
   OPTIMISM,
+  OPTIMISM_SEPOLIA,
+  BASE,
+  BASE_SEPOLIA,
   POLYGON,
+  POLYGON_AMOY,
+  ARBITRUM,
+  ARBITRUM_SEPOLIA,
+  MODE,
+  MODE_SEPOLIA,
+  LINEA,
+  ARBITRUM_NOVA,
+  CELO,
+  AVALANCHE,
+  AVALANCHE_FUJI,
+  GNOSIS,
 } from '@/utils/chains.js';
 
 import { Asset } from '.';
@@ -18,7 +31,7 @@ interface Token {
 }
 
 async function fetch(chain: ChainId): Promise<Asset[]> {
-  const tokens: Partial<Record<ChainId, Record<Address, Token | null>>> = {
+  const tokens: Record<ChainId, Record<Address, Token | null>> = {
     [ETHEREUM]: {
       '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
         name: 'USD Coin',
@@ -112,6 +125,122 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
         decimals: 18,
       },
     },
+    [SEPOLIA]: {},
+    [OPTIMISM]: {
+      '0x0b2c639c533813f4aa9d7837caf62653d097ff85': {
+        name: 'USDC',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      '0x7f5c764cbc14f9669b88837ca1490cca17c31607': {
+        name: 'Bridged USDC',
+        symbol: 'USDC.e',
+        decimals: 6,
+      },
+      '0xeb466342c4d449bc9f53a865d5cb90586f405215': {
+        name: 'Axelar USDC',
+        decimals: 6,
+      },
+      '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1': {
+        name: 'Bridged Dai Stablecoin',
+        symbol: 'DAI',
+        decimals: 18,
+      },
+      '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58': {
+        name: 'Bridged Tether USD',
+        symbol: 'USDT',
+        decimals: 6,
+      },
+      '0x7f5373ae26c3e8ffc4c77b7255df7ec1a9af52a6': {
+        name: 'Axelar Tether USD',
+        decimals: 6,
+      },
+      '0x1f32b1c2345538c0c6f582fcb022739c4a194ebb': {
+        name: 'Wrapped liquid staked Ether',
+        symbol: 'wstETH',
+        decimals: 18,
+      },
+      '0x81c9a7b55a4df39a9b7b5f781ec0e53539694873': {
+        name: 'Exacly USDC',
+        decimals: 6,
+      },
+      '0x2416092f143378750bb29b79ed961ab195cceea5': {
+        name: 'Renzo Restaked ETH',
+        symbol: 'ezETH',
+        decimals: 18,
+      },
+      '0x99c59acebfef3bbfb7129dc90d1a11db0e91187f': {
+        name: 'Pyth Network',
+        symbol: 'PYTH',
+        decimals: 6,
+      },
+      '0xb0ffa8000886e57f86dd5264b9582b2ad87b2b91': {
+        name: 'Wormhole Token',
+        symbol: 'W',
+        decimals: 18,
+      },
+      '0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8': {
+        name: 'Everclear',
+        symbol: 'NEXT',
+        decimals: 18,
+      },
+      '0x68f180fcce6836688e9084f035309e29bf0a2095': {
+        name: 'Wrapped Bitcoin',
+        symbol: 'WBTC',
+        decimals: 8,
+      },
+      '0x76fb31fb4af56892a25e32cfc43de717950c9278': {
+        name: 'Aave Token',
+        symbol: 'AAVE',
+        decimals: 18,
+      },
+      '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9': {
+        name: 'Synth USD',
+        symbol: 'sUSD',
+        decimals: 18,
+      },
+      '0xc40f949f8a4e094d1b49a23ea9241d289b7b2819': {
+        name: 'Liquity USD Stablecoin',
+        symbol: 'LUSD',
+        decimals: 18,
+      },
+    },
+    [OPTIMISM_SEPOLIA]: {},
+    [BASE]: {
+      '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': {
+        name: 'USDC',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      '0xeb466342c4d449bc9f53a865d5cb90586f405215': {
+        name: 'Axelar USDC',
+        decimals: 6,
+      },
+      '0x50c5725949a6f0c72e6c4a641f24049a917db0cb': {
+        name: 'Bridged Dai Stablecoin',
+        symbol: 'DAI',
+        decimals: 18,
+      },
+      '0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452': {
+        name: 'Wrapped liquid staked Ether',
+        symbol: 'wstETH',
+        decimals: 18,
+      },
+      '0x5c7e299cf531eb66f2a1df637d37abb78e6200c7': {
+        name: 'Axelar Dai Stablecoin',
+        decimals: 18,
+      },
+      '0x7f5373ae26c3e8ffc4c77b7255df7ec1a9af52a6': {
+        name: 'Axelar Tether USD',
+        decimals: 6,
+      },
+      '0x04c0599ae5a44757c0af6f9ec3b93da8976c150a': {
+        name: 'Wrapped eETH',
+        symbol: 'weETH',
+        decimals: 18,
+      },
+    },
+    [BASE_SEPOLIA]: {},
     [POLYGON]: {
       '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359': {
         name: 'USDC',
@@ -210,119 +339,7 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
         decimals: 18,
       },
     },
-    [OPTIMISM]: {
-      '0x0b2c639c533813f4aa9d7837caf62653d097ff85': {
-        name: 'USDC',
-        symbol: 'USDC',
-        decimals: 6,
-      },
-      '0x7f5c764cbc14f9669b88837ca1490cca17c31607': {
-        name: 'Bridged USDC',
-        symbol: 'USDC.e',
-        decimals: 6,
-      },
-      '0xeb466342c4d449bc9f53a865d5cb90586f405215': {
-        name: 'Axelar USDC',
-        decimals: 6,
-      },
-      '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1': {
-        name: 'Bridged Dai Stablecoin',
-        symbol: 'DAI',
-        decimals: 18,
-      },
-      '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58': {
-        name: 'Bridged Tether USD',
-        symbol: 'USDT',
-        decimals: 6,
-      },
-      '0x7f5373ae26c3e8ffc4c77b7255df7ec1a9af52a6': {
-        name: 'Axelar Tether USD',
-        decimals: 6,
-      },
-      '0x1f32b1c2345538c0c6f582fcb022739c4a194ebb': {
-        name: 'Wrapped liquid staked Ether',
-        symbol: 'wstETH',
-        decimals: 18,
-      },
-      '0x81c9a7b55a4df39a9b7b5f781ec0e53539694873': {
-        name: 'Exacly USDC',
-        decimals: 6,
-      },
-      '0x2416092f143378750bb29b79ed961ab195cceea5': {
-        name: 'Renzo Restaked ETH',
-        symbol: 'ezETH',
-        decimals: 18,
-      },
-      '0x99c59acebfef3bbfb7129dc90d1a11db0e91187f': {
-        name: 'Pyth Network',
-        symbol: 'PYTH',
-        decimals: 6,
-      },
-      '0xb0ffa8000886e57f86dd5264b9582b2ad87b2b91': {
-        name: 'Wormhole Token',
-        symbol: 'W',
-        decimals: 18,
-      },
-      '0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8': {
-        name: 'Everclear',
-        symbol: 'NEXT',
-        decimals: 18,
-      },
-      '0x68f180fcce6836688e9084f035309e29bf0a2095': {
-        name: 'Wrapped Bitcoin',
-        symbol: 'WBTC',
-        decimals: 8,
-      },
-      '0x76fb31fb4af56892a25e32cfc43de717950c9278': {
-        name: 'Aave Token',
-        symbol: 'AAVE',
-        decimals: 18,
-      },
-      '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9': {
-        name: 'Synth USD',
-        symbol: 'sUSD',
-        decimals: 18,
-      },
-      '0xc40f949f8a4e094d1b49a23ea9241d289b7b2819': {
-        name: 'Liquity USD Stablecoin',
-        symbol: 'LUSD',
-        decimals: 18,
-      },
-    },
-    [BASE]: {
-      '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': {
-        name: 'USDC',
-        symbol: 'USDC',
-        decimals: 6,
-      },
-      '0xeb466342c4d449bc9f53a865d5cb90586f405215': {
-        name: 'Axelar USDC',
-        decimals: 6,
-      },
-      '0x50c5725949a6f0c72e6c4a641f24049a917db0cb': {
-        name: 'Bridged Dai Stablecoin',
-        symbol: 'DAI',
-        decimals: 18,
-      },
-      '0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452': {
-        name: 'Wrapped liquid staked Ether',
-        symbol: 'wstETH',
-        decimals: 18,
-      },
-      '0x5c7e299cf531eb66f2a1df637d37abb78e6200c7': {
-        name: 'Axelar Dai Stablecoin',
-        decimals: 18,
-      },
-      '0x7f5373ae26c3e8ffc4c77b7255df7ec1a9af52a6': {
-        name: 'Axelar Tether USD',
-        decimals: 6,
-      },
-      '0x04c0599ae5a44757c0af6f9ec3b93da8976c150a': {
-        name: 'Wrapped eETH',
-        symbol: 'weETH',
-        decimals: 18,
-      },
-    },
+    [POLYGON_AMOY]: {},
     [ARBITRUM]: {
       '0xaf88d065e77c8cc2239327c5edb3a432268e5831': {
         name: 'USDC',
@@ -416,6 +433,15 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
         decimals: 18,
       },
     },
+    [ARBITRUM_SEPOLIA]: {},
+    [MODE]: {},
+    [MODE_SEPOLIA]: {},
+    [LINEA]: {},
+    [ARBITRUM_NOVA]: {},
+    [CELO]: {},
+    [AVALANCHE]: {},
+    [AVALANCHE_FUJI]: {},
+    [GNOSIS]: {},
   };
   const chainTokens = tokens[chain] || {};
   const chainAssets = Object.entries(chainTokens)
