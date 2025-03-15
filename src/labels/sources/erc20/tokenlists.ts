@@ -31,6 +31,7 @@ interface MetadataWithCount extends Metadata {
 }
 
 const listUrls: string[] = [
+  'https://tokens.1inch.eth.link',
   'https://tokens.coingecko.com/uniswap/all.json',
   'https://tokens.coingecko.com/polygon-pos/all.json',
   'https://api.coinmarketcap.com/data-api/v3/uniswap/all.json',
@@ -41,7 +42,8 @@ const listUrls: string[] = [
   'https://raw.githubusercontent.com/balancer/assets/refactor-for-multichain/generated/arbitrum.listed.tokenlist.json',
   'https://raw.githubusercontent.com/balancer/assets/refactor-for-multichain/generated/optimism.listed.json',
   'https://raw.githubusercontent.com/balancer/assets/refactor-for-multichain/generated/polygon.listed.tokenlist.json',
-  'https://unpkg.com/quickswap-default-token-list/build/quickswap-default.tokenlist.json',
+  'https://unpkg.com/quickswap-default-token-list@latest/build/quickswap-default.tokenlist.json',
+  'https://unpkg.com/@ubeswap/default-token-list@latest/ubeswap.token-list.json',
   'https://api-polygon-tokens.polygon.technology/tokenlists/polygon.tokenlist.json',
 ];
 
