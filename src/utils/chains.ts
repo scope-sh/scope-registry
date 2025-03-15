@@ -12,7 +12,6 @@ import {
   bscTestnet,
   gnosis,
   fantom,
-  zkSync,
   klaytnBaobab,
   metis,
   polygonZkEvm,
@@ -49,7 +48,6 @@ const BNB_TESTNET = bscTestnet.id;
 const GNOSIS_CHAIN = gnosis.id;
 const POLYGON = polygon.id;
 const FANTOM = fantom.id;
-const ZKSYNC = zkSync.id;
 const KLAYTN_BAOBAB = klaytnBaobab.id;
 const METIS = metis.id;
 const POLYGON_ZKEVM = polygonZkEvm.id;
@@ -106,7 +104,6 @@ type ChainId =
   | typeof GNOSIS_CHAIN
   | typeof POLYGON
   | typeof FANTOM
-  | typeof ZKSYNC
   | typeof KLAYTN_BAOBAB
   | typeof METIS
   | typeof POLYGON_ZKEVM
@@ -156,8 +153,6 @@ function getChainData(chain: ChainId): ChainData {
       return polygon;
     case FANTOM:
       return fantom;
-    case ZKSYNC:
-      return zkSync;
     case KLAYTN_BAOBAB:
       return klaytnBaobab;
     case METIS:
@@ -234,7 +229,6 @@ export {
   GNOSIS_CHAIN,
   POLYGON,
   FANTOM,
-  ZKSYNC,
   KLAYTN_BAOBAB,
   METIS,
   POLYGON_ZKEVM,

@@ -1,6 +1,7 @@
 import { Address } from 'viem';
 
 import {
+  type ChainId,
   ETHEREUM,
   OPTIMISM,
   BNB,
@@ -8,7 +9,6 @@ import {
   GNOSIS_CHAIN,
   POLYGON,
   FANTOM,
-  ZKSYNC,
   KLAYTN_BAOBAB,
   METIS,
   POLYGON_ZKEVM,
@@ -39,7 +39,6 @@ import {
   BLAST,
   BLAST_SEPOLIA,
   HARMONY_SHARD_0,
-  ChainId,
   MODE_SEPOLIA,
   MODE,
 } from '@/utils/chains.js';
@@ -84,11 +83,6 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       address: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
       name: 'Wrapped Fantom',
       symbol: 'WFTM',
-    },
-    [ZKSYNC]: {
-      address: '0x5aea5775959fbc2557cc8789bc1bf90a239d9a91',
-      name: 'Wrapped Ether',
-      symbol: 'WETH',
     },
     [KLAYTN_BAOBAB]: null,
     [METIS]: {

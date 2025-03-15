@@ -9,7 +9,6 @@ import {
   GNOSIS_CHAIN,
   POLYGON,
   FANTOM,
-  ZKSYNC,
   KLAYTN_BAOBAB,
   METIS,
   POLYGON_ZKEVM,
@@ -117,8 +116,6 @@ async function getAssets(chainId: ChainId): Promise<string[]> {
         return 'polygon';
       case FANTOM:
         return 'fantom';
-      case ZKSYNC:
-        return 'zksync';
       case KLAYTN_BAOBAB:
         return null;
       case METIS:
