@@ -1,4 +1,4 @@
-import { AlchemyChain, alchemy } from 'evm-providers';
+import { alchemy } from 'evm-providers';
 import { Address, PublicClient, createPublicClient, http } from 'viem';
 
 import erc20Abi from '@/abi/erc20.js';
@@ -8,8 +8,12 @@ import {
   BASE,
   ETHEREUM,
   getChainData,
+  MODE_SEPOLIA,
+  LINEA,
+  MODE,
   OPTIMISM,
   POLYGON,
+  CELO,
 } from './chains.js';
 import type { ChainId } from './chains.js';
 import { type Log } from './db.js';
@@ -23,11 +27,25 @@ interface Erc20Metadata {
 }
 
 function getClient(chain: ChainId): PublicClient | null {
+  function getEndpointUrl(chain: ChainId): string {
+    switch (chain) {
+      case MODE:
+      case MODE_SEPOLIA:
+      case LINEA:
+      case CELO: {
+        const chainData = getChainData(chain);
+        return chainData.rpcUrls.default.http[0] as string;
+      }
+      default:
+        return alchemy(chain, alchemyKey);
+    }
+  }
+
   const chainData = getChainData(chain);
   if (!chainData) {
     return null;
   }
-  const rpcUrl = alchemy(chain as AlchemyChain, alchemyKey);
+  const rpcUrl = getEndpointUrl(chain);
   if (!rpcUrl) {
     return null;
   }
