@@ -13,7 +13,6 @@ import {
   ARBITRUM,
   ARBITRUM_SEPOLIA,
   MODE,
-  MODE_SEPOLIA,
   LINEA,
   ARBITRUM_NOVA,
   CELO,
@@ -68,7 +67,6 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
-    [MODE_SEPOLIA]: null,
     [LINEA]: {
       address: '0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f',
       name: 'Wrapped Ether',

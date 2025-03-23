@@ -11,7 +11,6 @@ import {
   arbitrum,
   arbitrumSepolia,
   mode,
-  modeTestnet,
   linea,
   arbitrumNova,
   celo,
@@ -32,7 +31,6 @@ const POLYGON_AMOY = polygonAmoy.id;
 const ARBITRUM = arbitrum.id;
 const ARBITRUM_SEPOLIA = arbitrumSepolia.id;
 const MODE = mode.id;
-const MODE_SEPOLIA = modeTestnet.id;
 const LINEA = linea.id;
 const ARBITRUM_NOVA = arbitrumNova.id;
 const CELO = celo.id;
@@ -53,7 +51,6 @@ const CHAINS: ChainId[] = [
   ARBITRUM,
   ARBITRUM_SEPOLIA,
   MODE,
-  MODE_SEPOLIA,
   LINEA,
   ARBITRUM_NOVA,
   CELO,
@@ -75,7 +72,6 @@ type ChainId =
   | typeof ARBITRUM
   | typeof ARBITRUM_SEPOLIA
   | typeof MODE
-  | typeof MODE_SEPOLIA
   | typeof LINEA
   | typeof ARBITRUM_NOVA
   | typeof CELO
@@ -108,8 +104,6 @@ function getChainData(chainId: ChainId): ChainData {
       return arbitrumSepolia;
     case MODE:
       return mode;
-    case MODE_SEPOLIA:
-      return modeTestnet;
     case LINEA:
       return linea;
     case ARBITRUM_NOVA:
@@ -140,7 +134,6 @@ export {
   ARBITRUM,
   ARBITRUM_SEPOLIA,
   MODE,
-  MODE_SEPOLIA,
   LINEA,
   ARBITRUM_NOVA,
   CELO,

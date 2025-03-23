@@ -13,7 +13,6 @@ import {
   ARBITRUM,
   ARBITRUM_SEPOLIA,
   MODE,
-  MODE_SEPOLIA,
   LINEA,
   ARBITRUM_NOVA,
   CELO,
@@ -103,8 +102,6 @@ async function getAssets(chainId: ChainId): Promise<string[]> {
       case POLYGON_AMOY:
         return null;
       case MODE:
-        return null;
-      case MODE_SEPOLIA:
         return null;
       case LINEA:
         return 'linea';

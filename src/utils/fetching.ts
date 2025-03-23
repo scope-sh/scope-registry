@@ -8,7 +8,6 @@ import {
   BASE,
   ETHEREUM,
   getChainData,
-  MODE_SEPOLIA,
   LINEA,
   MODE,
   OPTIMISM,
@@ -30,7 +29,6 @@ function getClient(chain: ChainId): PublicClient | null {
   function getEndpointUrl(chain: ChainId): string {
     switch (chain) {
       case MODE:
-      case MODE_SEPOLIA:
       case LINEA:
       case CELO: {
         const chainData = getChainData(chain);
