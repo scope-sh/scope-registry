@@ -20,6 +20,7 @@ import {
   AVALANCHE,
   AVALANCHE_FUJI,
   GNOSIS,
+  BSC,
 } from '@/utils/chains.js';
 
 import { type Asset } from './index.js';
@@ -93,6 +94,11 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       address: '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d',
       name: 'Wrapped XDAI',
       symbol: 'WXDAI',
+    },
+    [BSC]: {
+      address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+      name: 'Wrapped BNB',
+      symbol: 'WBNB',
     },
   };
 
