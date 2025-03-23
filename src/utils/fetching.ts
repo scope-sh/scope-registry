@@ -8,7 +8,6 @@ import {
   BASE,
   ETHEREUM,
   getChainData,
-  LINEA,
   MODE,
   OPTIMISM,
   POLYGON,
@@ -29,7 +28,6 @@ function getClient(chain: ChainId): PublicClient | null {
   function getEndpointUrl(chain: ChainId): string {
     switch (chain) {
       case MODE:
-      case LINEA:
       case CELO: {
         const chainData = getChainData(chain);
         return chainData.rpcUrls.default.http[0] as string;
