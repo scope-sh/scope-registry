@@ -20,6 +20,7 @@ import {
   AVALANCHE_FUJI,
   GNOSIS,
   BSC,
+  MONAD_TESTNET,
 } from '@/utils/chains.js';
 
 import { type Asset } from './index.js';
@@ -98,6 +99,7 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
       name: 'Wrapped BNB',
       symbol: 'WBNB',
     },
+    [MONAD_TESTNET]: null,
   };
 
   const chainAsset = assets[chain];

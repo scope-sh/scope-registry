@@ -20,6 +20,7 @@ import {
   AVALANCHE_FUJI,
   GNOSIS,
   BSC,
+  MONAD_TESTNET,
 } from '@/utils/chains.js';
 
 import { Asset } from '.';
@@ -442,6 +443,7 @@ async function fetch(chain: ChainId): Promise<Asset[]> {
     [AVALANCHE_FUJI]: {},
     [GNOSIS]: {},
     [BSC]: {},
+    [MONAD_TESTNET]: {},
   };
   const chainTokens = tokens[chain] || {};
   const chainAssets = Object.entries(chainTokens)

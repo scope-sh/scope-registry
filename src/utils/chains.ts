@@ -18,6 +18,7 @@ import {
   avalancheFuji,
   gnosis,
   bsc,
+  monadTestnet,
 } from 'viem/chains';
 
 const ETHEREUM = mainnet.id;
@@ -38,6 +39,7 @@ const AVALANCHE = avalanche.id;
 const AVALANCHE_FUJI = avalancheFuji.id;
 const GNOSIS = gnosis.id;
 const BSC = bsc.id;
+const MONAD_TESTNET = monadTestnet.id;
 
 const CHAINS: ChainId[] = [
   ETHEREUM,
@@ -58,6 +60,7 @@ const CHAINS: ChainId[] = [
   AVALANCHE_FUJI,
   GNOSIS,
   BSC,
+  MONAD_TESTNET,
 ];
 
 type ChainId =
@@ -78,7 +81,8 @@ type ChainId =
   | typeof AVALANCHE
   | typeof AVALANCHE_FUJI
   | typeof GNOSIS
-  | typeof BSC;
+  | typeof BSC
+  | typeof MONAD_TESTNET;
 
 function getChainData(chainId: ChainId): ChainData {
   switch (chainId) {
@@ -118,6 +122,8 @@ function getChainData(chainId: ChainId): ChainData {
       return gnosis;
     case BSC:
       return bsc;
+    case MONAD_TESTNET:
+      return monadTestnet;
   }
 }
 
@@ -141,6 +147,7 @@ export {
   AVALANCHE_FUJI,
   GNOSIS,
   BSC,
+  MONAD_TESTNET,
   getChainData,
 };
 export type { ChainId };

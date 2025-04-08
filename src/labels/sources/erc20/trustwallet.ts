@@ -20,6 +20,7 @@ import {
   AVALANCHE_FUJI,
   GNOSIS,
   BSC,
+  MONAD_TESTNET,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata, isErc20Ignored } from '@/utils/fetching.js';
@@ -117,6 +118,8 @@ async function getAssets(chainId: ChainId): Promise<string[]> {
         return 'xdai';
       case BSC:
         return 'binance';
+      case MONAD_TESTNET:
+        return null;
     }
   }
 
