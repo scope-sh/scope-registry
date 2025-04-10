@@ -24,6 +24,8 @@ class Source extends BaseSource {
       '0xaac5d4240af87249b3f71bc8e4a2cae074a3e419': 'Factory V3.1',
       '0x97ebdca9c606d493dad1be10188dd78cadb2a139': 'Implementation V3.2',
       '0x4600a1e70fb9e4c9a3fec6d9105f6807adeacbe2': 'Factory V3.2',
+      '0xd6cedde84be40893d153be9d467cd6ad37875b28': 'Implementation V3.3',
+      '0x2577507b78c2008ff367261cb6285d44ba5ef2e9': 'Factory V3.3',
     };
     const chainAddresses = await getDeployed(chain, labels);
     return toChainLabelMap(
