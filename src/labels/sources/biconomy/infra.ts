@@ -17,6 +17,12 @@ class Source extends BaseSource {
 
   async fetch(chain: ChainId): Promise<ChainSingleLabelMap> {
     const labels: Record<Address, string> = {
+      '0xe854c84cd68fc434cb3b0042c29235d452cad977': 'MEE Entry Point',
+      '0x00000000d12897ddadc2044614a9677b191a2d95': 'MEE K1 Validator module',
+      '0x00000004430bb055db66ebef6fe5ee1da9668b10': 'Composability Module',
+      '0x0000000671eb337e12fe5db0e788f32e1d71b183': 'Composable Storage',
+      '0x000000afe527a978ecb761008af475cff04132a1': 'ETH Forwarder',
+
       '0x000031dd6d9d3a133e663660b959162870d755d4': 'Paymaster',
       '0x00000f79b7faf42eebadba19acc07cd08af44789': 'Paymaster',
       '0x00000f7365ca6c59a2c93719ad53d567ed49c14c': 'Paymaster',
