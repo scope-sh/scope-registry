@@ -23,7 +23,7 @@ class Source extends BaseSource {
       '0xf6bdf42c9be18ceca5c06c42a43daf7fbbe7896b': 'Multi Factor Validator',
 
       // Session keys
-      '0x0000000000461517cb3dc37db9f367651443c628': 'Smart Sessions',
+      '0x00000000002b0ecfbd0496ee71e01257da0e37de': 'Smart Sessions',
       '0x00000088d48cf102a8cdb0137a9b173f957c6343':
         'ERC20 Spending Limit Policy',
       '0x0000006dda6c463511c4e9b05cfc34c1247fcf1f': 'Universal Action Policy',
