@@ -21,6 +21,7 @@ import {
   GNOSIS,
   BSC,
   MONAD_TESTNET,
+  MEGAETH_TESTNET,
 } from '@/utils/chains.js';
 import type { ChainId } from '@/utils/chains.js';
 import { getErc20Metadata, isErc20Ignored } from '@/utils/fetching.js';
@@ -119,6 +120,8 @@ async function getAssets(chainId: ChainId): Promise<string[]> {
       case BSC:
         return 'binance';
       case MONAD_TESTNET:
+        return null;
+      case MEGAETH_TESTNET:
         return null;
     }
   }

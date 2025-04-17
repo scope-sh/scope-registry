@@ -12,6 +12,7 @@ import {
   OPTIMISM,
   POLYGON,
   CELO,
+  MEGAETH_TESTNET,
 } from './chains.js';
 import type { ChainId } from './chains.js';
 import { type Log } from './db.js';
@@ -28,7 +29,8 @@ function getClient(chain: ChainId): PublicClient | null {
   function getEndpointUrl(chain: ChainId): string {
     switch (chain) {
       case MODE:
-      case CELO: {
+      case CELO:
+      case MEGAETH_TESTNET: {
         const chainData = getChainData(chain);
         return chainData.rpcUrls.default.http[0] as string;
       }
