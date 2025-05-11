@@ -19,4 +19,5 @@ bun run generate:labels
 ## Related
 
 * [Scope UI](https://github.com/scope-sh/scope-app)
-* [Scope API Server](https://github.com/scope-sh/scope-api)
+* [Scope API](https://github.com/scope-sh/scope-api)
+* [Indexer](https://github.com/scope-sh/hyperindex-erc4337)
