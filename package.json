@@ -6,7 +6,7 @@
     "name": "Timur Badretdinov",
     "url": "https://github.com/Destiner"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/scope-sh/scope-registry.git"
